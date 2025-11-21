@@ -28,7 +28,7 @@
                 <div class="card-header bg-dark text-white fw-semibold">
                     My Store List
                 </div>
-                <div class="card-body table-responsive">
+                <div class="card-body">
                     {{-- Search --}}
                     <form method="GET" action="{{ route('admin.register.page') }}" class="mb-4">
                         <div class="input-group">
@@ -40,108 +40,145 @@
                     <br>
 
                     {{-- Table --}}
-                    <table class="table table-bordered table-striped align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>#</th>
-                                <th>Merchant Name</th>
-                                <th>Store Name</th>
-                                <th>Booking Operator</th>
-                                <th>Booking</th>
-                                <th>Courier</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($bookings as $key => $booking)
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle mb-0">
+                            <thead class="table-light">
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $booking->merchant->name }}</td>
-                                    <td>{{ $booking->store->name }}</td>
-                                    <td>{{ $booking->bookingOperator->name ?? 'N/A' }}</td>
+                                    <th>#</th>
+                                    <th>Order ID</th>
+                                    <th>Merchant Name</th>
+                                    <th>Store Name</th>
+                                    <th>Booking Operator</th>
+                                    <th class="text-center">Booking</th>
+                                    <th>Courier</th>
+                                    <th>Consignment ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($bookings as $key => $booking)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $booking->order_id }}</td>
+                                        <td>{{ $booking->merchant->name }}</td>
+                                        <td>{{ strtoupper($booking->store->name) }}</td>
+                                        <td>{{ $booking->bookingOperator->name ?? 'N/A' }}</td>
+                                        <td class="text-center">
+                                            @if (count($booking->products) > 0)
+                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#bookingModal{{ $booking->id }}">
+                                                    View
+                                                </button>
+                                            @else
+                                                0 Item
+                                            @endif
 
-                                    <td>
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#bookingModal{{ $booking->id }}">
-                                            View
-                                        </button>
+                                            <div class="modal fade" id="bookingModal{{ $booking->id }}" tabindex="-1"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
 
-                                        <div class="modal fade" id="bookingModal{{ $booking->id }}" tabindex="-1"
-                                            aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5">Booking Order: {{ $booking->order_id }}
-                                                        </h1>
-                                                        <button type="button" class="btn-close"
-                                                            data-bs-dismiss="modal"></button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-                                                        <div class="table-responsive">
-                                                            <table class="table">
-                                                                <thead class="bg-dark text-white">
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>Order ID</th>
-                                                                        <th>Product Name</th>
-                                                                        <th>QTY</th>
-                                                                        <th>Price</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-
-                                                                    @foreach ($booking->products as $i => $bp)
-                                                                        <tr>
-                                                                            <td>{{ $i + 1 }}</td>
-                                                                            <td>{{ $booking->order_id }}</td>
-                                                                            <td>{{ $bp->product->name }}</td>
-                                                                            <td>{{ $bp->quantity }}</td>
-                                                                            <td>{{ $bp->amount }}</td>
-                                                                        </tr>
-                                                                    @endforeach
-
-                                                                </tbody>
-                                                            </table>
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5">Booking Order:
+                                                                {{ $booking->order_id }}
+                                                            </h1>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal"></button>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                    </div>
+                                                        <div class="modal-body">
+                                                            <div class="table-responsive">
+                                                                <table class="table">
+                                                                    <thead class="bg-dark text-white">
+                                                                        <tr>
+                                                                            <th>#</th>
+                                                                            <th>Order ID</th>
+                                                                            <th>Product Name</th>
+                                                                            <th>QTY</th>
+                                                                            <th>Price</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
 
+                                                                        @foreach ($booking->products as $i => $bp)
+                                                                            <tr>
+                                                                                <td>{{ $i + 1 }}</td>
+                                                                                <td>{{ $booking->order_id }}</td>
+                                                                                <td>{{ $bp->product->name }}</td>
+                                                                                <td>{{ $bp->quantity }}</td>
+                                                                                <td>{{ $bp->amount }}</td>
+                                                                            </tr>
+                                                                        @endforeach
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
 
-                                    <td>
-                                        <div class="row">
-                                            <form action="{{ route('admin.assign.courier.services') }}" method="POST">
-                                                @csrf
-                                                <div class="col">
-                                                    <select class="form-select form-select-md" name="courier">
-                                                        <option>Select Courier</option>
-                                                        <option value="1">Pathao</option>
-                                                        <option value="2">Steadfast</option>
-                                                    </select>
+                                        <td>
+                                            @if (count($booking->products) > 0)
+                                                @if (empty($booking->courier_service))
+                                                    <form action="{{ route('admin.assign.courier.services') }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <div class="row">
+                                                            <div class="col-lg-10">
+                                                                <select class="form-select form-select-md" name="courier"
+                                                                    required>
+                                                                    <option value="">Select Courier</option>
+                                                                    <option value="1">Pathao</option>
+                                                                    <option value="2">Steadfast</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <input type="hidden" value="{{ $booking->id }}"
+                                                                    name="booking_id">
+                                                                <button type="submit" class="btn btn-sm btn-warning">
+                                                                    <i class="bx bx-check"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                @else
+                                                    {{ strtoupper($booking->courier_service) }}
+                                                @endif
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            @php
+                                                $array = json_decode($booking->pathao_consignment_ids, true);
+                                            @endphp
+                                            @foreach ($array ?? [] as $item)
+                                                {{ $item }} -
+                                                @php
+                                                    $value = Enan\PathaoCourier\Facades\PathaoCourier::VIEW_ORDER(
+                                                        $item,
+                                                    );
+                                                @endphp
+                                                <div class="bg-danger p-2 rounded text-white" role="alert">
+                                                    {{ $value['data']['order_status'] }}
                                                 </div>
-                                                <div class="col">
-                                                    <input type="hidden" value="{{ $booking->id }}" name="booking_id">
-                                                    <button type="submit" class="btn btn-sm btn-warning">
-                                                        <i class="bx bx-check"></i>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                                </br>
+                                            @endforeach
+                                        </td>
 
-                        </tbody>
-                    </table>
+                                    </tr>
+                                @endforeach
 
+                            </tbody>
+                        </table>
+                    </div>
                     {{-- Pagination --}}
                     <div class="col-lg-12">
                         <div class="mt-3">

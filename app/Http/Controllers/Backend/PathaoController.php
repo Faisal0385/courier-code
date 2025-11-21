@@ -43,8 +43,8 @@ class PathaoController extends Controller
     {
         $get_stores = PathaoCourier::GET_STORES();
         $stores     = $get_stores["data"]["data"];
-
-        return view('admin.create-pathao-store.index', compact('stores'));
+        
+        return view('admin.create-pathao-store.index', compact('stores','data'));
     }
 
     public function create()

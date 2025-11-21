@@ -34,6 +34,13 @@ return new class extends Migration
             $table->string('recipient_secondary_phone')->nullable();
             $table->text('recipient_address');
 
+            $table->string('pathao_consignment_ids');
+            $table->string('courier_status');
+            $table->string('courier_service');
+
+
+
+
             // 🌍 Location Info
             $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('zone_id');

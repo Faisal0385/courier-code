@@ -69,7 +69,7 @@
                                 <th>Recipient Phone</th>
                                 <th>Details</th>
                                 <th>Add</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -169,6 +169,9 @@
                                                     </div>
 
                                                     <div class="modal-footer">
+                                                        <button type="button" class="btn btn-warning">
+                                                            Edit
+                                                        </button>
                                                         <button type="button" class="btn btn-secondary"
                                                             data-bs-dismiss="modal">Close</button>
                                                     </div>
@@ -182,13 +185,13 @@
                                             href="{{ route('admin.booking.product.page', $bookingOrder->id) }}">Add
                                             Product</a>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @if ($bookingOrder->status == 1)
                                             <span class="p-1 badge bg-success text-dark">Done</span>
                                         @else
                                             <span class="p-1 badge bg-warning text-dark">Pending</span>
                                         @endif
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>

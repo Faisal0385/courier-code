@@ -48,45 +48,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin/register/merchant/page', [MerchantController::class, 'manageMerchant'])->name('admin.register.merchant.page');
     Route::get('admin/status/merchant/toggle/{id}', [MerchantController::class, 'toggleStatus'])->name('admin.toggle.merchant.status');
 
-
-
-
-
     ## Store
     Route::get('admin/store/index/{id}', [StoreController::class, 'index'])->name('admin.store.index');
     Route::get('admin/store/add/{id}', [StoreController::class, 'add'])->name('admin.store.add');
     Route::get('admin/store/edit/{id}', [StoreController::class, 'edit'])->name('admin.store.edit');
-
     Route::post('admin/store/store', [StoreController::class, 'store'])->name('admin.store.store');
     Route::post('admin/store/update/{id}', [StoreController::class, 'update'])->name('admin.store.update');
     // Route::post('admin/store/destroy/{id}', [StoreController::class, 'destroy'])->name('admin.store.destroy');
     Route::post('admin/store/assign/{id}', [StoreController::class, 'assignStoreAdmin'])->name('admin.store.assign');
-
-
     Route::get('admin/store/status/toggle/{id}', [StoreController::class, 'toggleStatus'])->name('admin.store.toggle.status');
     Route::get('admin/store/page', [StoreController::class, 'show'])->name('admin.store.show');
-
-
-
-
-
-
-
-
-
-
-
-
 
     ## Store Admin
     Route::get('admin/store-admin/index', [StoreAdminController::class, 'index'])->name('admin.store.admin.index');
     Route::post('admin/store-admin/store', [StoreAdminController::class, 'store'])->name('admin.store.admin.store');
 
-
     ## Store Manage
     Route::get('admin/store-manage/index', [StoreManageController::class, 'index'])->name('admin.store.manage.index');
     Route::post('admin/store-manage/store', [StoreManageController::class, 'store'])->name('admin.store.manage.store');
-
 
     ## Product
     Route::get('admin/product/index', [ProductController::class, 'index'])->name('admin.product.index');
@@ -95,157 +74,98 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/product/store', [ProductController::class, 'store'])->name('admin.product.store');
     Route::post('admin/product/update/{id}', [ProductController::class, 'update'])->name('admin.product.update');
 
-
     ## Product Manage
     Route::get('admin/product-manage/index/{id}', [ProductManageController::class, 'index'])->name('admin.product.manage.index');
     Route::get('admin/product-manage/add/{id}', [ProductManageController::class, 'add'])->name('admin.product.manage.add');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     ## New Owner Registration
     Route::get('admin/register/page', [AdminController::class, 'RegisterNewMember'])->name('admin.register.page');
     Route::post('admin/register/store', [AdminController::class, 'store'])->name('admin.register.store');
     Route::get('admin/status/toggle/{id}', [AdminController::class, 'toggleStatus'])->name('admin.toggle.status');
 
-
     ## New Memember Registration
     Route::get('admin/register/page', [AdminController::class, 'RegisterNewMember'])->name('admin.register.page');
     Route::post('admin/register/store', [AdminController::class, 'store'])->name('admin.register.store');
     Route::get('admin/status/toggle/{id}', [AdminController::class, 'toggleStatus'])->name('admin.toggle.status');
 
-
     ## Category
     Route::get('admin/category/index', [CategoryController::class, 'index'])->name('admin.category.index');
     Route::get('admin/category/create', [CategoryController::class, 'create'])->name('admin.category.create');
     Route::get('admin/category/edit/{id}', [CategoryController::class, 'edit'])->name('admin.category.edit');
-
     Route::post('admin/category/store', [CategoryController::class, 'store'])->name('admin.category.store');
     Route::post('admin/category/update/{id}', [CategoryController::class, 'update'])->name('admin.category.update');
     Route::post('admin/category/destroy/{id}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
-
     Route::get('admin/category/status/toggle/{id}', [CategoryController::class, 'toggleStatus'])->name('admin.category.toggle.status');
-
 
     ## Hub
     Route::get('admin/hub/index', [HubController::class, 'index'])->name('admin.hub.index');
     Route::get('admin/hub/create', [HubController::class, 'create'])->name('admin.hub.create');
     Route::get('admin/hub/edit/{id}', [HubController::class, 'edit'])->name('admin.hub.edit');
-
     Route::post('admin/hub/store', [HubController::class, 'store'])->name('admin.hub.store');
     Route::post('admin/hub/update/{id}', [HubController::class, 'update'])->name('admin.hub.update');
     Route::post('admin/hub/destroy/{id}', [HubController::class, 'destroy'])->name('admin.hub.destroy');
-
     Route::get('admin/hub/status/toggle/{id}', [HubController::class, 'toggleStatus'])->name('admin.hub.toggle.status');
-
 
     ## Hub Incharge
     Route::get('admin/hub/incharge/index', [HubInchargeController::class, 'index'])->name('admin.hub.inchage.index');
     Route::get('admin/hub/incharge/create', [HubInchargeController::class, 'create'])->name('admin.hub.inchage.create');
     Route::get('admin/hub/incharge/edit/{id}', [HubInchargeController::class, 'edit'])->name('admin.hub.inchage.edit');
-
     Route::post('admin/hub/incharge/store', [HubInchargeController::class, 'store'])->name('admin.hub.inchage.store');
     Route::post('admin/hub/incharge/update/{id}', [HubInchargeController::class, 'update'])->name('admin.hub.inchage.update');
     Route::post('admin/hub/incharge/destroy/{id}', [HubInchargeController::class, 'destroy'])->name('admin.hub.inchage.destroy');
-
     Route::get('admin/hub/incharge/status/toggle/{id}', [HubInchargeController::class, 'toggleStatus'])->name('admin.hub.inchage.toggle.status');
-
-
-
-
 
     ## Store Incharge
     Route::get('admin/store/incharge/index', [StoreInchargeController::class, 'index'])->name('admin.store.inchage.index');
     Route::get('admin/store/incharge/create', [StoreInchargeController::class, 'create'])->name('admin.store.inchage.create');
     Route::get('admin/store/incharge/edit/{id}', [StoreInchargeController::class, 'edit'])->name('admin.store.inchage.edit');
-
     Route::post('admin/store/incharge/store', [StoreInchargeController::class, 'store'])->name('admin.store.inchage.store');
     Route::post('admin/store/incharge/update/{id}', [StoreInchargeController::class, 'update'])->name('admin.store.inchage.update');
     Route::post('admin/store/incharge/destroy/{id}', [StoreInchargeController::class, 'destroy'])->name('admin.store.inchage.destroy');
-
     Route::get('admin/store/incharge/status/toggle/{id}', [StoreInchargeController::class, 'toggleStatus'])->name('admin.store.inchage.toggle.status');
-
-
-
-
-
-
-
-
-
 
     ## Dispatch Incharge
     Route::get('admin/dispatch/incharge/index', [DispatchInchargeController::class, 'index'])->name('admin.dispatch.incharge.index');
     Route::get('admin/dispatch/incharge/create', [DispatchInchargeController::class, 'create'])->name('admin.dispatch.incharge.create');
     Route::get('admin/dispatch/incharge/edit/{id}', [DispatchInchargeController::class, 'edit'])->name('admin.dispatch.incharge.edit');
-
     Route::post('admin/dispatch/incharge/store', [DispatchInchargeController::class, 'store'])->name('admin.dispatch.incharge.store');
     Route::post('admin/dispatch/incharge/update/{id}', [DispatchInchargeController::class, 'update'])->name('admin.dispatch.incharge.update');
     Route::post('admin/dispatch/incharge/destroy/{id}', [DispatchInchargeController::class, 'destroy'])->name('admin.dispatch.incharge.destroy');
-
     Route::get('admin/dispatch/incharge/status/toggle/{id}', [DispatchInchargeController::class, 'toggleStatus'])->name('admin.dispatch.incharge.toggle.status');
-
 
     ## Booking Operator Registration
     Route::get('admin/booking/operator/page', [BookingOperatorController::class, 'index'])->name('admin.booking.operator.page');
     Route::get('admin/booking/operator/create', [BookingOperatorController::class, 'create'])->name('admin.booking.operator.create');
     Route::get('admin/booking/operator/edit/{id}', [BookingOperatorController::class, 'edit'])->name('admin.booking.operator.edit');
-
     Route::post('admin/booking/operator/operatornt/store', [BookingOperatorController::class, 'store'])->name('admin.booking.operator.store');
     Route::get('admin/status/booking/operator/toggle/{id}', [BookingOperatorController::class, 'toggleStatus'])->name('admin.toggle.booking.operator.status');
-
 
     ## Stock Movement
     Route::get('admin/stock/movement/page/{id}', [StockMovementController::class, 'index'])->name('admin.stock.movement.page');
     Route::post('admin/stock/movement/store', [StockMovementController::class, 'store'])->name('admin.stock.movement.store');
 
-
     ## kyc verification
     Route::get('admin/kyc/verification/page', [KYCController::class, 'index'])->name('admin.kyc.verification.page');
     Route::post('admin/kyc/verification/store', [KYCController::class, 'store'])->name('admin.kyc.verification.store');
-
-
     Route::post('admin/kyc/payment/details/store', [KYCController::class, 'PaymentDetailStore'])->name('admin.kyc.payment.details.store');
-
-
 
     # verify email and phone
     Route::post('admin/email/verify', [EmailVerifyController::class, 'emailVerify'])->name('admin.email.verify');
     Route::post('admin/phone/verify', [PhoneVerifyController::class, 'phoneVerify'])->name('admin.phone.verify');
-
-
 
     ## Booking
     Route::get('admin/booking/page', [BookingController::class, 'index'])->name('admin.booking.page');
     Route::get('admin/booking/create/page', [BookingController::class, 'create'])->name('admin.booking.create.page');
     // Route::get('admin/booking/create/product/page', [BookingController::class, 'addProduct'])->name('admin.add.booking.create.page');
     Route::post('admin/booking/store', [BookingController::class, 'store'])->name('admin.booking.store');
-
     // Route::get('admin/bookings/{orderId}/products', [BookingController::class, 'addProduct'])->name('admin.booking.products.store');bookingIndex
     Route::get('admin/bookings/{orderId}/products', [BookingController::class, 'bookingIndex'])->name('admin.booking.product.page');
     Route::post('admin/bookings/order/product/store', [BookingController::class, 'addProduct'])->name('admin.booking.product.store');
     Route::get('admin/bookings/order/product/delete/{id}', [BookingController::class, 'destroy'])->name('admin.booking.product.delete');
 
-
-
     ## Assign Courier Services
     Route::get('admin/assign/courier/services/page', [AssignCourierController::class, 'index'])->name('admin.assign.courier.services.page');
     Route::post('admin/assign/courier/services', [AssignCourierController::class, 'order'])->name('admin.assign.courier.services');
-    
 });
 ### Protected Route Admin Profile & Password Pages End
 
