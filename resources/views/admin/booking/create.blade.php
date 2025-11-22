@@ -95,7 +95,7 @@
                                     <label for="recipient_name" class="col-form-label">Recipient's name</label>
                                     <input type="recipient_name" id="recipient_name" name="recipient_name"
                                         class="form-control @error('recipient_name') is-invalid @enderror"
-                                        placeholder="Recipient's name" value="{{ old('recipient_name') }}">
+                                        placeholder="Recipient's name" value="{{ old('recipient_name') }}" required>
                                 </div>
 
                                 {{-- Recipient's Phone --}}
@@ -103,7 +103,7 @@
                                     <label for="recipient_phone" class="col-form-label">Recipient's Phone</label>
                                     <input type="recipient_phone" id="recipient_phone" name="recipient_phone"
                                         class="form-control @error('recipient_phone') is-invalid @enderror"
-                                        placeholder="Recipient's Phone" value="{{ old('recipient_phone') }}">
+                                        placeholder="Recipient's Phone" value="{{ old('recipient_phone') }}" required>
                                 </div>
 
                                 {{-- Recipient's Secondary Phone --}}
@@ -119,8 +119,8 @@
 
                                 <div class="col-sm-12">
                                     <label for="recipient_address" class="col-form-label">Recipient Address</label>
-                                    <textarea id="recipient_address" name="recipient_address" rows="3" class="form-control"
-                                        placeholder="Recipient Address">{{ old('recipient_address') }}</textarea>
+                                    <textarea id="recipient_address" name="recipient_address" rows="3" min="10" class="form-control"
+                                        placeholder="Recipient Address" onkeyup="checkCharacter()" required>{{ old('recipient_address') }}</textarea>
                                 </div>
                             </div>
 
@@ -293,4 +293,57 @@
             }
         });
     </script>
+
+    <script>
+        // document.addEventListener("DOMContentLoaded", function() {
+        function checkCharacter(params) {
+            const addressField = document.getElementById("recipient_address");
+
+            addressField.addEventListener("input", function() {
+                if (addressField.value.length < 10) {
+                    addressField.style.border = "2px solid red";
+                } else {
+                    addressField.style.border = "2px solid green";
+                }
+            });
+
+            // Attach to your form submit
+            document.querySelector("form").addEventListener("submit", function(e) {
+                if (!validateAddress()) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+
+
+        // });
+    </script>
+
+    {{-- <script>
+        document.getElementById("recipient_address").addEventListener("input", function() {
+            let addr = this.value.toLowerCase();
+            console.log("this is working!!");
+            
+
+            // === City Auto Select ===
+            if (addr.includes("chittagong") || addr.includes("muradpur")) {
+                document.getElementById("city_id").value = "1"; // Chittagong
+            }
+
+            // === Zone Auto Select ===
+            if (addr.includes("halishahar")) {
+                document.getElementById("zone_id").value = "10"; // Halishahar
+            } else if (addr.includes("muradpur")) {
+                document.getElementById("zone_id").value = "11"; // Muradpur
+            }
+
+            // === Area Auto Select ===
+            if (addr.includes("block i")) {
+                document.getElementById("area_id").value = "101";
+            } else if (addr.includes("block j")) {
+                document.getElementById("area_id").value = "102";
+            }
+        });
+    </script> --}}
 @endsection

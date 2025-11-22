@@ -3,20 +3,93 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Booking;
 use App\Models\BookingProduct;
+use App\Models\City;
 use App\Models\DeliveryType;
+use App\Models\Division;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\Store;
+use App\Models\Zone;
 use Enan\PathaoCourier\Facades\PathaoCourier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+ini_set('max_execution_time', 300); // 300 seconds = 5 minutes
+
 
 class BookingController extends Controller
 {
     public function index(Request $request)
     {
+
+        // $get_cities = PathaoCourier::GET_CITIES();
+        // $cities = $get_cities["data"]["data"];
+
+        // $get_zones = PathaoCourier::GET_ZONES(10);
+        // $zones = $get_zones["data"]["data"];
+
+        // dd($zones);
+
+        // foreach ($cities as $value) {
+        //     City::create([
+        //         'city_id'   => $value['city_id'],
+        //         'city_name' => $value['city_name'],
+        //     ]);
+        // }
+
+        // foreach ($cities as $value) {
+        //     // City::create([
+        //     //     'city_id'   => $value['city_id'],
+        //     //     'city_name' => $value['city_name'],
+        //     // ]);
+        //     $get_zones = PathaoCourier::GET_ZONES($value['city_id']);
+        //     $zones = $get_zones["data"]["data"] ?? [];
+
+        //     // foreach ($zones as $key => $zone) {
+        //     //     # code...
+        //     //     // dd($value["city_id"],  $zone["zone_id"], $zone["zone_name"]);
+        //     //     Zone::create([
+        //     //         'city_id'   => $value['city_id'],
+        //     //         'zone_id'   => $zone['zone_id'],
+        //     //         'zone_name' => $zone['zone_name'],
+        //     //     ]);
+        //     // }
+
+        //     foreach ($zones as $key => $zone) {
+        //         # code...
+        //         // dd($value["city_id"],  $zone["zone_id"], $zone["zone_name"]);
+        //         $get_areas = PathaoCourier::GET_AREAS($zone["zone_id"]);
+        //         $areas = $get_areas["data"]["data"] ?? [];
+
+        //         foreach ($areas as $key => $area) {
+        //             Area::create([
+        //                 'zone_id'   => $zone['zone_id'],
+        //                 'area_id'   => $area['area_id'],
+        //                 'area_name' => $area['area_name'],
+        //             ]);
+        //         }
+        //     }
+
+
+
+
+
+        //     // dd($zones);
+        // }
+
+
+
+
+
+
+
+
+
+
+
         $store = Store::where('merchant_id', '=', Auth::user()->id)->where('status', '=', 1)->first();
         $products = Product::where('user_id', '=', Auth::user()->id)->get();
 
@@ -71,7 +144,7 @@ class BookingController extends Controller
             'recipient_name'            => 'required|string|max:100',
             'recipient_phone'           => 'required|string|max:20',
             'recipient_secondary_phone' => 'nullable|string|max:20',
-            'recipient_address'         => 'required|string|max:255',
+            'recipient_address'         => 'required|string|min:10|max:255',
             'city_id'                   => 'required|integer',
             'zone_id'                   => 'required|integer',
             'area_id'                   => 'required|integer',
@@ -86,7 +159,7 @@ class BookingController extends Controller
         $booking = new Booking();
         $booking->merchant_id               = Auth::user()->user_id ?? Auth::user()->id;
         $booking->booking_operator_id       = (Auth::user()->role == "booking-operator") ? Auth::user()->user_id : Auth::user()->id;
-        $booking->order_id                  = $datetime . $random; // Combine
+        $booking->order_id                  = $datetime . strtoupper($random); // Combine
         $booking->store_id                  = $validatedData['store_id'];
         $booking->product_type_id           = $validatedData['product_type_id'];
         $booking->delivery_type_id          = $validatedData['delivery_type_id'];
