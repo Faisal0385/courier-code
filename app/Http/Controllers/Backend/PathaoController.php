@@ -39,34 +39,34 @@ class PathaoController extends Controller
         ]);
     }
 
-    public function index()
-    {
-        $get_stores = PathaoCourier::GET_STORES();
-        $stores     = $get_stores["data"]["data"];
-        
-        return view('admin.create-pathao-store.index', compact('stores','data'));
-    }
+    // public function index()
+    // {
+    //     $get_stores = PathaoCourier::GET_STORES();
+    //     $stores     = $get_stores["data"]["data"];
 
-    public function create()
-    {
-        // $cities = PathaoCourier::GET_CITIES();
-        // $zones  = PathaoCourier::GET_ZONES(1);
-        // $areas  = PathaoCourier::GET_AREAS(1);
+    //     return view('admin.create-pathao-store.index', compact('stores','data'));
+    // }
 
-        $get_cities = PathaoCourier::GET_CITIES();
-        $cities     = $get_cities["data"]["data"];
+    // public function create()
+    // {
+    //     // $cities = PathaoCourier::GET_CITIES();
+    //     // $zones  = PathaoCourier::GET_ZONES(1);
+    //     // $areas  = PathaoCourier::GET_AREAS(1);
 
-        // dd($cities);
+    //     $get_cities = PathaoCourier::GET_CITIES();
+    //     $cities     = $get_cities["data"]["data"];
 
-        return view('admin.create-pathao-store.create', compact('cities'));
-    }
+    //     // dd($cities);
 
-    public function store(PathaoStoreRequest $request)
-    {
-        $abcd = PathaoCourier::CREATE_STORE($request);
+    //     return view('admin.create-pathao-store.create', compact('cities'));
+    // }
 
-        dd($abcd);
+    // public function store(PathaoStoreRequest $request)
+    // {
+    //     $abcd = PathaoCourier::CREATE_STORE($request);
 
-        return view('admin.create-pathao-store.create');
-    }
+    //     dd($abcd);
+
+    //     return view('admin.create-pathao-store.create');
+    // }
 }

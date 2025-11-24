@@ -37,9 +37,8 @@ return new class extends Migration
             $table->string('pathao_consignment_ids');
             $table->string('courier_status');
             $table->string('courier_service');
-
-
-
+            $table->string('amount_to_collect')->nullable();
+            $table->string('item_description')->nullable();
 
             // 🌍 Location Info
             $table->unsignedBigInteger('city_id');

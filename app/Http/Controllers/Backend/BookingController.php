@@ -16,6 +16,7 @@ use App\Models\Zone;
 use Enan\PathaoCourier\Facades\PathaoCourier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 ini_set('max_execution_time', 300); // 300 seconds = 5 minutes
 
@@ -134,9 +135,9 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        $products = Product::where('user_id', '=', Auth::user()->id)->get();
-
-        // ✅ Step 1: Validate the incoming request
+        // ------------------------------
+        // Step 1: Validate Request
+        // ------------------------------
         $validatedData = $request->validate([
             'store_id'                  => 'required|integer',
             'product_type_id'           => 'required|string',
@@ -148,34 +149,157 @@ class BookingController extends Controller
             'city_id'                   => 'required|integer',
             'zone_id'                   => 'required|integer',
             'area_id'                   => 'required|integer',
+            'products'                  => 'required',  // product list JSON
         ]);
 
-        // Current date and time: YYYYMMDDHHIISS
+        // Convert product JSON to PHP array
+        $products = json_decode($request->products, true);
+
+        if (!is_array($products) || count($products) === 0) {
+            return back()->with('error', 'Please add at least one product.');
+        }
+
+        // Create order ID
         $datetime = date('YmdHis');
-        // Random BASE62 segment
         $random = $this->base62(6);
 
-        // ✅ Step 2: Create the booking record
-        $booking = new Booking();
-        $booking->merchant_id               = Auth::user()->user_id ?? Auth::user()->id;
-        $booking->booking_operator_id       = (Auth::user()->role == "booking-operator") ? Auth::user()->user_id : Auth::user()->id;
-        $booking->order_id                  = $datetime . strtoupper($random); // Combine
-        $booking->store_id                  = $validatedData['store_id'];
-        $booking->product_type_id           = $validatedData['product_type_id'];
-        $booking->delivery_type_id          = $validatedData['delivery_type_id'];
-        $booking->recipient_name            = $validatedData['recipient_name'];
-        $booking->recipient_phone           = $validatedData['recipient_phone'];
-        $booking->recipient_secondary_phone = $validatedData['recipient_secondary_phone'] ?? null;
-        $booking->recipient_address         = $validatedData['recipient_address'];
-        $booking->city_id                   = $validatedData['city_id'];
-        $booking->zone_id                   = $validatedData['zone_id'];
-        $booking->area_id                   = $validatedData['area_id'];
-        $booking->save();
+        // -------------------------------------
+        // Step 2: Use DB Transaction
+        // -------------------------------------
+        DB::beginTransaction();
 
-        // ✅ Step 3: Redirect with a success message
-        // return view('admin.booking.add_product', compact('booking', 'products'))->with('success', 'Booking created successfully!');
+        try {
+
+            // ------------------------------
+            // Save Booking
+            // ------------------------------
+            $booking = Booking::create([
+                'merchant_id'               => Auth::user()->user_id ?? Auth::user()->id,
+                'booking_operator_id'       => (Auth::user()->role == "booking-operator") ? Auth::user()->user_id : Auth::user()->id,
+                'order_id'                  => $datetime . strtoupper($random),
+                'store_id'                  => $validatedData['store_id'],
+                'product_type_id'           => $validatedData['product_type_id'],
+                'delivery_type_id'          => $validatedData['delivery_type_id'],
+                'recipient_name'            => $validatedData['recipient_name'],
+                'recipient_phone'           => $validatedData['recipient_phone'],
+                'recipient_secondary_phone' => $validatedData['recipient_secondary_phone'] ?? null,
+                'recipient_address'         => $validatedData['recipient_address'],
+                'city_id'                   => $validatedData['city_id'],
+                'zone_id'                   => $validatedData['zone_id'],
+                'area_id'                   => $validatedData['area_id'],
+            ]);
+
+            // Get ID
+            $booking_id = $booking->id;
+
+            // Step 1: Get all product IDs
+            $productIds = collect($products)->pluck('product_id')->toArray();
+
+            // Step 2: Get all product info (weight + stock) in ONE QUERY
+            $productData = Product::whereIn('id', $productIds)
+                ->get(['id', 'weight', 'stock'])
+                ->keyBy('id');
+
+            // Step 3: Prepare bulk insert array
+            $bookingProductInsert = [];
+
+            foreach ($products as $item) {
+                $pid = $item['product_id'];
+
+                // Get product object
+                $product = $productData[$pid];
+
+                // Reduce stock in memory
+                $product->stock -= $item['quantity'];
+
+                // Prepare booking product insert
+                $bookingProductInsert[] = [
+                    'booking_id' => $booking_id,
+                    'product_id' => $pid,
+                    'quantity'   => $item['quantity'],
+                    'weight'     => $product->weight,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            // Step 4: BULK update stock (only one query)
+            foreach ($productData as $product) {
+                Product::where('id', $product->id)->update([
+                    'stock' => $product->stock
+                ]);
+            }
+
+            // Step 5: BULK insert booking products (one query)
+            BookingProduct::insert($bookingProductInsert);
+            
+            DB::commit();
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+            return back()->with('error', 'Something went wrong! ');
+        }
+
+        // ------------------------------
+        // Step 3: Return Success
+        // ------------------------------
         return redirect()->back()->with('success', 'Booking created successfully!');
     }
+
+
+    // public function store(Request $request)
+    // {
+    //     // ✅ Step 1: Validate the incoming request
+    //     $validatedData = $request->validate([
+    //         'store_id'                  => 'required|integer',
+    //         'product_type_id'           => 'required|string',
+    //         'delivery_type_id'          => 'required|string',
+    //         'recipient_name'            => 'required|string|max:100',
+    //         'recipient_phone'           => 'required|string|max:20',
+    //         'recipient_secondary_phone' => 'nullable|string|max:20',
+    //         'recipient_address'         => 'required|string|min:10|max:255',
+    //         'city_id'                   => 'required|integer',
+    //         'zone_id'                   => 'required|integer',
+    //         'area_id'                   => 'required|integer',
+    //     ]);
+
+    //     // Current date and time: YYYYMMDDHHIISS
+    //     $datetime = date('YmdHis');
+    //     // Random BASE62 segment
+    //     $random = $this->base62(6);
+
+    //     // ✅ Step 2: Create the booking record
+    //     $booking = new Booking();
+    //     $booking->merchant_id               = Auth::user()->user_id ?? Auth::user()->id;
+    //     $booking->booking_operator_id       = (Auth::user()->role == "booking-operator") ? Auth::user()->user_id : Auth::user()->id;
+    //     $booking->order_id                  = $datetime . strtoupper($random); // Combine
+    //     $booking->store_id                  = $validatedData['store_id'];
+    //     $booking->product_type_id           = $validatedData['product_type_id'];
+    //     $booking->delivery_type_id          = $validatedData['delivery_type_id'];
+    //     $booking->recipient_name            = $validatedData['recipient_name'];
+    //     $booking->recipient_phone           = $validatedData['recipient_phone'];
+    //     $booking->recipient_secondary_phone = $validatedData['recipient_secondary_phone'] ?? null;
+    //     $booking->recipient_address         = $validatedData['recipient_address'];
+    //     $booking->city_id                   = $validatedData['city_id'];
+    //     $booking->zone_id                   = $validatedData['zone_id'];
+    //     $booking->area_id                   = $validatedData['area_id'];
+    //     $booking->save();
+
+    //     $booking_id = $booking->save() ? $booking->id : null;
+
+    //     $product_array = json_decode($request->products, true);
+
+    //     foreach ($product_array as $key => $value) {
+    //         $bookingProduct = new BookingProduct();
+    //         $bookingProduct->booking_id = $booking_id;
+    //         $bookingProduct->product_id = $value["product_id"];
+    //         $bookingProduct->quantity   = $value["quantity"];
+    //         $bookingProduct->save();
+    //     }
+
+    //     // ✅ Step 3: Redirect with a success message
+    //     return redirect()->back()->with('success', 'Booking created successfully!');
+    // }
 
     public function bookingIndex(Request $request, $orderId)
     {

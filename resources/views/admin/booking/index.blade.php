@@ -23,7 +23,7 @@
         <div class="ms-auto">
             <a href="{{ route('admin.booking.create.page') }}" class="btn btn-sm btn-dark">
                 <i class="fas fa-plus-circle me-1"></i>
-                Add Booking Order
+                Create Booking Order
             </a>
         </div>
     </div>
@@ -34,7 +34,7 @@
         <div class="ms-auto">
             <a href="{{ route('admin.booking.create.page') }}" class="btn btn-sm btn-dark">
                 <i class="fas fa-plus-circle me-1"></i>
-                Add Booking Order
+                Create Booking Order
             </a>
         </div>
     </div>

@@ -36,69 +36,42 @@ class AssignCourierController extends Controller
             'bookingOperator',
             'productType',
             'deliveryType',
-            'products.product'   // nested eager loading
-        ])
-            ->findOrFail($request->booking_id);
+            'products.product' // nested eager loading
+        ])->findOrFail($request->booking_id);
 
         // Prepare bulk order data - create one order per product in the booking
         $bulkOrders = [];
 
+        $weight = 0;
+        $item_quantity = 0;
+        $amount_to_collect = 0;
+
         foreach ($booking->products as $index => $bookingProduct) {
-            $product = $bookingProduct->product;
-
-            // Build item description from product details
-            $itemDescription = $product->name ?? 'Product';
-            if ($product->category) {
-                $itemDescription .= ' - ' . $product->category;
-            }
-
-            $bulkOrders[] = [
-                // 'store_id' => $booking->store->pathao_store_id, // Pathao store ID from database
-                'store_id'          => 345173, // Pathao store ID from database
-                'merchant_order_id' => $booking->order_id . '-' . ($index + 1), // Unique order ID per product
-                'sender_name'       => $booking->merchant->name ?? 'Merchant', // Store/Sender name
-                'sender_phone'      => $booking->merchant->phone ?? '01700000000', // Store/Sender phone
-
-                'recipient_name'    => $booking->recipient_name, // Customer name
-                'recipient_phone'   => $booking->recipient_phone, // Customer phone
-                'recipient_address' => $booking->recipient_address, // Delivery address
-
-                'recipient_city'      => (int) $booking->city_id, // City ID // fetched from recipient_address if not provided
-                'recipient_zone'      => (int) $booking->zone_id, // Zone ID
-                'recipient_area'      => (int) $booking->area_id, // Area ID
-
-                'delivery_type'       => $booking->deliveryType->pathao_delivery_type_id ?? 48, // 48 = Normal, 12 = On Demand
-                'item_type'           => $booking->productType->pathao_item_type_id ?? 2, // 1 = Document, 2 = Parcel
-                'special_instruction' => $booking->special_instruction ?? null, // Optional instructions
-                'item_quantity'       => $bookingProduct->quantity ?? 1, // Number of items
-                'item_weight'         => $product->weight ?? 0.5, // Weight in kg
-                'amount_to_collect'   => $booking->amount_to_collect ?? 0, // Cash to collect (COD amount)
-                'item_description'    => $itemDescription, // Item description
-            ];
+            $weight            += $bookingProduct->weight;
+            $item_quantity     += $bookingProduct->quantity;
+            $amount_to_collect += $bookingProduct->amount;
         }
 
-        // If no products, create a single order with booking data
-        if (empty($bulkOrders)) {
-            $bulkOrders[] = [
-                'store_id'            => $booking->store->pathao_store_id, // Pathao store ID from database
-                'merchant_order_id'   => $booking->order_id,
-                'sender_name'         => $booking->merchant->name ?? 'Merchant',
-                'sender_phone'        => $booking->merchant->phone ?? '01700000000',
-                'recipient_name'      => $booking->recipient_name,
-                'recipient_phone'     => $booking->recipient_phone,
-                'recipient_address'   => $booking->recipient_address,
-                'recipient_city'      => (int) $booking->city_id,
-                'recipient_zone'      => (int) $booking->zone_id,
-                'recipient_area'      => (int) $booking->area_id,
-                'delivery_type'       => $booking->deliveryType->pathao_delivery_type_id ?? 48,
-                'item_type'           => $booking->productType->pathao_item_type_id ?? 2,
-                'special_instruction' => $booking->special_instruction ?? null,
-                'item_quantity'       => 1,
-                'item_weight'         => 0.5,
-                'amount_to_collect'   => $booking->amount_to_collect ?? 0,
-                'item_description'    => 'Package',
-            ];
-        }
+        //// Delete this
+        $bulkOrders[] = [
+            'store_id'            => $booking->store->pathao_store_id ?? 345173, // Pathao store ID from database
+            'merchant_order_id'   => $booking->order_id,
+            'sender_name'         => $booking->merchant->name ?? 'Merchant',
+            'sender_phone'        => $booking->merchant->phone ?? '01700000000',
+            'recipient_name'      => $booking->recipient_name,
+            'recipient_phone'     => $booking->recipient_phone,
+            'recipient_address'   => $booking->recipient_address,
+            'recipient_city'      => (int) $booking->city_id,
+            'recipient_zone'      => (int) $booking->zone_id,
+            'recipient_area'      => (int) $booking->area_id,
+            'delivery_type'       => $booking->deliveryType->pathao_delivery_type_id ?? "Normal",
+            'item_type'           => $booking->productType->pathao_item_type_id ?? "Parcel",
+            'special_instruction' => $booking->special_instruction ?? null,
+            'item_quantity'       => (int) $item_quantity,
+            'item_weight'         => $weight,
+            'amount_to_collect'   => $amount_to_collect ?? 0,
+            'item_description'    => $booking->item_description,
+        ];
 
         try {
             $consignmentIds = [];

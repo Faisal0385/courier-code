@@ -183,12 +183,12 @@
                     <div class="menu-title">Settings</div>
                 </a>
                 <ul>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('admin.pathao.store.index') }}">
                             <i class="bx bx-right-arrow-alt"></i>
                             Create Store
                         </a>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{ route('admin.product.type.index') }}">
                             <i class="bx bx-right-arrow-alt"></i>
@@ -201,7 +201,7 @@
                             Add Delivery Type
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('admin.division.index') }}">
                             <i class="bx bx-right-arrow-alt"></i>
                             Add Division
@@ -218,7 +218,7 @@
                             <i class="bx bx-right-arrow-alt"></i>
                             Add Thana
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
         @endif

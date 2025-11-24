@@ -245,13 +245,13 @@ Route::get('admin/delivery/type/delete/{id}', [DeliveryTypeController::class, 'd
 Route::get('admin/delivery/type/status/toggle/{id}', [DeliveryTypeController::class, 'toggleStatus'])->name('admin.delivery.type.toggle.status');
 
 ## Pathao Store
-Route::get('admin/pathao/store/index', [PathaoController::class, 'index'])->name('admin.pathao.store.index');
-Route::get('admin/pathao/store/create', [PathaoController::class, 'create'])->name('admin.pathao.store.create');
-Route::get('admin/pathao/store/edit/{id}', [PathaoController::class, 'edit'])->name('admin.pathao.store.edit');
-Route::post('admin/pathao/store/store', [PathaoController::class, 'store'])->name('admin.pathao.store.store');
-Route::post('admin/pathao/store/update/{id}', [PathaoController::class, 'update'])->name('admin.pathao.store.update');
-Route::get('admin/pathao/store/delete/{id}', [PathaoController::class, 'destroy'])->name('admin.pathao.store.delete');
-Route::get('admin/pathao/store/status/toggle/{id}', [PathaoController::class, 'toggleStatus'])->name('admin.pathao.store.toggle.status');
+// Route::get('admin/pathao/store/index', [PathaoController::class, 'index'])->name('admin.pathao.store.index');
+// Route::get('admin/pathao/store/create', [PathaoController::class, 'create'])->name('admin.pathao.store.create');
+// Route::get('admin/pathao/store/edit/{id}', [PathaoController::class, 'edit'])->name('admin.pathao.store.edit');
+// Route::post('admin/pathao/store/store', [PathaoController::class, 'store'])->name('admin.pathao.store.store');
+// Route::post('admin/pathao/store/update/{id}', [PathaoController::class, 'update'])->name('admin.pathao.store.update');
+// Route::get('admin/pathao/store/delete/{id}', [PathaoController::class, 'destroy'])->name('admin.pathao.store.delete');
+// Route::get('admin/pathao/store/status/toggle/{id}', [PathaoController::class, 'toggleStatus'])->name('admin.pathao.store.toggle.status');
 
 Route::get('/pathao/cities', [PathaoController::class, 'getCities']);
 Route::get('/pathao/areas/{city_id}', [PathaoController::class, 'getAreas']);
