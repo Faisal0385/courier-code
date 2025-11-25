@@ -86,6 +86,11 @@
                                             Details
                                         </button>
 
+                                        <a href="{{ route('admin.booking.edit.page', $bookingOrder->id) }}"
+                                            class="btn btn-sm btn-warning">
+                                            Edit
+                                        </a>
+
                                         <!-- Modal for Each Booking -->
                                         <div class="modal fade" id="bookingModal{{ $bookingOrder->id }}" tabindex="-1"
                                             aria-labelledby="bookingModal{{ $bookingOrder->id }}Label" aria-hidden="true">
@@ -169,9 +174,6 @@
                                                     </div>
 
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-warning">
-                                                            Edit
-                                                        </button>
                                                         <button type="button" class="btn btn-secondary"
                                                             data-bs-dismiss="modal">Close</button>
                                                     </div>

@@ -44,12 +44,10 @@ class AssignCourierController extends Controller
 
         $weight = 0;
         $item_quantity = 0;
-        $amount_to_collect = 0;
 
         foreach ($booking->products as $index => $bookingProduct) {
-            $weight            += $bookingProduct->weight;
-            $item_quantity     += $bookingProduct->quantity;
-            $amount_to_collect += $bookingProduct->amount;
+            $weight        += $bookingProduct->weight;
+            $item_quantity += $bookingProduct->quantity;
         }
 
         //// Delete this
@@ -64,12 +62,12 @@ class AssignCourierController extends Controller
             'recipient_city'      => (int) $booking->city_id,
             'recipient_zone'      => (int) $booking->zone_id,
             'recipient_area'      => (int) $booking->area_id,
-            'delivery_type'       => $booking->deliveryType->pathao_delivery_type_id ?? "Normal",
-            'item_type'           => $booking->productType->pathao_item_type_id ?? "Parcel",
+            'delivery_type'       => $booking->delivery_type_id ?? 48,
+            'item_type'           => $booking->product_type_id ?? 2,
             'special_instruction' => $booking->special_instruction ?? null,
             'item_quantity'       => (int) $item_quantity,
             'item_weight'         => $weight,
-            'amount_to_collect'   => $amount_to_collect ?? 0,
+            'amount_to_collect'   => $booking->amount_to_collect ?? 0,
             'item_description'    => $booking->item_description,
         ];
 

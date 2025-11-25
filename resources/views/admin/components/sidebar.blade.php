@@ -71,8 +71,6 @@
                 </ul>
             </li>
 
-
-
             <li class="menu-label">HUB SETUP</li>
 
             <li>
@@ -111,45 +109,6 @@
                 </ul>
             </li>
 
-
-
-            {{-- <li>
-            <a href="{{ route('dashboard') }}">
-                <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                <div class="menu-title">Manage Role</div>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('admin.category.index') }}">
-                <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                <div class="menu-title">Manage Category</div>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('admin.category.index') }}">
-                <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                <div class="menu-title">Manage Sub Category</div>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('admin.category.index') }}">
-                <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                <div class="menu-title">Manage Brand</div>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('admin.category.index') }}">
-                <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                <div class="menu-title">Manage Unit</div>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('settings.create') }}">
-                <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                <div class="menu-title">Manage Site Setting</div>
-            </a>
-        </li> --}}
-
             <li class="menu-label">SETUP</li>
 
             <li>
@@ -159,12 +118,6 @@
                     <div class="menu-title">Manage Product</div>
                 </a>
                 <ul>
-                    {{-- <li>
-                    <a href="{{ route('admin.category.index') }}">
-                        <i class="bx bx-right-arrow-alt"></i>
-                        Add Category
-                    </a>
-                </li> --}}
                     <li>
                         <a href="{{ route('admin.product.index') }}">
                             <i class="bx bx-right-arrow-alt"></i>
@@ -183,12 +136,6 @@
                     <div class="menu-title">Settings</div>
                 </a>
                 <ul>
-                    {{-- <li>
-                        <a href="{{ route('admin.pathao.store.index') }}">
-                            <i class="bx bx-right-arrow-alt"></i>
-                            Create Store
-                        </a>
-                    </li> --}}
                     <li>
                         <a href="{{ route('admin.product.type.index') }}">
                             <i class="bx bx-right-arrow-alt"></i>
@@ -201,24 +148,6 @@
                             Add Delivery Type
                         </a>
                     </li>
-                    {{-- <li>
-                        <a href="{{ route('admin.division.index') }}">
-                            <i class="bx bx-right-arrow-alt"></i>
-                            Add Division
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.district.index') }}">
-                            <i class="bx bx-right-arrow-alt"></i>
-                            Add District
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.thana.index') }}">
-                            <i class="bx bx-right-arrow-alt"></i>
-                            Add Thana
-                        </a>
-                    </li> --}}
                 </ul>
             </li>
         @endif

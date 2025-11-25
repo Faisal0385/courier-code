@@ -23,6 +23,8 @@ class Booking extends Model
         'pathao_consignment_ids',
         'courier_status',
         'courier_service',
+        'amount_to_collect',
+        'item_description',
         'city_id',
         'zone_id',
         'area_id',

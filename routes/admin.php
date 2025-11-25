@@ -156,6 +156,25 @@ Route::middleware(['auth'])->group(function () {
     ## Booking
     Route::get('admin/booking/page', [BookingController::class, 'index'])->name('admin.booking.page');
     Route::get('admin/booking/create/page', [BookingController::class, 'create'])->name('admin.booking.create.page');
+    Route::get('admin/booking/{id}/edit/page', [BookingController::class, 'edit'])->name('admin.booking.edit.page');
+
+    Route::get('admin/booking/{id}/product/delete', [BookingController::class, 'deleteBookingProduct'])->name('admin.booking.product.delete.link');
+    Route::post('admin/booking/{id}/product/edit/page', [BookingController::class, 'editBookingProduct'])->name('admin.booking.product.edit.page');
+    Route::post('/admin/booking/{id}/update', [BookingController::class, 'updateBooking'])->name('admin.booking.update');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Route::get('admin/booking/create/product/page', [BookingController::class, 'addProduct'])->name('admin.add.booking.create.page');
     Route::post('admin/booking/store', [BookingController::class, 'store'])->name('admin.booking.store');
     // Route::get('admin/bookings/{orderId}/products', [BookingController::class, 'addProduct'])->name('admin.booking.products.store');bookingIndex
@@ -166,6 +185,30 @@ Route::middleware(['auth'])->group(function () {
     ## Assign Courier Services
     Route::get('admin/assign/courier/services/page', [AssignCourierController::class, 'index'])->name('admin.assign.courier.services.page');
     Route::post('admin/assign/courier/services', [AssignCourierController::class, 'order'])->name('admin.assign.courier.services');
+
+
+    ## Product Type
+    Route::get('admin/product/type/index', [ProductTypeController::class, 'index'])->name('admin.product.type.index');
+    Route::get('admin/product/type/create', [ProductTypeController::class, 'create'])->name('admin.product.type.create');
+    Route::get('admin/product/type/edit/{id}', [ProductTypeController::class, 'edit'])->name('admin.product.type.edit');
+    Route::post('admin/product/type/store', [ProductTypeController::class, 'store'])->name('admin.product.type.store');
+    Route::post('admin/product/type/update/{id}', [ProductTypeController::class, 'update'])->name('admin.product.type.update');
+    Route::get('admin/product/type/delete/{id}', [ProductTypeController::class, 'destroy'])->name('admin.product.type.delete');
+    Route::get('admin/product/type/status/toggle/{id}', [ProductTypeController::class, 'toggleStatus'])->name('admin.product.type.toggle.status');
+
+    ## Delivery Type
+    Route::get('admin/delivery/type/index', [DeliveryTypeController::class, 'index'])->name('admin.delivery.type.index');
+    Route::get('admin/delivery/type/create', [DeliveryTypeController::class, 'create'])->name('admin.delivery.type.create');
+    Route::get('admin/delivery/type/edit/{id}', [DeliveryTypeController::class, 'edit'])->name('admin.delivery.type.edit');
+    Route::post('admin/delivery/type/store', [DeliveryTypeController::class, 'store'])->name('admin.delivery.type.store');
+    Route::post('admin/delivery/type/update/{id}', [DeliveryTypeController::class, 'update'])->name('admin.delivery.type.update');
+    Route::get('admin/delivery/type/delete/{id}', [DeliveryTypeController::class, 'destroy'])->name('admin.delivery.type.delete');
+    Route::get('admin/delivery/type/status/toggle/{id}', [DeliveryTypeController::class, 'toggleStatus'])->name('admin.delivery.type.toggle.status');
+
+
+    Route::get('/pathao/cities', [PathaoController::class, 'getCities']);
+    Route::get('/pathao/areas/{city_id}', [PathaoController::class, 'getAreas']);
+    Route::get('/pathao/zones/{area_id}', [PathaoController::class, 'getZones']);
 });
 ### Protected Route Admin Profile & Password Pages End
 
@@ -226,23 +269,7 @@ Route::post('admin/thana/update/{id}', [ThanaController::class, 'update'])->name
 Route::get('admin/thana/delete/{id}', [ThanaController::class, 'destroy'])->name('admin.thana.delete');
 Route::get('admin/thana/status/toggle/{id}', [ThanaController::class, 'toggleStatus'])->name('admin.thana.toggle.status');
 
-## Product Type
-Route::get('admin/product/type/index', [ProductTypeController::class, 'index'])->name('admin.product.type.index');
-Route::get('admin/product/type/create', [ProductTypeController::class, 'create'])->name('admin.product.type.create');
-Route::get('admin/product/type/edit/{id}', [ProductTypeController::class, 'edit'])->name('admin.product.type.edit');
-Route::post('admin/product/type/store', [ProductTypeController::class, 'store'])->name('admin.product.type.store');
-Route::post('admin/product/type/update/{id}', [ProductTypeController::class, 'update'])->name('admin.product.type.update');
-Route::get('admin/product/type/delete/{id}', [ProductTypeController::class, 'destroy'])->name('admin.product.type.delete');
-Route::get('admin/product/type/status/toggle/{id}', [ProductTypeController::class, 'toggleStatus'])->name('admin.product.type.toggle.status');
 
-## Delivery Type
-Route::get('admin/delivery/type/index', [DeliveryTypeController::class, 'index'])->name('admin.delivery.type.index');
-Route::get('admin/delivery/type/create', [DeliveryTypeController::class, 'create'])->name('admin.delivery.type.create');
-Route::get('admin/delivery/type/edit/{id}', [DeliveryTypeController::class, 'edit'])->name('admin.delivery.type.edit');
-Route::post('admin/delivery/type/store', [DeliveryTypeController::class, 'store'])->name('admin.delivery.type.store');
-Route::post('admin/delivery/type/update/{id}', [DeliveryTypeController::class, 'update'])->name('admin.delivery.type.update');
-Route::get('admin/delivery/type/delete/{id}', [DeliveryTypeController::class, 'destroy'])->name('admin.delivery.type.delete');
-Route::get('admin/delivery/type/status/toggle/{id}', [DeliveryTypeController::class, 'toggleStatus'])->name('admin.delivery.type.toggle.status');
 
 ## Pathao Store
 // Route::get('admin/pathao/store/index', [PathaoController::class, 'index'])->name('admin.pathao.store.index');
@@ -252,7 +279,3 @@ Route::get('admin/delivery/type/status/toggle/{id}', [DeliveryTypeController::cl
 // Route::post('admin/pathao/store/update/{id}', [PathaoController::class, 'update'])->name('admin.pathao.store.update');
 // Route::get('admin/pathao/store/delete/{id}', [PathaoController::class, 'destroy'])->name('admin.pathao.store.delete');
 // Route::get('admin/pathao/store/status/toggle/{id}', [PathaoController::class, 'toggleStatus'])->name('admin.pathao.store.toggle.status');
-
-Route::get('/pathao/cities', [PathaoController::class, 'getCities']);
-Route::get('/pathao/areas/{city_id}', [PathaoController::class, 'getAreas']);
-Route::get('/pathao/zones/{area_id}', [PathaoController::class, 'getZones']);
