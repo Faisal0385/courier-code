@@ -32,8 +32,8 @@
                     {{-- Search --}}
                     <form method="GET" action="{{ route('admin.assign.courier.services.page') }}" class="mb-4">
                         <div class="input-group">
-                            <input type="text" name="search" class="form-control"
-                                placeholder="Search by Order ID" value="{{ request('search') }}">
+                            <input type="text" name="search" class="form-control" placeholder="Search by Order ID"
+                                value="{{ request('search') }}">
                             <button class="btn btn-outline-secondary" type="submit">Search</button>
                         </div>
                     </form>
@@ -91,7 +91,7 @@
                                                                     <thead class="bg-dark text-white">
                                                                         <tr>
                                                                             <th>#</th>
-                                                                            <th>Order ID</th>
+                                                                            {{-- <th>Order ID</th> --}}
                                                                             <th>Product Name</th>
                                                                             <th>QTY</th>
                                                                             {{-- <th>Price</th> --}}
@@ -102,7 +102,7 @@
                                                                         @foreach ($booking->products as $i => $bp)
                                                                             <tr>
                                                                                 <td>{{ $i + 1 }}</td>
-                                                                                <td>{{ $booking->order_id }}</td>
+                                                                                {{-- <td>{{ $booking->order_id }}</td> --}}
                                                                                 <td>{{ $bp->product->name }}</td>
                                                                                 <td>{{ $bp->quantity }}</td>
                                                                                 {{-- <td>{{ $bp->amount }}</td> --}}

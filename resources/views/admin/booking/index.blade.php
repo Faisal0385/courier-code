@@ -86,10 +86,13 @@
                                             Details
                                         </button>
 
-                                        <a href="{{ route('admin.booking.edit.page', $bookingOrder->id) }}"
-                                            class="btn btn-sm btn-warning">
-                                            Edit
-                                        </a>
+                                        @if (empty($bookingOrder->courier_service))
+                                            <a href="{{ route('admin.booking.edit.page', $bookingOrder->id) }}"
+                                                class="btn btn-sm btn-warning">
+                                                Edit
+                                            </a>
+                                        @endif
+
 
                                         <!-- Modal for Each Booking -->
                                         <div class="modal fade" id="bookingModal{{ $bookingOrder->id }}" tabindex="-1"
