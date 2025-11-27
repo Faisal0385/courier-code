@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\AssignCourierController;
 use App\Http\Controllers\Backend\BookingController;
 use App\Http\Controllers\Backend\BookingOperatorController;
+use App\Http\Controllers\Backend\BulkUploadController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DeliveryTypeController;
@@ -279,3 +280,9 @@ Route::get('admin/thana/status/toggle/{id}', [ThanaController::class, 'toggleSta
 // Route::post('admin/pathao/store/update/{id}', [PathaoController::class, 'update'])->name('admin.pathao.store.update');
 // Route::get('admin/pathao/store/delete/{id}', [PathaoController::class, 'destroy'])->name('admin.pathao.store.delete');
 // Route::get('admin/pathao/store/status/toggle/{id}', [PathaoController::class, 'toggleStatus'])->name('admin.pathao.store.toggle.status');
+
+
+
+## Bulk Upload
+Route::get('admin/bulk/upload/index', [BulkUploadController::class, 'index'])->name('admin.bulk.upload.index');
+Route::post('admin/bulk/upload/store', [BulkUploadController::class, 'store'])->name('admin.bulk.upload.store');

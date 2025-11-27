@@ -34,11 +34,11 @@ class StoreAdminController extends Controller
     {
         // ✅ Step 1: Validate incoming request
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
+            'phone'    => 'nullable|string|max:20',
+            'address'  => 'nullable|string',
         ]);
 
         // ✅ Step 3: Create the booking operator

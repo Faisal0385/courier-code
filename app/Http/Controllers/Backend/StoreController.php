@@ -15,13 +15,29 @@ class StoreController extends Controller
 {
     public function index(Request $request, $id)
     {
+        // $stores = Store::query()
+        //     ->when($request->filled('search'), fn($q) =>
+        //     $q->where('name', 'like', '%' . $request->search . '%'))
+        //     ->where('merchant_id', '=', $id)
+        //     ->latest()
+        //     ->paginate(10)
+        //     ->withQueryString();
+
+
         $stores = Store::query()
-            ->when($request->filled('search'), fn($q) =>
-            $q->where('name', 'like', '%' . $request->search . '%'))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $search = $request->search;
+                $q->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('primary_phone', 'like', "%{$search}%");
+                });
+            })
             ->where('merchant_id', '=', $id)
             ->latest()
             ->paginate(10)
             ->withQueryString();
+
 
         $storeAdmins = User::where('role', '=', 'store-admin')->where('status', '=', 1)->get(['id', 'name']);
         return view('admin.store.index', compact('stores', 'id', 'storeAdmins'));
@@ -51,75 +67,75 @@ class StoreController extends Controller
     {
         $validated = $request->validate([
             'merchant_id' => 'required|string',
-            'owner_name' => 'required|string|max:255',
-            'name' => 'required|string|max:255|unique:stores,name',
-            'phone' => 'required|string|size:11',
-            'email' => 'nullable|email',
-            'address' => 'required|string|min:15|max:120',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
-            'city_id' => 'required',
-            'zone_id' => 'required',
-            'area_id' => 'required',
+            'owner_name'  => 'required|string|max:255',
+            'name'        => 'required|string|max:255|unique:stores,name',
+            'phone'       => 'required|string|size:11',
+            'email'       => 'nullable|email',
+            'address'     => 'required|string|min:15|max:120',
+            'logo'        => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
+            'city_id'     => 'required',
+            'zone_id'     => 'required',
+            'area_id'     => 'required',
         ]);
 
         $data = [
-            'merchant_id' => $validated['merchant_id'],
-            'name' => $validated['name'],
-            'owner_name' => $validated['owner_name'], // Store owner name in owner_phone field
+            'merchant_id'   => $validated['merchant_id'],
+            'name'          => $validated['name'],
+            'owner_name'    => $validated['owner_name'], // Store owner name in owner_phone field
             'primary_phone' => $validated['phone'],
-            'email' => $validated['email'],
-            'address' => $validated['address'],
+            'email'         => $validated['email'],
+            'address'       => $validated['address'],
             // API returns structured objects; store string/IDs as appropriate
-            'city' => $request->input('city_id'),
-            'zone' => $request->input('zone_id'),
-            'area' => $request->input('area_id'),
-            'slug' => Str::slug($validated['name']),
-            'logo' => $request->hasFile('image') ? $this->uploadImage($request->file('image')) : null,
+            'city'          => $request->input('city_id'),
+            'zone'          => $request->input('zone_id'),
+            'area'          => $request->input('area_id'),
+            'slug'          => Str::slug($validated['name']),
+            'logo'          => $request->hasFile('image') ? $this->uploadImage($request->file('image')) : null,
         ];
 
         // Create Pathao store using the request object directly
-        $pathaoStoreRequest = new \Enan\PathaoCourier\Requests\PathaoStoreRequest();
-        $pathaoStoreRequest->merge([
-            'name' => $validated['name'], // store name
-            'contact_name' => $validated['owner_name'],
-            'contact_number' => $validated['phone'],
-            'address' => $validated['address'],
-            'city_id' => (int) $request->input('city_id'),
-            'zone_id' => (int) $request->input('zone_id'),
-            'area_id' => (int) $request->input('area_id'),
-        ]);
+        // $pathaoStoreRequest = new \Enan\PathaoCourier\Requests\PathaoStoreRequest();
+        // $pathaoStoreRequest->merge([
+        //     'name' => $validated['name'], // store name
+        //     'contact_name' => $validated['owner_name'],
+        //     'contact_number' => $validated['phone'],
+        //     'address' => $validated['address'],
+        //     'city_id' => (int) $request->input('city_id'),
+        //     'zone_id' => (int) $request->input('zone_id'),
+        //     'area_id' => (int) $request->input('area_id'),
+        // ]);
 
-        try {
-            $pathaoResponse = PathaoCourier::CREATE_STORE($pathaoStoreRequest);
+        // try {
+        //     $pathaoResponse = PathaoCourier::CREATE_STORE($pathaoStoreRequest);
 
-            Log::info('Pathao Store Creation Response: ', $pathaoResponse);
+        //     Log::info('Pathao Store Creation Response: ', $pathaoResponse);
 
-            // Check if Pathao store creation was successful
-            if (isset($pathaoResponse['status']) && $pathaoResponse['status'] != 200) {
-                return back()
-                    ->withInput()
-                    ->with('error', 'Failed to create store in Pathao: ' . ($pathaoResponse['message'] ?? 'Unknown error'));
-            }
+        //     // Check if Pathao store creation was successful
+        //     if (isset($pathaoResponse['status']) && $pathaoResponse['status'] != 200) {
+        //         return back()
+        //             ->withInput()
+        //             ->with('error', 'Failed to create store in Pathao: ' . ($pathaoResponse['message'] ?? 'Unknown error'));
+        //     }
 
-            // Extract and store the Pathao store_id from response
+        //     // Extract and store the Pathao store_id from response
 
-            // When a new store is created, Pathao keeps the status as Approval Pending, but when stores are retrieved
-            // from the API later, they appear there. So we fetch the store ID by listing stores; however, for that the store must be
-            // Activated, which is not the case immediately after creation.
-            // Therefore, this method shall be moved elsewhere after some time or upon status change.
-            // Given the API guide, Pathao doesn't provide any webhooks for store approval status changes.
-            $pathaoStoreId = $this->retrievePathaoStoreId($validated['name']);
-            if ($pathaoStoreId) {
-                $data['pathao_store_id'] = $pathaoStoreId;
-                Log::info('Pathao Store ID retrieved: ' . $pathaoStoreId);
-            }
+        //     // When a new store is created, Pathao keeps the status as Approval Pending, but when stores are retrieved
+        //     // from the API later, they appear there. So we fetch the store ID by listing stores; however, for that the store must be
+        //     // Activated, which is not the case immediately after creation.
+        //     // Therefore, this method shall be moved elsewhere after some time or upon status change.
+        //     // Given the API guide, Pathao doesn't provide any webhooks for store approval status changes.
+        //     $pathaoStoreId = $this->retrievePathaoStoreId($validated['name']);
+        //     if ($pathaoStoreId) {
+        //         $data['pathao_store_id'] = $pathaoStoreId;
+        //         Log::info('Pathao Store ID retrieved: ' . $pathaoStoreId);
+        //     }
 
-        } catch (\Exception $e) {
-            Log::error('Pathao Store Creation Error: ' . $e->getMessage());
-            return back()
-                ->withInput()
-                ->with('error', 'Pathao API error: ' . $e->getMessage());
-        }
+        // } catch (\Exception $e) {
+        //     Log::error('Pathao Store Creation Error: ' . $e->getMessage());
+        //     return back()
+        //         ->withInput()
+        //         ->with('error', 'Pathao API error: ' . $e->getMessage());
+        // }
 
         Store::create($data);
 

@@ -26,7 +26,6 @@ class BookingOperatorController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-
         return view('admin.booking-operator.index', compact('bookingOperators'));
     } ## End Mehtod
 

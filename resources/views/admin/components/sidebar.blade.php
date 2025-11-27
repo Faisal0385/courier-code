@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.booking.page') }}">
+                <a href="{{ route('admin.bulk.upload.index') }}">
                     <div class="parent-icon"><i class='bx bx-cookie'></i></div>
                     <div class="menu-title">Bulk Order</div>
                 </a>
