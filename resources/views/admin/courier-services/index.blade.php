@@ -163,6 +163,18 @@
                                                     $value = Enan\PathaoCourier\Facades\PathaoCourier::VIEW_ORDER(
                                                         $booking->pathao_consignment_ids,
                                                     );
+
+                                                    dd($value);
+
+
+                                                    $value1 = Enan\PathaoCourier\Facades\PathaoCourier::GET_PRICE_CALCULATION(
+                                                        $booking->pathao_consignment_ids,
+                                                    );
+
+                                                    // dd($value1);
+
+
+                                                    
                                                 }
                                             @endphp
                                             @if (!empty($booking->pathao_consignment_ids))
