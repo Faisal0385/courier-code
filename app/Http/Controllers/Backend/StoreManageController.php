@@ -11,22 +11,37 @@ class StoreManageController extends Controller
 {
     public function index(Request $request)
     {
+
         $user = Auth::user();
 
-        // Base query (so pagination always works)
-        $query = Store::query();
+        // Normalize role to lower-case for consistent checking
+        $role = strtolower($user->role);
 
-        // Apply role-based store filtering
-        if ($user->role === 'merchant' || $user->role === 'admin') {
-            $query->where('merchant_id', $user->id)->where('status', '=', 1);
-        } elseif ($user->role === 'store admin') {
-            $query->where('store_admin_id', $user->id)->where('status', '=', 1);
-        } else {
-            // If other roles have no access → return empty paginator
-            return view('admin.store-manage.index', []);
+        // Determine parent merchant ID
+        $ownerId = ($role === 'store admin')
+            ? $user->user_id
+            : $user->id;
+
+        // Base query
+        $query = Store::query()->where('status', 1);
+
+        // Apply role-based filtering
+        switch ($role) {
+            case 'merchant':
+            case 'admin':
+                $query->where('merchant_id', $ownerId);
+                break;
+
+            case 'store admin':
+                $query->where('store_admin_id', $user->id);
+                break;
+
+            default:
+                // Unknown role → return empty results page
+                return view('admin.store-manage.index', ['stores' => collect([])]);
         }
 
-        // Always paginate at the end
+        // Paginate
         $stores = $query->paginate(8);
 
         return view('admin.store-manage.index', compact('stores'));

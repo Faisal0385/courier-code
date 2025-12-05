@@ -34,28 +34,28 @@ class StoreAdminController extends Controller
     {
         // ✅ Step 1: Validate incoming request
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
+            'phone'    => 'nullable|string|max:20',
+            'address'  => 'nullable|string',
         ]);
 
-        // ✅ Step 3: Create the booking operator
-        $operator = new User();
-        $operator->user_id = Auth::user()->id;
-        $operator->name = $validatedData['name'];
-        $operator->email = $validatedData['email'];
-        $operator->password = bcrypt($validatedData['password']);
-        $operator->phone = $validatedData['phone'] ?? null;
-        $operator->address = $validatedData['address'] ?? null;
-        $operator->role = 'store admin';
-        $operator->save();
+        // ✅ Step 3: Create the booking store
+        $store = new User();
+        $store->user_id  = Auth::user()->id;
+        $store->name     = $validatedData['name'];
+        $store->email    = $validatedData['email'];
+        $store->password = bcrypt($validatedData['password']);
+        $store->phone    = $validatedData['phone'] ?? null;
+        $store->address  = $validatedData['address'] ?? null;
+        $store->role     = 'Store Admin';
+        $store->save();
 
         // Add role to model_has_roles table automatically
-        $operator->assignRole('store admin');
+        $store->assignRole('Store Admin');
 
         // ✅ Step 4: Return response
-        return redirect()->back()->with('success', 'Booking operator created successfully!');
+        return redirect()->back()->with('success', 'Store Admin created successfully!');
     }
 }

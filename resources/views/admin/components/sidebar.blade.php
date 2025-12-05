@@ -96,18 +96,22 @@
                         <div class="menu-title">Manage Store</div>
                     </a>
                     <ul>
+                        @if (Auth::user()->can('store.admin.create'))
                         <li>
                             <a href="{{ route('admin.store.admin.index', Auth::user()->id) }}">
                                 <div class="parent-icon"><i class='bx bx-cookie'></i></div>
                                 <div class="menu-title">Create Store Admin</div>
                             </a>
                         </li>
+                        @endif
+                        @if (Auth::user()->can('store.create'))
                         <li>
                             <a href="{{ route('admin.store.index', Auth::user()->id) }}">
                                 <div class="parent-icon"><i class='bx bx-cookie'></i></div>
                                 <div class="menu-title">Create Store</div>
                             </a>
                         </li>
+                        @endif
                         <li>
                             <a href="{{ route('admin.store.manage.index') }}">
                                 <div class="parent-icon"><i class='bx bx-cookie'></i></div>

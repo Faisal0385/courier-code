@@ -29,7 +29,7 @@
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Invoice - {{ $order['order_id'] }}</h5>
-                        <button onclick="window.print()" class="btn btn-primary btn-sm">Print</button>
+                        {{-- <button onclick="window.print()" class="btn btn-primary btn-sm">Print</button> --}}
                     </div>
 
                     <div class="card-body">
@@ -93,25 +93,54 @@
                                     <td>Order Amount</td>
                                     <td class="text-end">{{ $order['order_amount'] }} Tk</td>
                                 </tr>
-                                <tr>
-                                    <td>Full Fillment Fee</td>
-                                    <td class="text-end">{{ $order['delivery_fee'] }} Tk</td>
-                                </tr>
+
+                                @if ($role === 'Merchant Fullfillment')
+                                    <tr>
+                                        <td>Full Fillment Fee</td>
+                                        <td class="text-end">{{ $setup_change['fulfilment_fee'] }} Tk</td>
+                                    </tr>
+                                @endif
+
                                 <tr>
                                     <td>Delivery Fee</td>
-                                    <td class="text-end">{{ $order['delivery_fee'] }} Tk</td>
+                                    <td class="text-end">{{ $setup_change['delivery_charges'] }} Tk</td>
                                 </tr>
                                 <tr>
                                     <td>COD Fee</td>
-                                    <td class="text-end">{{ $order['cod_fee'] }} Tk</td>
+                                    <td class="text-end">{{ $setup_change['cod_fee'] }} Tk</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td>Promo Discount</td>
                                     <td class="text-end">- {{ $order['promo_discount'] }} Tk</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td><strong>Total Fee</strong></td>
-                                    <td class="text-end"><strong>{{ $order['total_fee'] }} Tk</strong></td>
+
+                                    @php
+
+                                        $fulfilment_fee =
+                                            $role === 'Merchant Fullfillment' ? $setup_change['fulfilment_fee'] : 0;
+
+                                        $total_amount =
+                                            $fulfilment_fee +
+                                            $setup_change['delivery_charges'] +
+                                            $setup_change['cod_fee'] +
+                                            $order['order_amount'];
+
+                                    @endphp
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <td class="text-end"><strong>{{ $total_amount }} Tk</strong></td>
                                 </tr>
                                 <tr>
                                     <td>Billing Status</td>

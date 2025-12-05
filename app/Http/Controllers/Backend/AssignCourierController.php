@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\SetupCharge;
+use App\Models\User;
 use Enan\PathaoCourier\Facades\PathaoCourier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -142,6 +144,16 @@ class AssignCourierController extends Controller
     {
         $data = PathaoCourier::VIEW_ORDER($pathao_consignment_id);
         $order = $data['data'];
-        return view('admin.courier-services.invoice', compact('order'));
+
+        $data_info = Booking::where('order_id', '=', $order["merchant_order_id"])->first("merchant_id");
+        $user      = User::findOrFail($data_info->merchant_id);
+        $role = $user->role ?? null;
+        // if($user->role == 'Merchant Fullfillment'){
+
+        // };
+
+        $setup_change = SetupCharge::first();
+
+        return view('admin.courier-services.invoice', compact('order','setup_change','role'));
     }
 }
