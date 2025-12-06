@@ -82,7 +82,7 @@ class HubInchargeController extends Controller
     public function edit($id)
     {
         $hubIncharge = User::findOrFail($id);
-        $hubLists    = Hub::where('merchant_id', '=', Auth::user()->id)->get();
+        $hubLists    = Hub::get();
 
         return view('admin.hub-incharge.edit', compact('hubIncharge', 'hubLists'));
     }

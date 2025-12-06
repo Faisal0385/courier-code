@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Store;
 use App\Models\User;
 use Enan\PathaoCourier\Facades\PathaoCourier;
@@ -46,7 +47,6 @@ class StoreController extends Controller
      */
     public function create()
     {
-
         $get_cities = PathaoCourier::GET_CITIES();
         $cities = $get_cities["data"]["data"];
 
@@ -209,4 +209,19 @@ class StoreController extends Controller
 
         return redirect()->back()->with('success', 'Status updated successfully.');
     } ## End Mehtod
+
+    /**
+     * Show the form for creating.
+     */
+    public function edit($id)
+    {
+        // $get_cities = PathaoCourier::GET_CITIES();
+        // $cities = $get_cities["data"]["data"];
+
+        $store  = Store::findOrFail($id);
+        $city = City::where('city_id','=',$id)->first();
+        dd($city);
+        $cities = [];
+        return view('admin.store.edit', compact('cities', 'store', 'id'));
+    }
 }
