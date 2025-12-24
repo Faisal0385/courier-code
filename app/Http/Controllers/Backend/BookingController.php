@@ -29,14 +29,14 @@ class BookingController extends Controller
             $user_id = Auth::user()->user_id;
         }
 
-        $store      = Store::where('merchant_id', '=', Auth::user()->id)->where('status', '=', 1)->first();
-        $products   = Product::where('user_id', '=', Auth::user()->id)->get();
+        $store = Store::where('merchant_id', '=', Auth::user()->id)->where('status', '=', 1)->first();
+        $products = Product::where('user_id', '=', Auth::user()->id)->get();
         $get_cities = PathaoCourier::GET_CITIES();
-        $cities     = $get_cities['data']['data'] ?? [];
+        $cities = $get_cities['data']['data'] ?? [];
 
         $bookingOrders = Booking::query()
             ->when($request->filled('search'), fn($q) =>
-            $q->where('order_id', 'like', '%' . $request->search . '%'))
+                $q->where('order_id', 'like', '%' . $request->search . '%'))
             ->where('merchant_id', $user_id)
             ->latest()
             ->paginate(8)
@@ -83,19 +83,19 @@ class BookingController extends Controller
         // Step 1: Validate Request
         // ------------------------------
         $validatedData = $request->validate([
-            'store_id'          => 'required|integer',
-            'product_type_id'   => 'required|string',
-            'delivery_type_id'  => 'required|string',
-            'recipient_name'    => 'required|string|max:100',
-            'recipient_phone'   => 'required|string|max:20',
+            'store_id' => 'required|integer',
+            'product_type_id' => 'required|string',
+            'delivery_type_id' => 'required|string',
+            'recipient_name' => 'required|string|max:100',
+            'recipient_phone' => 'required|string|max:20',
             'recipient_secondary_phone' => 'nullable|string|max:20',
             'recipient_address' => 'required|string|min:10|max:255',
             'amount_to_collect' => 'required|string',
-            'item_description'  => 'nullable',
+            'item_description' => 'nullable',
             // 'city_id'           => 'required|integer',
             // 'zone_id'           => 'required|integer',
             // 'area_id'           => 'required|integer',
-            'products'          => 'required',  // product list JSON
+            'products' => 'required',  // product list JSON
         ]);
 
         // Convert product JSON to PHP array
@@ -107,7 +107,7 @@ class BookingController extends Controller
 
         // Create order ID
         $datetime = date('YmdHis');
-        $random   = $this->base62(6);
+        $random = $this->base62(6);
 
         // -------------------------------------
         // Step 2: Use DB Transaction
@@ -120,21 +120,21 @@ class BookingController extends Controller
             // Save Booking
             // ------------------------------
             $booking = Booking::create([
-                'merchant_id'         => Auth::user()->user_id ?? Auth::user()->id,
+                'merchant_id' => Auth::user()->user_id ?? Auth::user()->id,
                 'booking_operator_id' => (Auth::user()->role == "Booking Operator") ? Auth::user()->id : Auth::user()->user_id,
-                'order_id'            => $datetime . strtoupper($random),
-                'store_id'            => $validatedData['store_id'],
-                'product_type_id'     => $validatedData['product_type_id'],
-                'delivery_type_id'    => $validatedData['delivery_type_id'],
-                'recipient_name'      => $validatedData['recipient_name'],
-                'recipient_phone'     => $validatedData['recipient_phone'],
+                'order_id' => $datetime . strtoupper($random),
+                'store_id' => $validatedData['store_id'],
+                'product_type_id' => $validatedData['product_type_id'],
+                'delivery_type_id' => $validatedData['delivery_type_id'],
+                'recipient_name' => $validatedData['recipient_name'],
+                'recipient_phone' => $validatedData['recipient_phone'],
                 'recipient_secondary_phone' => $validatedData['recipient_secondary_phone'] ?? null,
-                'recipient_address'   => $validatedData['recipient_address'],
+                'recipient_address' => $validatedData['recipient_address'],
                 // 'city_id'             => $validatedData['city_id'],
                 // 'zone_id'             => $validatedData['zone_id'],
                 // 'area_id'             => $validatedData['area_id'],
-                'amount_to_collect'   => $validatedData["amount_to_collect"],
-                'item_description'    => $validatedData["item_description"],
+                'amount_to_collect' => $validatedData["amount_to_collect"],
+                'item_description' => $validatedData["item_description"],
             ]);
 
             // Get ID
@@ -198,18 +198,18 @@ class BookingController extends Controller
     {
         // Validate form input
         $validated = $request->validate([
-            'store_id'          => 'required|exists:stores,id',
-            'product_type_id'   => 'required|exists:product_types,id',
-            'delivery_type_id'  => 'required|exists:delivery_types,id',
-            'recipient_name'    => 'required|string|max:255',
-            'recipient_phone'   => 'required|string|max:20',
+            'store_id' => 'required|exists:stores,id',
+            'product_type_id' => 'required|exists:product_types,id',
+            'delivery_type_id' => 'required|exists:delivery_types,id',
+            'recipient_name' => 'required|string|max:255',
+            'recipient_phone' => 'required|string|max:20',
             'recipient_secondary_phone' => 'nullable|string|max:20',
             'amount_to_collect' => 'nullable|numeric',
-            'item_description'  => 'nullable|string|max:500',
+            'item_description' => 'nullable|string|max:500',
             'recipient_address' => 'required|string|min:10|max:255',
-            'city_id'           => 'required|integer',
-            'zone_id'           => 'required|integer',
-            'area_id'           => 'required|integer',
+            'city_id' => 'required|integer',
+            'zone_id' => 'required|integer',
+            'area_id' => 'required|integer',
         ]);
 
         try {
@@ -221,18 +221,18 @@ class BookingController extends Controller
 
                 // Update booking fields
                 $booking->update([
-                    'store_id'         => $validated['store_id'],
-                    'product_type_id'  => $validated['product_type_id'],
+                    'store_id' => $validated['store_id'],
+                    'product_type_id' => $validated['product_type_id'],
                     'delivery_type_id' => $validated['delivery_type_id'],
-                    'recipient_name'   => $validated['recipient_name'],
-                    'recipient_phone'  => $validated['recipient_phone'],
+                    'recipient_name' => $validated['recipient_name'],
+                    'recipient_phone' => $validated['recipient_phone'],
                     'recipient_secondary_phone' => $validated['recipient_secondary_phone'] ?? null,
                     'amount_to_collect' => $validated['amount_to_collect'] ?? null,
-                    'item_description'  => $validated['item_description'] ?? null,
+                    'item_description' => $validated['item_description'] ?? null,
                     'recipient_address' => $validated['recipient_address'],
-                    'city_id'           => $validated['city_id'],
-                    'zone_id'           => $validated['zone_id'] ?? null,
-                    'area_id'           => $validated['area_id'] ?? null,
+                    'city_id' => $validated['city_id'],
+                    'zone_id' => $validated['zone_id'] ?? null,
+                    'area_id' => $validated['area_id'] ?? null,
                 ]);
             });
 
@@ -251,12 +251,12 @@ class BookingController extends Controller
             $user_id = Auth::user()->user_id;
         }
 
-        $stores        = Store::select('id', 'name')->where('merchant_id', '=', $user_id)->orderBy('name')->get();
-        $products      = Product::select('id', 'name')->where('user_id', '=', $user_id)->orderBy('name')->get();
-        $productTypes  = ProductType::where('status', '=', 1)->orderBy('name')->get();
+        $stores = Store::select('id', 'name')->where('merchant_id', '=', $user_id)->orderBy('name')->get();
+        $products = Product::select('id', 'name')->where('user_id', '=', $user_id)->orderBy('name')->get();
+        $productTypes = ProductType::where('status', '=', 1)->orderBy('name')->get();
         $deliveryTypes = DeliveryType::where('status', '=', 1)->orderBy('name')->get();
-        $get_cities    = PathaoCourier::GET_CITIES();
-        $cities        = $get_cities['data']['data'] ?? [];
+        $get_cities = PathaoCourier::GET_CITIES();
+        $cities = $get_cities['data']['data'] ?? [];
 
         $bookingInfo = Booking::findOrFail($id);
         $bookingProducts = BookingProduct::with('product')
@@ -264,12 +264,12 @@ class BookingController extends Controller
             ->get()
             ->map(function ($item) {
                 return [
-                    'id'                => $item->id,
-                    'product_id'        => $item->product_id,
-                    'product_name'      => $item->product->name ?? null,
-                    'weight'            => $item->weight,
-                    'quantity'          => $item->quantity,
-                    'amount'            => $item->amount,
+                    'id' => $item->id,
+                    'product_id' => $item->product_id,
+                    'product_name' => $item->product->name ?? null,
+                    'weight' => $item->weight,
+                    'quantity' => $item->quantity,
+                    'amount' => $item->amount,
                     'description_price' => $item->description_price,
                 ];
             });
