@@ -28,35 +28,35 @@
 
                 <div class="card shadow">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Invoice - {{ $order['order_id'] }}</h5>
+                        <h5 class="mb-0">Invoice - {{ $data['order_id'] }}</h5>
                         {{-- <button onclick="window.print()" class="btn btn-primary btn-sm">Print</button> --}}
                     </div>
 
                     <div class="card-body">
 
                         {{-- Store Info --}}
-                        <h6 class="fw-bold mb-2">{{ $order['store_name'] }}</h6>
-                        <p class="mb-4">Store ID: {{ $order['store_id'] }}</p>
+                        <h6 class="fw-bold mb-2">{{ $data['store_name'] }}</h6>
+                        <p class="mb-4">Store ID: {{ $data['store_id'] }}</p>
 
                         <div class="row">
                             {{-- Recipient Info --}}
                             <div class="col-md-6">
                                 <h5 class="fw-bold mb-3">Recipient Information</h5>
-                                <p><strong>Name:</strong> {{ $order['recipient_name'] }}</p>
-                                <p><strong>Phone:</strong> {{ $order['recipient_phone'] }}</p>
-                                <p><strong>Address:</strong> {{ $order['recipient_address'] }}</p>
-                                <p><strong>City:</strong> {{ $order['city_name'] }}</p>
-                                <p><strong>Zone:</strong> {{ $order['zone_name'] }}</p>
+                                <p><strong>Name:</strong> {{ $data['recipient_name'] }}</p>
+                                <p><strong>Phone:</strong> {{ $data['recipient_phone'] }}</p>
+                                <p><strong>Address:</strong> {{ $data['recipient_address'] }}</p>
+                                <p><strong>City:</strong> {{ $data['city_name'] }}</p>
+                                <p><strong>Zone:</strong> {{ $data['zone_name'] }}</p>
                             </div>
 
                             {{-- Order Info --}}
                             <div class="col-md-6">
                                 <h5 class="fw-bold mb-3">Order Details</h5>
-                                <p><strong>Order ID:</strong> {{ $order['order_id'] }}</p>
-                                <p><strong>Merchant Order ID:</strong> {{ $order['merchant_order_id'] }}</p>
-                                <p><strong>Created At:</strong> {{ $order['order_created_at'] }}</p>
-                                <p><strong>Status:</strong> {{ $order['order_status'] }}</p>
-                                <p><strong>Delivery Type:</strong> {{ $order['order_type'] }}</p>
+                                <p><strong>Order ID:</strong> {{ $data['order_id'] }}</p>
+                                <p><strong>Merchant Order ID:</strong> {{ $data['merchant_order_id'] }}</p>
+                                <p><strong>Created At:</strong> {{ $data['order_created_at'] }}</p>
+                                <p><strong>Status:</strong> {{ $data['order_status'] }}</p>
+                                <p><strong>Delivery Type:</strong> {{ $data['order_type'] }}</p>
                             </div>
                         </div>
 
@@ -76,9 +76,9 @@
                             <tbody>
                                 <tr>
                                     <td>Item</td>
-                                    <td>{{ $order['item_quantity'] }}</td>
-                                    <td>{{ $order['total_weight'] }} kg</td>
-                                    <td>{{ $order['item_type'] }}</td>
+                                    <td>{{ $data['item_quantity'] }}</td>
+                                    <td>{{ $data['total_weight'] }} kg</td>
+                                    <td>{{ $data['item_type'] }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -90,37 +90,36 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <td>Order Amount</td>
-                                    <td class="text-end">{{ $order['order_amount'] }} Tk</td>
+                                    <td>Customer Order Amount</td>
+                                    <td class="text-end">{{ $data['order_amount'] }} Tk</td>
                                 </tr>
-
-                                @if ($role === 'Merchant Fullfillment')
-                                    <tr>
-                                        <td>Full Fillment Fee</td>
-                                        <td class="text-end">{{ $setup_change['fulfilment_fee'] ?? 0 }} Tk</td>
-                                    </tr>
-                                @endif
-
-                                 <tr>
+                                <tr>
                                     <td>Courier Delivery Fee</td>
-                                    <td class="text-end">{{ $order['delivery_charges'] ?? null }} Tk</td>
+                                    <td class="text-end">{{ $data['total_fee'] ?? null }} Tk</td>
                                 </tr>
                                 <tr>
                                     <td>Courier COD Fee</td>
-                                    <td class="text-end">{{ $order['cod_fee'] ?? null }} Tk</td>
+                                    <td class="text-end">{{ $data['cod_fee'] ?? null }} Tk</td>
                                 </tr>
 
+                                {{-- @if ($role === 'Merchant Fullfillment') --}}
                                 <tr>
-                                    <td>Delivery Fee</td>
+                                    <td>Full Fillment Fee</td>
+                                    <td class="text-end">{{ $setup_change['fulfilment_fee'] ?? 0 }} Tk</td>
+                                </tr>
+                                {{-- @endif --}}
+
+                                <tr>
+                                    <td>Our Delivery Fee</td>
                                     <td class="text-end">{{ $setup_change['delivery_charges'] ?? null }} Tk</td>
                                 </tr>
                                 <tr>
-                                    <td>COD Fee</td>
+                                    <td>Our COD Fee</td>
                                     <td class="text-end">{{ $setup_change['cod_fee'] ?? null }} Tk</td>
                                 </tr>
                                 {{-- <tr>
                                     <td>Promo Discount</td>
-                                    <td class="text-end">- {{ $order['promo_discount'] }} Tk</td>
+                                    <td class="text-end">- {{ $data['promo_discount'] }} Tk</td>
                                 </tr> --}}
                                 <tr>
                                     <td><strong>Total Fee</strong></td>
@@ -129,14 +128,14 @@
 
                                         $fulfilment_fee =
                                             $role === 'Merchant Fullfillment'
-                                                ? $setup_change['fulfilment_fee'] ?? 0
-                                                : 0;
+                                            ? $setup_change['fulfilment_fee'] ?? 0
+                                            : 0;
 
                                         $total_amount =
                                             $fulfilment_fee +
                                             ($setup_change['delivery_charges'] ?? 0) +
                                             ($setup_change['cod_fee'] ?? 0) +
-                                            $order['order_amount'];
+                                            $data['order_amount'];
                                     @endphp
 
 
@@ -144,14 +143,14 @@
                                 </tr>
                                 <tr>
                                     <td>Billing Status</td>
-                                    <td class="text-end">{{ $order['billing_status'] }}</td>
+                                    <td class="text-end">{{ $data['billing_status'] }}</td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <hr>
 
-                        <p><strong>Cash on Delivery:</strong> {{ $order['cash_on_delivery'] }}</p>
+                        <p><strong>Cash on Delivery:</strong> {{ $data['cash_on_delivery'] }}</p>
 
                         <p class="text-muted mt-4">* This is a system-generated invoice.</p>
 
@@ -163,4 +162,4 @@
         </div>
 
 
-    @endsection
+@endsection

@@ -6,13 +6,13 @@
 
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">My Store Lists</div>
+        <div class="breadcrumb-title pe-3">Cancelled Deliveries</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Store List</li>
+                    <li class="breadcrumb-item active" aria-current="page">Cancelled Deliveries List</li>
                 </ol>
             </nav>
         </div>
@@ -24,9 +24,54 @@
     {{-- Admin List Table --}}
     <div class="row justify-content-start">
         <div class="col-lg-12">
+            <div class="row">
+
+                <div class="col">
+                    <div class="card radius-10" style="background: #F5F8FA;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-0 text-black">{{ $merchants ?? 0 }}</h5>
+                                <div class="ms-auto">
+                                    <i class='bx bx-user fs-3 text-black'></i>
+                                </div>
+                            </div>
+                            <div class="progress my-3 bg-light-transparent" style="height:3px;">
+                                <div class="progress-bar bg-black" role="progressbar" style="width: 55%" aria-valuenow="25"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="d-flex align-items-center text-black">
+                                <p class="mb-0">Total</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card radius-10" style="background: #F5F8FA;">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-0 text-black">{{ $operators ?? 0 }}</h5>
+                                <div class="ms-auto">
+                                    <i class='bx bx-user fs-3 text-black'></i>
+                                </div>
+                            </div>
+                            <div class="progress my-3 bg-light-transparent" style="height:3px;">
+                                <div class="progress-bar bg-black" role="progressbar" style="width: 55%" aria-valuenow="25"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="d-flex align-items-center text-black">
+                                <p class="mb-0">Cancelled</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="col-lg-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-dark text-white fw-semibold">
-                    My Store List
+                    Cancelled Deliveries List
                 </div>
                 <div class="card-body">
                     {{-- Search --}}
@@ -46,33 +91,42 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Order ID</th>
-                                    <th>Merchant Name</th>
-                                    <th>Store Name</th>
-                                    <th>Booking Operator</th>
-                                    <th class="text-center">Booking</th>
-                                    <th>Courier</th>
                                     <th>Consignment ID</th>
+                                    <th>Store Name</th>
+                                    <th>Recipient Info</th>
+                                    {{-- <th>Booking Operator</th> --}}
+                                    {{-- <th class="text-center">Booking</th> --}}
+                                    <th class="text-center">Amount</th>
+                                    <th class="text-center">Payment</th>
+                                    <th>Courier</th>
                                     <th>Status</th>
-                                    {{-- <th>Invoice</th>
-                                    <th>POD</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $key => $booking)
+                                    {{-- @dd($booking) --}}
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $booking->order_id }}</td>
-                                        <td>{{ $booking->merchant->name }}</td>
+                                        <td>
+                                            {{ $booking->pathao_consignment_ids }}
+                                        </td>
                                         <td>{{ strtoupper($booking->store->name) }}</td>
-                                        <td>{{ $booking->bookingOperator->name ?? 'N/A' }}</td>
-                                        <td class="text-center">
+                                        <td>
+                                            {{ $booking->recipient_name }} <br>
+                                            {{ $booking->recipient_phone }} <br>
+                                            {{ $booking->recipient_address }} <br>
+                                        </td>
+                                        {{-- <td>{{ $booking->bookingOperator->name ?? 'N/A' }}</td> --}}
+
+                                        {{-- <td class="text-center">
                                             @if (count($booking->products) > 0)
-                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#bookingModal{{ $booking->id }}">
-                                                    View
-                                                </button>
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#bookingModal{{ $booking->id }}">
+                                                View
+                                            </button>
                                             @else
-                                                0 Item
+                                            0 Item
                                             @endif
 
                                             <div class="modal fade" id="bookingModal{{ $booking->id }}" tabindex="-1"
@@ -94,22 +148,18 @@
                                                                     <thead class="bg-dark text-white">
                                                                         <tr>
                                                                             <th>#</th>
-                                                                            {{-- <th>Order ID</th> --}}
                                                                             <th>Product Name</th>
                                                                             <th>QTY</th>
-                                                                            {{-- <th>Price</th> --}}
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
 
                                                                         @foreach ($booking->products as $i => $bp)
-                                                                            <tr>
-                                                                                <td>{{ $i + 1 }}</td>
-                                                                                {{-- <td>{{ $booking->order_id }}</td> --}}
-                                                                                <td>{{ $bp->product->name }}</td>
-                                                                                <td>{{ $bp->quantity }}</td>
-                                                                                {{-- <td>{{ $bp->amount }}</td> --}}
-                                                                            </tr>
+                                                                        <tr>
+                                                                            <td>{{ $i + 1 }}</td>
+                                                                            <td>{{ $bp->product->name }}</td>
+                                                                            <td>{{ $bp->quantity }}</td>
+                                                                        </tr>
                                                                         @endforeach
 
                                                                     </tbody>
@@ -125,66 +175,45 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> --}}
 
                                         <td>
+                                            @php
+                                                $invoice_data = App\Models\Invoice::where('order_consignment_id', '=', $booking->pathao_consignment_ids)->first(["order_amount", "total_fee", "discount", "cod_fee", "billing_status"]);
+                                            @endphp
 
-                                            @if (count($booking->products) > 0)
-                                                @if (empty($booking->courier_service))
-                                                    @if (Auth::user()->can('courier.assign'))
-                                                        <form action="{{ route('admin.assign.courier.services') }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            <div class="row">
-                                                                <div class="col-lg-10">
-                                                                    <select class="form-select form-select-md"
-                                                                        name="courier" required>
-                                                                        <option value="">Select Courier</option>
-                                                                        @foreach ($courierStores as $courierStore)
-                                                                            <option value="{{ $courierStore->store_id }}">
-                                                                                {{ $courierStore->store_name }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-lg-2 d-flex p-0">
-                                                                    <input type="hidden" value="{{ $booking->id }}"
-                                                                        name="booking_id">
-                                                                    <button type="submit" class="btn btn-sm btn-warning">
-                                                                        <i class="bx bx-check"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    @endif
-                                                @else
-                                                    {{ strtoupper($booking->courier_service) }}
-                                                @endif
+                                            Order Amount : {{ $invoice_data->order_amount ?? 'N/A' }} <br>
+                                            Total Fee : {{ $invoice_data->total_fee ?? 'N/A' }} <br>
+                                            Discount : {{ $invoice_data->discount ?? 'N/A' }} <br>
+                                            COD : {{ $invoice_data->cod_fee ?? 'N/A' }} <br>
 
-                                            @endif
                                         </td>
+
+                                        <td>{{ $invoice_data->billing_status ?? 'N/A' }} </td>
 
                                         <td>
-                                            {{ $booking->pathao_consignment_ids }}
+                                            {{ strtoupper($booking->courier_service ?? null) }}
                                         </td>
+
                                         <td>
                                             @if (!empty($booking->pathao_consignment_ids))
                                                 <div class="bg-danger p-2 rounded text-white" role="alert">
-                                                    {{-- {{ $value['data']['order_status'] ?? null }} --}}
                                                     {{ $booking->courier_status ?? null }}
                                                 </div>
+                                            @else
+                                                <p>Assign Courier Pending</p>
                                             @endif
                                         </td>
                                         {{-- <td>
                                             @if (!empty($booking->pathao_consignment_ids))
-                                                <a class="btn btn-sm btn-warning d-flex align-item-center"
-                                                    href="{{ route('admin.assign.courier.services.invoice.page', $booking->pathao_consignment_ids) }}">Invoice</a>
+                                            <a class="btn btn-sm btn-warning d-flex align-item-center"
+                                                href="{{ route('admin.assign.courier.services.invoice.page', $booking->pathao_consignment_ids) }}">Invoice</a>
                                             @endif
                                         </td>
                                         <td>
                                             @if (!empty($booking->pathao_consignment_ids))
-                                                <a class="btn btn-sm btn-success d-flex align-item-center"
-                                                    href="{{ route('admin.assign.courier.services.pod.page', $booking->pathao_consignment_ids) }}">POD</a>
+                                            <a class="btn btn-sm btn-success d-flex align-item-center"
+                                                href="{{ route('admin.assign.courier.services.pod.page', $booking->pathao_consignment_ids) }}">POD</a>
                                             @endif
                                         </td> --}}
                                     </tr>

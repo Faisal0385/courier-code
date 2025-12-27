@@ -24,6 +24,10 @@ return new class extends Migration {
             $table->string('role')->default('Merchant');
             $table->integer('user_id')->nullable();
             $table->integer('hub_id')->nullable();
+
+            $table->string('email_otp')->nullable();
+            $table->timestamp('email_otp_expires_at')->nullable();
+
             $table->integer('status')->default(0);
 
             $table->rememberToken();

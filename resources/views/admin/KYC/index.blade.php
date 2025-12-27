@@ -376,9 +376,13 @@
                         {{-- email --}}
                         <div class="mb-3 row">
                             <label for="email" class="col-sm-3 col-form-label">Email</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 d-flex align-items-center">
                                 <input type="text" class="form-control" name="email" id="email"
                                     placeholder="Email" value="{{ old('email', $data->email ?? null) }}">
+
+                                @if ($data->verify_email == 1)
+                                    <img src="{{ asset('product.png') }}" alt="" width="30px" height="30px">
+                                @endif
                             </div>
                         </div>
 

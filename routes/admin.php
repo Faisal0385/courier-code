@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\BookingOperatorController;
 use App\Http\Controllers\Backend\BulkUploadController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\DeliveriesController;
 use App\Http\Controllers\Backend\DeliveryTypeController;
 use App\Http\Controllers\Backend\DispatchInchargeController;
 use App\Http\Controllers\Backend\DispatchItemController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\Backend\PhoneVerifyController;
 use App\Http\Controllers\Backend\ProductTypeController;
 use App\Http\Controllers\Backend\SetupChargeController;
 use App\Http\Controllers\Backend\ThanaController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 
@@ -180,7 +182,29 @@ Route::middleware(['auth'])->group(function () {
 
     # verify email and phone
     Route::post('admin/email/verify', [EmailVerifyController::class, 'emailVerify'])->name('admin.email.verify');
+    Route::get('verify-email-otp/page', [EmailVerifyController::class, 'verifyEmailOtpPage'])->name('verify-email-otp.page');
+    Route::post('verify-email-otp', [EmailVerifyController::class, 'verifyEmailOtp'])->name('verify-email-otp');
+    Route::post('/send-email-otp', [EmailVerifyController::class, 'sendEmailOtp']);
+
     Route::post('admin/phone/verify', [PhoneVerifyController::class, 'phoneVerify'])->name('admin.phone.verify');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     ## Booking
     Route::get('admin/booking/page', [BookingController::class, 'index'])->name('admin.booking.page');
@@ -214,7 +238,7 @@ Route::middleware(['auth'])->group(function () {
     ## Assign Courier Services
     Route::get('admin/assign/courier/services/page', [AssignCourierController::class, 'index'])->name('admin.assign.courier.services.page');
     Route::post('admin/assign/courier/services', [AssignCourierController::class, 'order'])->name('admin.assign.courier.services');
-    Route::get('admin/assign/courier/services/invoice/{id}/page', [AssignCourierController::class, 'invoice'])->name('admin.assign.courier.services.invoice.page');
+    Route::get('admin/assign/courier/services/invoice/{id}/{mid}/{role}/page', [AssignCourierController::class, 'invoice'])->name('admin.assign.courier.services.invoice.page');
     Route::get('admin/assign/courier/services/pod/{id}/page', [AssignCourierController::class, 'pod'])->name('admin.assign.courier.services.pod.page');
 
     ## Product Type
@@ -369,3 +393,30 @@ Route::post('admin/dispatch/item/store', [DispatchItemController::class, 'store'
 Route::post('admin/dispatch/item/update/{id}', [DispatchItemController::class, 'update'])->name('admin.dispatch.item.update');
 Route::get('admin/dispatch/item/delete/{id}', [DispatchItemController::class, 'destroy'])->name('admin.dispatch.item.delete');
 Route::get('admin/dispatch/item/status/toggle/{id}', [DispatchItemController::class, 'toggleStatus'])->name('admin.dispatch.item.toggle.status');
+
+
+## Active
+Route::get('admin/all/page', [DeliveriesController::class, 'all'])->name('admin.all.page');
+Route::get('admin/active/page', [DeliveriesController::class, 'active'])->name('admin.active.page');
+Route::get('admin/delivered/page', [DeliveriesController::class, 'delivered'])->name('admin.delivered.page');
+Route::get('admin/returned/page', [DeliveriesController::class, 'returned'])->name('admin.returned.page');
+Route::get('admin/cancelled/page', [DeliveriesController::class, 'cancelled'])->name('admin.cancelled.page');
+Route::get('admin/invoice/page', [DeliveriesController::class, 'invoice'])->name('admin.invoice.page');
+
+// Route::get('admin/active/create', [DispatchItemController::class, 'create'])->name('admin.dispatch.item.create');
+// Route::get('admin/active/edit/{id}', [DispatchItemController::class, 'edit'])->name('admin.dispatch.item.edit');
+// Route::post('admin/active/store', [DispatchItemController::class, 'store'])->name('admin.dispatch.item.store');
+// Route::post('admin/active/update/{id}', [DispatchItemController::class, 'update'])->name('admin.dispatch.item.update');
+// Route::get('admin/active/delete/{id}', [DispatchItemController::class, 'destroy'])->name('admin.dispatch.item.delete');
+// Route::get('admin/active/status/toggle/{id}', [DispatchItemController::class, 'toggleStatus'])->name('admin.dispatch.item.toggle.status');
+
+
+
+Route::get('/test-mail', function () {
+    Mail::raw('This is a test email from Laravel', function ($message) {
+        $message->to('receiver@gmail.com')
+            ->subject('Laravel Mail Test');
+    });
+
+    return 'Email sent!';
+});

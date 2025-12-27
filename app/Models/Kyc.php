@@ -19,6 +19,8 @@ class Kyc extends Model
         'selfie',
         'verify_phone',
         'verify_email',
+        'email_otp',
+        'email_otp_expires_at',
         'status',
     ];
 

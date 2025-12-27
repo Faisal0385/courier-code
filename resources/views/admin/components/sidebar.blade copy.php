@@ -94,69 +94,6 @@
                 </li>
             @endif
 
-            {{-- @if (Auth::user()->can('booking.menu')) --}}
-            <li class="menu-label">Deliveries</li>
-            <li>
-                <a class="has-arrow" href="javascript:;">
-                    <div class="parent-icon">
-                        <i class="bx bx-grid-alt"></i>
-                    </div>
-                    <div class="menu-title">Deliveries</div>
-                </a>
-                <ul>
-
-                    <li>
-                        <a href="{{ route('admin.all.page') }}">
-                            <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                            <div class="menu-title">All</div>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.active.page') }}">
-                            <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                            <div class="menu-title">Active</div>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.delivered.page') }}">
-                            <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                            <div class="menu-title">Delivered</div>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.cancelled.page') }}">
-                            <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                            <div class="menu-title">Cancelled</div>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.returned.page') }}">
-                            <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                            <div class="menu-title">Returned</div>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            {{-- @endif --}}
-
-            <li>
-                <a href="{{ route('admin.invoice.page') }}">
-                    <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                    <div class="menu-title">Invoices</div>
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('admin.courier.list.page') }}">
-                    <div class="parent-icon"><i class='bx bx-cookie'></i></div>
-                    <div class="menu-title">Stores</div>
-                </a>
-            </li>
-
             @if (Auth::user()->can('store.menu'))
                 <li class="menu-label">STORE SETUP</li>
                 <li>
@@ -283,6 +220,13 @@
                             <a href="{{ route('admin.setup.charges.index') }}">
                                 <i class="bx bx-right-arrow-alt"></i>
                                 Setup Charges
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.courier.list.page') }}">
+                                <i class="bx bx-right-arrow-alt"></i>
+                                Add Courier
                             </a>
                         </li>
                     </ul>
