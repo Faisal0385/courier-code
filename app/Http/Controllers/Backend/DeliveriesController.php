@@ -350,8 +350,9 @@ class DeliveriesController extends Controller
             'products.product'
         ])->where('order_id', $orderId)->first();
 
-        // dd($booking);
-        $pdf = Pdf::loadView('admin.deliveries.invoice-pdf', compact('booking'));
+        // 3x3 inch = 216 x 216 points (72 points per inch)
+        $pdf = Pdf::loadView('admin.deliveries.invoice-pdf', compact('booking'))
+                ->setPaper([0, 0, 216, 216], 'portrait');
         return $pdf->stream('Invoice_' . $booking->order_id . '.pdf');
     }
 }
