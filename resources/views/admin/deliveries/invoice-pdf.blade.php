@@ -16,6 +16,9 @@
             padding: 0;
             /* overflow: hidden; */
         }
+        table {
+            margin-top: 10px;
+        }
         .label {
             border: 1px solid #000;
             padding: 3px;
@@ -35,7 +38,7 @@
         }
         .store-name {
             font-weight: bold;
-            font-size: 8px;
+            font-size: 15px;
             line-height: 1.1;
         }
         .barcode {
@@ -46,7 +49,7 @@
         }
         .recipient-name {
             font-weight: bold;
-            font-size: 8px;
+            font-size: 15px;
         }
         .cod {
             background: #000;
@@ -56,7 +59,7 @@
             font-size: 6px;
         }
         .small {
-            font-size: 6px;
+            font-size: 10px;
             line-height: 1.1;
         }
     </style>
@@ -92,35 +95,35 @@
     <table width="100%" cellspacing="0" cellpadding="0">
         <tr>
             <td class="barcode">
-                {{-- Adjusted barcode size for 3x3 inch: width=0.9, height=28 --}}
-                {!! DNS1D::getBarcodeHTML($booking->order_id, 'C128', 0.9, 28) !!}
+                {{-- Adjusted barcode size for 3x3 inch: width=0.9, height=50 --}}
+                {!! DNS1D::getBarcodeHTML($booking->order_id, 'C128', 0.9, 80) !!}
             </td>
         </tr>
     </table>
 
     <!-- RECIPIENT INFO -->
-    <table width="100%" cellspacing="0" cellpadding="0" style="margin-top:3px;">
+    <table width="100%" cellspacing="0" cellpadding="0" style="margin-top:3px; border-collapse: separate; border-spacing: 0 5px;">
         <tr>
-            <td class="recipient-name">
+            <td class="recipient-name" style="padding:0;">
                 {{ Str::limit($booking->recipient_name, 28) }}
             </td>
         </tr>
         <tr>
-            <td style="padding-top:1px;">
+            <td style="padding:0;">
                 <span class="small">{{ $booking->recipient_phone }}</span>
                 &nbsp;
                 <span class="cod">
-                    COD: ৳{{ number_format($booking->amount_to_collect ?? 0) }}
+                    COD: taka {{ number_format($booking->amount_to_collect ?? 0) }}
                 </span>
             </td>
         </tr>
         <tr>
-            <td class="small" style="padding-top:2px;">
+            <td class="small" style="padding:0;">
                 Order: {{ $booking->order_id }}
             </td>
         </tr>
         <tr>
-            <td class="small" style="padding-top:2px;">
+            <td class="small" style="padding:0;">
                 {{ Str::limit($booking->recipient_address, 70) }}
             </td>
         </tr>
