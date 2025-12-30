@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Models\Store;
 use GuzzleHttp\Client;
 use App\Constants\AppConstants;
+use App\Models\CourierStore;
+use Enan\PathaoCourier\Requests\PathaoOrderRequest;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
@@ -20,9 +22,9 @@ class PathaoService
     protected $apiKey;
     protected $secretKey;
     protected $client;
-    public Store $store;
+    public CourierStore $store;
 
-    public function __construct(?string $type = '', ?Store $store = null, ?string $base_uri_type = AppConstants::PATHAO_API_BASE_URI_TYPE_HERMES)
+    public function __construct(?string $type = '', ?CourierStore $store = null, ?string $base_uri_type = AppConstants::PATHAO_API_BASE_URI_TYPE_HERMES)
     {
         if ($store) {
             $this->store = $store;
@@ -99,7 +101,7 @@ class PathaoService
             'Content-Type' => 'application/json',
         ];
 
-        if ($auth && $this->store instanceof Store && !empty($this->store->token)) {
+        if ($auth && $this->store instanceof CourierStore && !empty($this->store->token)) {
             $headers['Authorization'] = 'Bearer ' . $this->store->token;
         }
 
@@ -146,32 +148,36 @@ class PathaoService
         return $data;
     }
 
-    public function createOrder(Order $order)
+    public function createOrder(array $orderData)
     {
         $url = 'aladdin/api/v1/orders';
 
+        // Prepare request body according to PathaoOrderRequest structure
         $body = [
-            'store_id' => $this->store->store_id,
-            'merchant_order_id' => $order->order_no,
-            // 'sender_name' => $order->user->name,
-            // 'sender_phone' => $order->user->userDetails?->mobile_no,
-            'recipient_name' => $order->orderDetails->receiver_name,
-            'recipient_phone' => $order->orderDetails->receiver_phone,
-            'recipient_address' =>  $order->orderDetails->receiver_address,
-            'recipient_city' => $order->orderDetails->receiver_city,
-            'recipient_zone' => $order->orderDetails->receiver_zone,
-            'recipient_area' => $order->orderDetails->receiver_area,
-            'delivery_type' => 48,
-            'item_type' => 2,
-            'special_instruction' => 'Handle it with safety.',
-            'item_quantity' =>  $order->orderItems->count(),
-            'item_weight' => 0.5,
-            'amount_to_collect' => $order->totalPrice,
-            'item_description' => '',
+            'store_id' => $orderData['store_id'],
+            'merchant_order_id' => $orderData['merchant_order_id'] ?? null,
+            'sender_name' => $orderData['sender_name'],
+            'sender_phone' => $orderData['sender_phone'],
+            'recipient_name' => $orderData['recipient_name'],
+            'recipient_phone' => $orderData['recipient_phone'],
+            'recipient_address' => $orderData['recipient_address'],
+            // 'recipient_city' => $orderData['recipient_city'],
+            // 'recipient_zone' => $orderData['recipient_zone'],
+            // 'recipient_area' => $orderData['recipient_area'],
+            'delivery_type' => $orderData['delivery_type'] ?? PathaoOrderRequest::DELIVERY_TYPE_NORMAL, // 48 (normal) or 12 (on-demand)
+            'item_type' => $orderData['item_type'] ?? PathaoOrderRequest::ITEM_TYPE_PARCEL, // 2 (parcel) or 1 (document)
+            'special_instruction' => $orderData['special_instruction'] ?? null,
+            'item_quantity' => $orderData['item_quantity'],
+            'item_weight' => $orderData['item_weight'],
+            'amount_to_collect' => $orderData['amount_to_collect'],
+            'item_description' => $orderData['item_description'] ?? null,
         ];
 
         $data = $this->Pathao_API_Response(true, $url, AppConstants::METHOD_TYPE_POST, $body);
 
+        Log::info("Pathao Order {$orderData['merchant_order_id']} Creation Request: ", (array)$orderData);
+
+        Log::info("Pathao Order {$orderData['merchant_order_id']} Creation Response: ", (array)$data);
         return $data;
     }
 

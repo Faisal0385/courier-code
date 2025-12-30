@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
-
 use App\Http\Controllers\Controller;
+use App\Http\Service\PathaoService;
 use App\Models\Booking;
 use App\Models\CourierStore;
 use App\Models\Invoice;
@@ -70,6 +70,7 @@ class AssignCourierController extends Controller
 
     public function order(Request $request)
     {
+        $courierStore = CourierStore::findOrFail($request->courier);
         $booking = Booking::with([
             'store',
             'Merchant',
@@ -92,7 +93,7 @@ class AssignCourierController extends Controller
 
         //// Delete this
         $bulkOrders[] = [
-            'store_id' => $request->courier ?? 345173, // Pathao store ID from database
+            'store_id' => $courierStore->store_id ?? 345173, // Pathao store ID from database
             'merchant_order_id' => $booking->order_id,
             'sender_name' => $booking->merchant->name ?? 'Merchant',
             'sender_phone' => $booking->merchant->phone ?? '01700000000',
@@ -118,21 +119,17 @@ class AssignCourierController extends Controller
             // Create individual orders for each product
             foreach ($bulkOrders as $index => $orderData) {
                 try {
-                    // Create PathaoOrderRequest for each order
-                    $pathaoOrderRequest = new \Enan\PathaoCourier\Requests\PathaoOrderRequest();
-                    $pathaoOrderRequest->merge($orderData);
+                    // Create order in Pathao using the array data directly
+                    $pathaoResponse = (new PathaoService(store: $courierStore))->createOrder($orderData);
 
-                    // Create order in Pathao
-                    $pathaoResponse = PathaoCourier::CREATE_ORDER($pathaoOrderRequest);
-
-                    Log::info("Pathao Order {$index} Creation Response: ", $pathaoResponse);
+                    Log::info("Pathao Order {$index} Creation Response: ", (array) $pathaoResponse);
 
                     // Check if order creation was successful
-                    if (isset($pathaoResponse['data']['data']['consignment_id'])) {
-                        $consignmentIds[] = $pathaoResponse['data']['data']['consignment_id'];
+                    if ($pathaoResponse->code == 200 && isset($pathaoResponse->data['data']['consignment_id'])) {
+                        $consignmentIds[] = $pathaoResponse->data['data']['consignment_id'];
                     } else {
                         $failedOrders[] = $orderData['merchant_order_id'];
-                        Log::error("Failed to create order {$orderData['merchant_order_id']}: ", $pathaoResponse);
+                        Log::error("Failed to create order {$orderData['merchant_order_id']}: ", (array) $pathaoResponse);
                     }
                 } catch (\Exception $e) {
                     $failedOrders[] = $orderData['merchant_order_id'];

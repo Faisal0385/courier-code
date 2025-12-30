@@ -141,7 +141,7 @@
                                                                         name="courier" required>
                                                                         <option value="">Select Courier</option>
                                                                         @foreach ($courierStores as $courierStore)
-                                                                            <option value="{{ $courierStore->store_id }}">
+                                                                            <option value="{{ $courierStore->id }}">
                                                                                 {{ $courierStore->store_name }}
                                                                             </option>
                                                                         @endforeach
