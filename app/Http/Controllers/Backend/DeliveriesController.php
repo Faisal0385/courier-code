@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\CourierStore;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -335,5 +336,23 @@ class DeliveriesController extends Controller
 
             return view('admin.deliveries.invoices', compact('bookings', 'courierStores'));
         }
+    }
+
+
+    public function invoicePdf($orderId)
+    {
+        $booking = Booking::with([
+            'store',
+            'Merchant',
+            'bookingOperator',
+            'productType',
+            'deliveryType',
+            'products.product'
+        ])->where('order_id', $orderId)->first();
+
+        // 3x3 inch = 216 x 216 points (72 points per inch)
+        $pdf = Pdf::loadView('admin.deliveries.invoice-pdf', compact('booking'))
+                ->setPaper([0, 0, 216, 216], 'portrait');
+        return $pdf->stream('Invoice_' . $booking->order_id . '.pdf');
     }
 }
