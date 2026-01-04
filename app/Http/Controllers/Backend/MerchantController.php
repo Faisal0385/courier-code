@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\CourierStore;
 use App\Models\Kyc;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ class MerchantController extends Controller
 {
     public function manageMerchant(Request $request)
     {
+        $courierStores = CourierStore::get();
         $merchants = User::query()
             ->leftJoin('kycs', 'users.id', '=', 'kycs.user_id')
             ->when($request->filled('search'), function ($q) use ($request) {
@@ -39,7 +41,7 @@ class MerchantController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.admin_register_merchant', compact('merchants'));
+        return view('admin.admin_register_merchant', compact('merchants','courierStores'));
     } ## End Method
 
     public function manageMerchantFullfillment(Request $request)

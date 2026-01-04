@@ -65,6 +65,7 @@
                                     <th>Phone</th>
                                     <th>Status</th>
                                     <th>Fullfillment</th>
+                                    <th>Assign Courier</th>
                                     <th>Registered At</th>
                                 </tr>
                             </thead>
@@ -117,6 +118,21 @@
                                                 </option>
 
                                             </select>
+                                        </td>
+                                        <td>
+
+                                            <form action="">
+                                                <select class="form-select form-select-md" name="courier" required>
+                                                    <option value="">Select Courier</option>
+                                                    @foreach ($courierStores as $courierStore)
+                                                        <option value="{{ $courierStore->id }}">
+                                                            {{ $courierStore->store_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="button"
+                                                    class="btn btn-sm btn-success mt-1 w-100">Select</button>
+                                            </form>
                                         </td>
                                         <td>{{ $merchant->created_at->format('d M, Y h:i A') }}</td>
                                     </tr>
