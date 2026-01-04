@@ -7,7 +7,7 @@
     <!--breadcrumb-->
     <!-- ✅ Visible on medium & large screens (hidden on extra-small screens) -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Manage Merchant</div>
+        <div class="breadcrumb-title pe-3">Manage Hub Incharge</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
@@ -16,7 +16,7 @@
                             <i class="bx bx-home-alt"></i>
                         </a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Manage Merchant</li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage Hub Incharge</li>
                 </ol>
             </nav>
         </div>
@@ -25,7 +25,7 @@
 
     <!-- ✅ Visible only on small & medium screens (hidden on large and up) -->
     <div class="page-breadcrumb d-flex align-items-center mb-3 d-lg-none">
-        <div class="breadcrumb-title pe-3">Manage Merchant</div>
+        <div class="breadcrumb-title pe-3">Manage Hub Incharge</div>
         <div class="ms-auto"></div>
     </div>
     <!--end breadcrumb-->
@@ -40,11 +40,12 @@
             <div class="col-lg-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-dark text-white fw-semibold">
-                        All Merchant Details
+                        All Hub Incharge Details
                     </div>
                     <div class="card-body table-responsive">
                         {{-- Search --}}
-                        <form method="GET" action="{{ route('admin.register.merchant.page') }}" class="mb-4">
+                        <form method="GET" action="{{ route('admin.register.hub.incharge.page') }}"
+                            class="mb-4">
                             <div class="input-group">
                                 <input type="text" name="search" class="form-control"
                                     placeholder="Search by name, email or phone" value="{{ request('search') }}">
@@ -64,14 +65,13 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Status</th>
-                                    <th>Fullfillment</th>
                                     <th>Registered At</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($merchants as $index => $merchant)
+                                @foreach ($merchant_fullfillments as $index => $merchant)
                                     <tr>
-                                        <td>{{ $merchants->firstItem() + $index }}</td>
+                                        <td>{{ $merchant_fullfillments->firstItem() + $index }}</td>
                                         <td>
                                             @if ($merchant->kyc_status)
                                                 <i class="text-primary fa-solid fa-circle-check"></i>
@@ -102,22 +102,6 @@
                                                 <i class="fa fa-eye"></i> View
                                             </button>
                                         </td>
-                                        <td>
-                                            <select class="form-select" name="fullfillment" id="fullfillment"
-                                                data-user-id="{{ $merchant->id }}">
-
-                                                <option value="yes"
-                                                    {{ $merchant->role == 'Merchant Fullfillment' ? 'selected' : '' }}>
-                                                    Yes
-                                                </option>
-
-                                                <option value="no"
-                                                    {{ $merchant->role != 'Merchant Fullfillment' ? 'selected' : '' }}>
-                                                    No
-                                                </option>
-
-                                            </select>
-                                        </td>
                                         <td>{{ $merchant->created_at->format('d M, Y h:i A') }}</td>
                                     </tr>
                                 @endforeach
@@ -127,7 +111,7 @@
                         {{-- Pagination --}}
                         <div class="col-lg-12">
                             <div class="mt-3">
-                                {{ $merchants->links('pagination::bootstrap-5') }}
+                                {{ $merchant_fullfillments->links('pagination::bootstrap-5') }}
                             </div>
                         </div>
                     </div>

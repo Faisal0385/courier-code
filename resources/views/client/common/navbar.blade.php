@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-white bg-white py-3 shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="#">PackerPanda <small class="text-muted"
+        <a class="navbar-brand" href="{{ route('home') }}">PackerPanda <small class="text-muted"
                 style="font-weight:600; font-size:12px">Courier</small></a>
 
         <div class="d-flex align-items-center d-lg-none ms-auto">
@@ -12,7 +12,7 @@
 
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-                <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('price.plan.page') }}">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Coverage</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>

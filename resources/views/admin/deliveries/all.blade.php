@@ -72,79 +72,19 @@
                                             {{ $booking->recipient_phone }} <br>
                                             {{ $booking->recipient_address }} <br>
                                         </td>
-                                        {{-- <td>{{ $booking->bookingOperator->name ?? 'N/A' }}</td> --}}
-
-                                        {{-- <td class="text-center">
-                                            @if (count($booking->products) > 0)
-                                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#bookingModal{{ $booking->id }}">
-                                                    View
-                                                </button>
-                                            @else
-                                                0 Item
-                                            @endif
-
-                                            <div class="modal fade" id="bookingModal{{ $booking->id }}" tabindex="-1"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5">Booking Order:
-                                                                {{ $booking->order_id }}
-                                                            </h1>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"></button>
-                                                        </div>
-
-                                                        <div class="modal-body">
-                                                            <div class="table-responsive">
-                                                                <table class="table">
-                                                                    <thead class="bg-dark text-white">
-                                                                        <tr>
-                                                                            <th>#</th>
-                                                                            <th>Product Name</th>
-                                                                            <th>QTY</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-
-                                                                        @foreach ($booking->products as $i => $bp)
-                                                                            <tr>
-                                                                                <td>{{ $i + 1 }}</td>
-                                                                                <td>{{ $bp->product->name }}</td>
-                                                                                <td>{{ $bp->quantity }}</td>
-                                                                            </tr>
-                                                                        @endforeach
-
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td> --}}
-
                                         <td>
-                                            @php
+                                            {{-- @php
                                                 $invoice_data = App\Models\Invoice::where('order_consignment_id', '=', $booking->pathao_consignment_ids)->first(["order_amount", "total_fee", "discount", "cod_fee", "billing_status"]);
-                                            @endphp
+                                            @endphp --}}
 
-                                            Order Amount : ৳ {{ $invoice_data->order_amount ?? 'N/A' }} <br>
-                                            Total Fee : ৳ {{ $invoice_data->total_fee ?? 'N/A' }} <br>
-                                            Discount : ৳ {{ $invoice_data->discount ?? 'N/A' }} <br>
-                                            COD : ৳ {{ $invoice_data->cod_fee ?? 'N/A' }} <br>
+                                            Order Amount : ৳ {{ $booking->order_amount ?? 'N/A' }} <br>
+                                            Total Fee : ৳ {{ $booking->total_fee ?? 'N/A' }} <br>
+                                            Discount : ৳ {{ $booking->discount_amount ?? 'N/A' }} <br>
+                                            COD : ৳ {{ $booking->cod_fee ?? 'N/A' }} <br>
 
                                         </td>
 
-                                        <td>{{ $invoice_data->billing_status ?? 'N/A' }} </td>
+                                        <td>{{ $booking->billing_status ?? 'N/A' }} </td>
 
                                         <td>
                                             {{ strtoupper($booking->courier_service ?? null) }}

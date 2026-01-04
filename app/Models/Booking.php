@@ -28,7 +28,14 @@ class Booking extends Model
         'city_id',
         'zone_id',
         'area_id',
-        'status',
+        'order_amount',
+        'total_fee',
+        'total_weight',
+        'billing_status',
+        'discount_amount',
+        'cod_fee',
+        'delivery_fee',
+        'status'
     ];
 
     // Merchant who created the booking

@@ -33,24 +33,19 @@
 
     {{-- Admin List Table --}}
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" href="{{ route('admin.register.merchant.page') }}">Merchant</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" href="{{ route('admin.register.merchant.fullfillment.page') }}">Fullfillment</a>
-        </li>
-    </ul>
+    @include('admin.components.tabs')
+
     <div class="tab-content" id="myTabContent">
         <div class="row justify-content-start mt-2">
             <div class="col-lg-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-dark text-white fw-semibold">
-                        All Merchant Details
+                        All Merchant Fullfillment Details
                     </div>
                     <div class="card-body table-responsive">
                         {{-- Search --}}
-                        <form method="GET" action="{{ route('admin.register.merchant.fullfillment.page') }}" class="mb-4">
+                        <form method="GET" action="{{ route('admin.register.merchant.fullfillment.page') }}"
+                            class="mb-4">
                             <div class="input-group">
                                 <input type="text" name="search" class="form-control"
                                     placeholder="Search by name, email or phone" value="{{ request('search') }}">

@@ -380,7 +380,7 @@
                                 <input type="text" class="form-control" name="email" id="email"
                                     placeholder="Email" value="{{ old('email', $data->email ?? null) }}">
 
-                                @if ($data->verify_email == 1)
+                                @if ($data->verify_email ?? null == 1)
                                     <img src="{{ asset('product.png') }}" alt="" width="30px" height="30px">
                                 @endif
                             </div>

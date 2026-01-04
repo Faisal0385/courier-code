@@ -40,6 +40,14 @@ return new class extends Migration
             $table->string('amount_to_collect')->nullable();
             $table->string('item_description')->nullable();
 
+            $table->string('order_amount')->nullable();
+            $table->string('total_weight')->nullable();
+            $table->string('total_fee')->nullable();
+            $table->string('discount_amount')->nullable();
+            $table->string('cod_fee')->nullable();
+            $table->string('delivery_fee')->nullable();
+            $table->string('billing_status')->nullable();
+
             // 🌍 Location Info
             $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('zone_id');

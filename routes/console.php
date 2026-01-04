@@ -43,4 +43,4 @@ Schedule::call(function () {
     } catch (\Exception $e) {
         Log::error('Transaction failed, rolled back all updates: ' . $e->getMessage());
     }
-})->everyThirtyMinutes();
+})->everyFifteenMinutes();

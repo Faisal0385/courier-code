@@ -4,7 +4,7 @@
 
             <!-- Logo + Address -->
             <div class="col-md-4">
-                <img src="{{ asset('logo.jpeg') }}" alt="logo" class="mb-3" width="100" height="100">
+                <img src="{{ asset('Packer_Panda-03.svg') }}" alt="logo" class="mb-3" width="100" height="100">
                 <p class="small text-muted mb-1">House #44, Road #10, Sector #10</p>
                 <p class="small text-muted mb-1">Uttara, Dhaka - 1230, Bangladesh</p>
                 <p class="small text-muted mb-0"><i class="fa fa-phone me-1"></i> +880 1234-567890</p>
@@ -25,7 +25,8 @@
             <div class="col-md-3">
                 <h6 class="fw-bold mb-3">Our Services</h6>
                 <ul class="list-unstyled text-muted small">
-                    <li class="mb-1"><a href="#" class="text-muted text-decoration-none">Ecommerce Delivery</a></li>
+                    <li class="mb-1"><a href="#" class="text-muted text-decoration-none">Ecommerce Delivery</a>
+                    </li>
                     <li class="mb-1"><a href="#" class="text-muted text-decoration-none">Pick & Drop</a></li>
                     <li class="mb-1"><a href="#" class="text-muted text-decoration-none">Packaging</a></li>
                     <li class="mb-1"><a href="#" class="text-muted text-decoration-none">Warehousing</a></li>

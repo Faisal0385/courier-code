@@ -62,7 +62,7 @@
                                     <select class="form-select" id="store_id" name="store_id" required>
                                         <option value="">Select Store</option>
                                         @foreach ($stores as $store)
-                                            <option value="{{ $store->id }}">{{ $store->name }}</option>
+                                            <option value="{{ $store->id }}" selected>{{ $store->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -72,9 +72,11 @@
                                     <label for="product_type_id" class="form-label fw-semibold">Product Type</label>
                                     <select class="form-select" id="product_type_id" name="product_type_id" required>
                                         <option value="">Product Type</option>
-                                        @foreach ($productTypes as $productType)
+                                        <option value="2" selected>Parcel</option>
+
+                                        {{-- @foreach ($productTypes as $productType)
                                             <option value="{{ $productType->id }}">{{ $productType->name }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
 
@@ -83,8 +85,11 @@
                                     <label for="delivery_type_id" class="form-label fw-semibold">Delivery Type</label>
                                     <select class="form-select" id="delivery_type_id" name="delivery_type_id" required>
                                         <option value="">Delivery Type</option>
+
                                         @foreach ($deliveryTypes as $deliveryType)
-                                            <option value="{{ $deliveryType->id }}">{{ $deliveryType->name }}</option>
+                                            <option value="{{ $deliveryType->id }}"
+                                                {{ $deliveryType->id == 48 ? 'selected' : '' }}>{{ $deliveryType->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>

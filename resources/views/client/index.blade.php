@@ -14,7 +14,8 @@
 
                 <div class="col-lg-6">
                     <span class="eyebrow">Fast • Safe • Nationwide</span>
-                    <h1 class="mt-2">We are <span style="color:var(--primary);">Packer Panda</span> - Your Reliable <span style="color:var(--primary);">Fulfillment</span> Partner with Rapid, 365-Day Delivery.</h1>
+                    <h1 class="mt-2">We are <span style="color:var(--primary);">Packer Panda</span> - Your Reliable <span
+                            style="color:var(--primary);">Fulfillment</span> Partner with Rapid, 365-Day Delivery.</h1>
                     <p class="lead mt-3">Easy tracking, faster payment, and safe delivery across the entire country.</p>
 
                     <div class="d-flex gap-3 mt-4">
@@ -85,23 +86,23 @@
             <h3 class="fw-bold mb-4">Our Service</h3>
             <div class="row g-4 justify-content-center">
                 <div class="col-6 col-md-3 text-center service-card">
-                    <div class="service-icon"><img src="https://cdn-icons-png.flaticon.com/512/2920/2920244.png" alt="ecom"
-                            style="max-width:70px"></div>
+                    <div class="service-icon"><img src="https://cdn-icons-png.flaticon.com/512/2920/2920244.png"
+                            alt="ecom" style="max-width:70px"></div>
                     <h6 class="mt-3">Ecommerce Delivery</h6>
                 </div>
                 <div class="col-6 col-md-3 text-center service-card">
-                    <div class="service-icon"><img src="https://cdn-icons-png.flaticon.com/512/1021/1021183.png" alt="pick"
-                            style="max-width:70px"></div>
+                    <div class="service-icon"><img src="https://cdn-icons-png.flaticon.com/512/1021/1021183.png"
+                            alt="pick" style="max-width:70px"></div>
                     <h6 class="mt-3">Pick and Drop</h6>
                 </div>
                 <div class="col-6 col-md-3 text-center service-card">
-                    <div class="service-icon"><img src="https://cdn-icons-png.flaticon.com/512/4792/4792929.png" alt="pack"
-                            style="max-width:70px"></div>
+                    <div class="service-icon"><img src="https://cdn-icons-png.flaticon.com/512/4792/4792929.png"
+                            alt="pack" style="max-width:70px"></div>
                     <h6 class="mt-3">Packaging</h6>
                 </div>
                 <div class="col-6 col-md-3 text-center service-card">
-                    <div class="service-icon"><img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="ware"
-                            style="max-width:70px"></div>
+                    <div class="service-icon"><img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
+                            alt="ware" style="max-width:70px"></div>
                     <h6 class="mt-3">Warehousing</h6>
                 </div>
             </div>
@@ -164,8 +165,8 @@
                 <div class="col-lg-8">
                     <div class="accordion" id="faq">
                         <div class="accordion-item mb-3">
-                            <h2 class="accordion-header" id="q1"><button class="accordion-button collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#c1">Why Packer Panda
+                            <h2 class="accordion-header" id="q1"><button class="accordion-button collapsed"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#c1">Why Packer Panda
                                     Courier?</button></h2>
                             <div id="c1" class="accordion-collapse collapse" data-bs-parent="#faq">
                                 <div class="accordion-body">Packer Panda Courier is a licensed, reliable and fast courier
@@ -173,8 +174,8 @@
                             </div>
                         </div>
                         <div class="accordion-item mb-3">
-                            <h2 class="accordion-header" id="q2"><button class="accordion-button collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#c2">What is the coverage
+                            <h2 class="accordion-header" id="q2"><button class="accordion-button collapsed"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#c2">What is the coverage
                                     area of Packer Panda Courier?</button></h2>
                             <div id="c2" class="accordion-collapse collapse" data-bs-parent="#faq">
                                 <div class="accordion-body">We serve most major cities and many rural areas. Coverage
@@ -182,8 +183,8 @@
                             </div>
                         </div>
                         <div class="accordion-item mb-3">
-                            <h2 class="accordion-header" id="q3"><button class="accordion-button collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#c3">What services does
+                            <h2 class="accordion-header" id="q3"><button class="accordion-button collapsed"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#c3">What services does
                                     Packer Panda Courier provide?</button></h2>
                             <div id="c3" class="accordion-collapse collapse" data-bs-parent="#faq">
                                 <div class="accordion-body">Ecommerce delivery, pick & drop, packaging, warehousing, and
@@ -191,8 +192,8 @@
                             </div>
                         </div>
                         <div class="accordion-item mb-3">
-                            <h2 class="accordion-header" id="q4"><button class="accordion-button collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#c4">Want to know about your
+                            <h2 class="accordion-header" id="q4"><button class="accordion-button collapsed"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#c4">Want to know about your
                                     delivery charges ?</button></h2>
                             <div id="c4" class="accordion-collapse collapse" data-bs-parent="#faq">
                                 <div class="accordion-body">Use our rate calculator or contact support for exact pricing
@@ -215,7 +216,7 @@
                         <p class="mb-0">Start Your first step with Packer Panda</p>
                     </div>
                     <div class="col-md-3 text-md-end mt-3 mt-md-0">
-                        <a href="#" class="btn btn-light btn-lg">Become a Marchant</a>
+                        <a href="{{ route('register') }}" class="btn btn-light btn-lg">Become a Merchant</a>
                     </div>
                 </div>
             </div>

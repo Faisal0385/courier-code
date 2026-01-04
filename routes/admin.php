@@ -32,6 +32,7 @@ use App\Http\Controllers\Backend\PhoneVerifyController;
 use App\Http\Controllers\Backend\ProductTypeController;
 use App\Http\Controllers\Backend\SetupChargeController;
 use App\Http\Controllers\Backend\ThanaController;
+use App\Http\Controllers\Frontend\PricePlanController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -50,9 +51,26 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/profile/update', [AdminController::class, 'AdminProfileUpdate'])->name('admin.profile.update');
     Route::post('admin/password/update', [AdminController::class, 'AdminPasswordUpdate'])->name('admin.password.update');
 
+
+
+
+
+
     ## Merchant Registration
     Route::get('admin/register/merchant/page', [MerchantController::class, 'manageMerchant'])->name('admin.register.merchant.page');
-    Route::get('admin/register/merchant/fullfillment/page', [MerchantController::class, 'manageMerchantFullfillment'])->name('admin.register.merchant.fullfillment.page');
+    Route::get('admin/register/merchant-fullfillment/page', [MerchantController::class, 'manageMerchantFullfillment'])->name('admin.register.merchant.fullfillment.page');
+    Route::get('admin/register/store-admin/page', [MerchantController::class, 'manageMerchantStoreAdmin'])->name('admin.register.store.admin.page');
+    Route::get('admin/register/hub-incharge/page', [MerchantController::class, 'manageMerchantHubIncharge'])->name('admin.register.hub.incharge.page');
+    Route::get('admin/register/store-incharge/page', [MerchantController::class, 'manageMerchantStoreIncharge'])->name('admin.register.store.incharge.page');
+    Route::get('admin/register/dispatch-incharge/page', [MerchantController::class, 'manageMerchantDispatchIncharge'])->name('admin.register.dispatch.incharge.page');
+
+
+
+
+
+
+
+
     Route::get('admin/status/merchant/toggle/{id}', [MerchantController::class, 'toggleStatus'])->name('admin.toggle.merchant.status');
 
     ## Store
@@ -411,8 +429,6 @@ Route::get('admin/invoice/pdf/{orderId}', [DeliveriesController::class, 'invoice
 // Route::post('admin/active/update/{id}', [DispatchItemController::class, 'update'])->name('admin.dispatch.item.update');
 // Route::get('admin/active/delete/{id}', [DispatchItemController::class, 'destroy'])->name('admin.dispatch.item.delete');
 // Route::get('admin/active/status/toggle/{id}', [DispatchItemController::class, 'toggleStatus'])->name('admin.dispatch.item.toggle.status');
-
-
 
 Route::get('/test-mail', function () {
     Mail::raw('This is a test email from Laravel', function ($message) {
