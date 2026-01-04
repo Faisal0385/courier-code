@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2025 at 07:44 PM
+-- Generation Time: Jan 04, 2026 at 01:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,9 +59,16 @@ CREATE TABLE `bookings` (
   `courier_service` varchar(255) DEFAULT NULL,
   `amount_to_collect` varchar(255) DEFAULT NULL,
   `item_description` varchar(255) DEFAULT NULL,
-  `city_id` bigint(20) UNSIGNED NOT NULL,
-  `zone_id` bigint(20) UNSIGNED NOT NULL,
+  `city_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `zone_id` bigint(20) UNSIGNED DEFAULT NULL,
   `area_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `order_amount` varchar(225) DEFAULT NULL,
+  `total_weight` varchar(255) DEFAULT NULL,
+  `total_fee` varchar(255) DEFAULT NULL,
+  `discount_amount` varchar(255) DEFAULT NULL,
+  `cod_fee` varchar(255) DEFAULT NULL,
+  `delivery_fee` varchar(255) DEFAULT NULL,
+  `billing_status` varchar(255) DEFAULT NULL,
   `status` varchar(255) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -71,25 +78,32 @@ CREATE TABLE `bookings` (
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`id`, `order_id`, `merchant_id`, `booking_operator_id`, `store_id`, `product_type_id`, `delivery_type_id`, `recipient_name`, `recipient_phone`, `recipient_secondary_phone`, `recipient_address`, `pathao_consignment_ids`, `courier_status`, `courier_service`, `amount_to_collect`, `item_description`, `city_id`, `zone_id`, `area_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, '20251212143606JQJJFS', 1, 1, 1, 2, 48, 'Jasmin', '01516173275', NULL, 'House No - 06, Road No - 01', 'DR121225WAR4R7', 'pending', 'pathao', '2001', NULL, 2, 405, 15872, '0', '2025-12-12 08:36:06', '2025-12-12 09:54:49'),
-(2, '20251212155722TZRO7O', 1, 1, 1, 2, 48, 'Jasmin', '01516173275', NULL, 'House No - 06, Road No - 01', 'DR121225RHBNE4', 'pending', 'pathao', '2000', NULL, 2, 405, 15872, '0', '2025-12-12 09:57:22', '2025-12-12 09:58:54'),
-(3, 'ORD_693d523a5b0b0', 1, 1, 1, 2, 48, 'Faisal A Salam', '01312361494', NULL, 'House no. 6, Chawkbazar', 'DR131225FE64GA', 'pending', 'pathao', '2000', '', 2, 78, NULL, '1', '2025-12-13 05:47:06', '2025-12-13 05:47:07'),
-(4, 'ORD_693db1485e70f', 1, 1, 1, 2, 48, 'Faisal', '01312361494', NULL, 'House no. 6, 2nd Road', 'DR131225KWMFRR', 'pending', 'pathao', '1000', 'This is a note', 3, 612, NULL, '1', '2025-12-13 12:32:40', '2025-12-13 12:32:43'),
-(5, 'ORD_693db14880559', 1, 1, 1, 2, 48, 'Jasmin', '01312361496', NULL, 'House no. 6, 2nd Road', 'DR131225HCHCRB', 'pending', 'pathao', '3000', 'This is a note', 2, 73, NULL, '1', '2025-12-13 12:32:40', '2025-12-13 12:32:43'),
-(6, 'ORD_693db1488535c', 1, 1, 1, 2, 48, 'Farzana', '01312361497', NULL, 'House no. 6, 2nd Road', 'DR131225EN6A5Z', 'pending', 'pathao', '4000', 'This is a note', 1, 1765, NULL, '1', '2025-12-13 12:32:40', '2025-12-13 12:32:43'),
-(7, 'ORD_693eda33beb38', 1, 1, 1, 2, 48, 'Faisal', '01312361494', NULL, 'House no. 6, Chawkbazar', 'DR1412257FPDDT', 'pending', 'pathao', '2000', 'This is a note', 1, 1538, NULL, '1', '2025-12-14 09:39:31', '2025-12-14 09:39:44'),
-(8, 'ORD_693eda341cd2d', 1, 1, 1, 2, 48, 'Farhad', '01312361478', NULL, 'House no. 10, Chawkbazar', 'DR141225CRLN7F', 'pending', 'pathao', '3000', 'This is a note', 2, 79, NULL, '1', '2025-12-14 09:39:32', '2025-12-14 09:39:44'),
-(9, 'ORD_693eda34215cb', 1, 1, 1, 2, 48, 'Fahim', '01312361498', NULL, 'Road no. 2, House 12', 'DR141225FPBPCH', 'pending', 'pathao', '4000', 'This is a note', 3, 2651, NULL, '1', '2025-12-14 09:39:32', '2025-12-14 09:39:44'),
-(10, 'ORD_693eda34250ac', 1, 1, 1, 2, 48, 'Fatema', '01312361494', NULL, 'Road no. 12, House 20, Section 2B', 'DR141225VLVFKP', 'pending', 'pathao', '5000', 'This is a note', 9, 757, NULL, '1', '2025-12-14 09:39:32', '2025-12-14 09:39:44'),
-(11, 'ORD_693edc3b7b499', 1, 1, 1, 2, 48, 'Jasmin', '01312361494', NULL, 'House no. 6, Chawkbazar', 'DR1412258M7R3L', 'pending', 'pathao', '4000', 'This is a note', 1, 1538, NULL, '1', '2025-12-14 09:48:11', '2025-12-14 09:48:13'),
-(12, 'ORD_693edc3b87212', 1, 1, 1, 2, 48, 'Farjana', '01312361494', NULL, 'Road no. 12, House 20, Section 2B', 'DR141225JFCHKE', 'pending', 'pathao', '1000', 'This is a note', 9, 757, NULL, '1', '2025-12-14 09:48:11', '2025-12-14 09:48:13'),
-(13, '20251215070150IIYFUL', 1, 1, 1, 2, 48, 'Jasmine', '01727656531', '01727656531', 'House No - 06, Road No - 01', NULL, NULL, NULL, '2000', 'this is an item', 2, 79, 4161, '0', '2025-12-15 01:01:50', '2025-12-16 10:44:37'),
-(14, '20251216131103BCYUII', 5, 5, 5, 2, 48, 'Jasmine', '01312361494', '01727656532', 'House No - 06, Road No - 01', NULL, NULL, NULL, '2000', 'These are item description', 2, 69, 5435, '0', '2025-12-16 07:11:03', '2025-12-16 07:11:03'),
-(15, '20251216131317XS7HDU', 5, 5, 6, 1, 48, 'Farjana', '01516173275', '01516173275', 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', NULL, NULL, NULL, '2000', '2001', 2, 417, 14842, '0', '2025-12-16 07:13:17', '2025-12-16 07:13:17'),
-(16, '20251216132608RKPH7P', 5, 5, 6, 2, 48, 'Fahad', '01516173275', '01516173275', 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', NULL, NULL, NULL, '2000', '2000', 2, 405, 15872, '0', '2025-12-16 07:26:08', '2025-12-16 07:26:08'),
-(17, '20251216132903F6PCZH', 5, 7, 6, 2, 48, 'Jasmin', '01516173275', '01516173275', 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', NULL, NULL, NULL, '2000', '2000', 2, 405, 15872, '0', '2025-12-16 07:29:03', '2025-12-16 07:29:03'),
-(18, '2025121616514408H0FP', 1, NULL, 1, 2, 48, 'Jasmine', '01516173275', '01516173275', 'Muradpurqqq', 'DR1612253U2ZTP', 'pending', 'pathao', '2000', NULL, 2, 400, 20058, '0', '2025-12-16 10:51:44', '2025-12-16 10:52:16');
+INSERT INTO `bookings` (`id`, `order_id`, `merchant_id`, `booking_operator_id`, `store_id`, `product_type_id`, `delivery_type_id`, `recipient_name`, `recipient_phone`, `recipient_secondary_phone`, `recipient_address`, `pathao_consignment_ids`, `courier_status`, `courier_service`, `amount_to_collect`, `item_description`, `city_id`, `zone_id`, `area_id`, `order_amount`, `total_weight`, `total_fee`, `discount_amount`, `cod_fee`, `delivery_fee`, `billing_status`, `status`, `created_at`, `updated_at`) VALUES
+(1, '20251212143606JQJJFS', 1, 1, 1, 2, 48, 'Jasmin', '01516173275', NULL, 'House No - 06, Road No - 01', 'DR121225WAR4R7', 'Delivered', 'pathao', '2001', NULL, 2, 405, 15872, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-12 08:36:06', '2025-12-25 10:33:10'),
+(2, '20251212155722TZRO7O', 1, 1, 1, 2, 48, 'Jasmin', '01516173275', NULL, 'House No - 06, Road No - 01', 'DR121225RHBNE4', 'Pickup Cancel', 'pathao', '2000', NULL, 2, 405, 15872, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-12 09:57:22', '2025-12-25 10:33:11'),
+(3, 'ORD_693d523a5b0b0', 1, 1, 1, 2, 48, 'Faisal A Salam', '01312361494', NULL, 'House no. 6, Chawkbazar', 'DR131225FE64GA', 'Pickup Cancel', 'pathao', '2000', '', 2, 78, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-13 05:47:06', '2025-12-25 10:33:12'),
+(4, 'ORD_693db1485e70f', 1, 1, 1, 2, 48, 'Faisal', '01312361494', NULL, 'House no. 6, 2nd Road', 'DR131225KWMFRR', 'Pickup Cancel', 'pathao', '1000', 'This is a note', 3, 612, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-13 12:32:40', '2025-12-25 10:33:13'),
+(5, 'ORD_693db14880559', 1, 1, 1, 2, 48, 'Jasmin', '01312361496', NULL, 'House no. 6, 2nd Road', 'DR131225HCHCRB', 'Pickup Cancel', 'pathao', '3000', 'This is a note', 2, 73, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-13 12:32:40', '2025-12-25 10:33:14'),
+(6, 'ORD_693db1488535c', 1, 1, 1, 2, 48, 'Farzana', '01312361497', NULL, 'House no. 6, 2nd Road', 'DR131225EN6A5Z', 'Pickup Cancel', 'pathao', '4000', 'This is a note', 1, 1765, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-13 12:32:40', '2025-12-25 10:33:14'),
+(7, 'ORD_693eda33beb38', 1, 1, 1, 2, 48, 'Faisal', '01312361494', NULL, 'House no. 6, Chawkbazar', 'DR1412257FPDDT', 'Pickup Cancel', 'pathao', '2000', 'This is a note', 1, 1538, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-14 09:39:31', '2025-12-25 10:33:15'),
+(8, 'ORD_693eda341cd2d', 1, 1, 1, 2, 48, 'Farhad', '01312361478', NULL, 'House no. 10, Chawkbazar', 'DR141225CRLN7F', 'Pickup Cancel', 'pathao', '3000', 'This is a note', 2, 79, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-14 09:39:32', '2025-12-25 10:33:16'),
+(9, 'ORD_693eda34215cb', 1, 1, 1, 2, 48, 'Fahim', '01312361498', NULL, 'Road no. 2, House 12', 'DR141225FPBPCH', 'Pickup Cancel', 'pathao', '4000', 'This is a note', 3, 2651, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-14 09:39:32', '2025-12-25 10:33:17'),
+(10, 'ORD_693eda34250ac', 1, 1, 1, 2, 48, 'Fatema', '01312361494', NULL, 'Road no. 12, House 20, Section 2B', 'DR141225VLVFKP', 'Pickup Cancel', 'pathao', '5000', 'This is a note', 9, 757, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-14 09:39:32', '2025-12-25 10:33:17'),
+(11, 'ORD_693edc3b7b499', 1, 1, 1, 2, 48, 'Jasmin', '01312361494', NULL, 'House no. 6, Chawkbazar', 'DR1412258M7R3L', 'Pickup Cancel', 'pathao', '4000', 'This is a note', 1, 1538, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-14 09:48:11', '2025-12-31 09:30:01'),
+(12, 'ORD_693edc3b87212', 1, 1, 1, 2, 48, 'Farjana', '01312361494', NULL, 'Road no. 12, House 20, Section 2B', 'DR141225JFCHKE', 'Pickup Cancel', 'pathao', '1000', 'This is a note', 9, 757, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2025-12-14 09:48:11', '2025-12-31 09:30:02'),
+(13, '20251215070150IIYFUL', 1, 1, 1, 2, 48, 'Jasmine', '01727656531', '01727656531', 'House No - 06, Road No - 01', NULL, NULL, NULL, '2000', 'this is an item', 2, 79, 4161, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-15 01:01:50', '2025-12-16 10:44:37'),
+(14, '20251216131103BCYUII', 5, 5, 5, 2, 48, 'Jasmine', '01312361494', '01727656532', 'House No - 06, Road No - 01', NULL, NULL, NULL, '2000', 'These are item description', 2, 69, 5435, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-16 07:11:03', '2025-12-16 07:11:03'),
+(15, '20251216131317XS7HDU', 5, 5, 6, 1, 48, 'Farjana', '01516173275', '01516173275', 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', NULL, NULL, NULL, '2000', '2001', 2, 417, 14842, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-16 07:13:17', '2025-12-16 07:13:17'),
+(16, '20251216132608RKPH7P', 5, 5, 6, 2, 48, 'Fahad', '01516173275', '01516173275', 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', 'DR271225VU5G66', 'Pickup Cancel', 'pathao', '2000', '2000', 2, 405, 15872, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-16 07:26:08', '2025-12-31 09:30:03'),
+(17, '20251216132903F6PCZH', 5, 7, 6, 2, 48, 'Jasmin', '01516173275', '01516173275', 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', 'DR2412252EZE8B', 'Pickup Cancel', 'pathao', '2000', '2000', 2, 405, 15872, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-16 07:29:03', '2025-12-25 10:33:21'),
+(18, '2025121616514408H0FP', 1, NULL, 1, 2, 48, 'Jasmine', '01516173275', '01516173275', 'Muradpurqqq', 'DR1612253U2ZTP', 'Pickup Cancel', 'pathao', '2000', NULL, 2, 400, 20058, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-16 10:51:44', '2025-12-25 10:33:22'),
+(19, '2025123114522806VWZC', 1, NULL, 1, 2, 48, 'Jasmine', '01312361494', NULL, 'House no. 12, road 12, Andorkilla, Chattogram', 'DT311225M9BGST', 'pending', 'pathao', '2000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-31 08:52:28', '2025-12-31 08:52:43'),
+(20, '202512311505200W6HEO', 1, NULL, 1, 2, 12, 'Jasmine', '01312361494', NULL, 'House no. 12, road 12, Andorkilla, Chattogram', 'DT311225KXC454', 'pending', 'pathao', '2000', NULL, 2, 69, 5436, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-31 09:05:20', '2025-12-31 09:10:17'),
+(21, '2025123115254038UYLI', 1, NULL, 1, 2, 48, 'Jasmine', '01312361494', NULL, 'House no. 12, road 12, Andorkilla, Chattogram', 'DR311225FZAR4L', 'Pickup Cancel', 'pathao', '2000', '2001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-31 09:25:40', '2025-12-31 09:30:06'),
+(22, '202512311539268HCVFX', 1, NULL, 1, 2, 48, 'Jasmine', '01312361494', NULL, 'House no. 12, road 12, Andorkilla, Chattogram', 'DR3112256XQU2K', 'Pickup Cancel', 'pathao', '2000', '2001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-31 09:39:26', '2025-12-31 10:00:02'),
+(23, '202512311804119UQ2MB', 1, NULL, 1, 2, 48, 'Jasmine', '01312361494', NULL, 'House no. 12, road 12, Andorkilla, Chattogram', 'DR311225VHCFDA', 'Pickup Cancel', 'pathao', '2000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-31 12:04:11', '2025-12-31 12:30:02'),
+(24, '202512311811588A1UA9', 1, NULL, 1, 2, 48, 'Farjana', '01312361494', NULL, 'House no. 12, road 12, Andorkilla, Chattogram', 'DR311225FHJYMQ', 'Pickup Cancel', 'pathao', '2000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '2025-12-31 12:11:58', '2025-12-31 12:30:03'),
+(25, '20251231182008IAIVYI', 1, NULL, 1, 2, 48, 'Fahad', '01312361494', NULL, 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', 'DR311225ZMZ6J5', 'Pickup Cancel', 'pathao', '2000', NULL, NULL, NULL, NULL, '2000', '1', '150', '0', '20', '130', 'Unpaid', '0', '2025-12-31 12:20:08', '2025-12-31 12:45:02');
 
 -- --------------------------------------------------------
 
@@ -134,7 +148,14 @@ INSERT INTO `booking_products` (`id`, `booking_id`, `product_id`, `weight`, `qua
 (18, 15, 4, 0.50, 1, NULL, NULL, '2025-12-16 07:13:17', '2025-12-16 07:13:17'),
 (19, 16, 4, 0.50, 1, NULL, NULL, '2025-12-16 07:26:08', '2025-12-16 07:26:08'),
 (20, 17, 4, 0.50, 1, NULL, NULL, '2025-12-16 07:29:03', '2025-12-16 07:29:03'),
-(21, 18, 2, 1.00, 1, NULL, NULL, '2025-12-16 10:51:44', '2025-12-16 10:51:44');
+(21, 18, 2, 1.00, 1, NULL, NULL, '2025-12-16 10:51:44', '2025-12-16 10:51:44'),
+(22, 19, 2, 1.00, 1, NULL, NULL, '2025-12-31 08:52:28', '2025-12-31 08:52:28'),
+(23, 20, 1, 1.00, 1, NULL, NULL, '2025-12-31 09:05:20', '2025-12-31 09:05:20'),
+(24, 21, 2, 1.00, 1, NULL, NULL, '2025-12-31 09:25:40', '2025-12-31 09:25:40'),
+(25, 22, 2, 1.00, 1, NULL, NULL, '2025-12-31 09:39:26', '2025-12-31 09:39:26'),
+(26, 23, 2, 1.00, 1, NULL, NULL, '2025-12-31 12:04:11', '2025-12-31 12:04:11'),
+(27, 24, 1, 1.00, 1, NULL, NULL, '2025-12-31 12:11:58', '2025-12-31 12:11:58'),
+(28, 25, 2, 1.00, 1, NULL, NULL, '2025-12-31 12:20:08', '2025-12-31 12:20:08');
 
 -- --------------------------------------------------------
 
@@ -153,7 +174,9 @@ CREATE TABLE `cache` (
 --
 
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('spatie.permission.cache', 'a:3:{s:5:\"alias\";a:5:{s:1:\"a\";s:2:\"id\";s:1:\"b\";s:4:\"name\";s:1:\"c\";s:10:\"group_name\";s:1:\"d\";s:10:\"guard_name\";s:1:\"r\";s:5:\"roles\";}s:11:\"permissions\";a:17:{i:0;a:5:{s:1:\"a\";i:9;s:1:\"b\";s:12:\"booking.menu\";s:1:\"c\";s:7:\"booking\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:4:{i:0;i:5;i:1;i:10;i:2;i:11;i:3;i:12;}}i:1;a:5:{s:1:\"a\";i:10;s:1:\"b\";s:23:\"booking.operator.create\";s:1:\"c\";s:7:\"booking\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:5;i:1;i:11;i:2;i:12;}}i:2;a:5:{s:1:\"a\";i:11;s:1:\"b\";s:12:\"order.create\";s:1:\"c\";s:7:\"booking\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:10;i:1;i:11;i:2;i:12;}}i:3;a:5:{s:1:\"a\";i:12;s:1:\"b\";s:10:\"store.menu\";s:1:\"c\";s:5:\"store\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:5;i:1;i:9;i:2;i:12;}}i:4;a:5:{s:1:\"a\";i:13;s:1:\"b\";s:12:\"store.create\";s:1:\"c\";s:5:\"store\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:5;i:1;i:9;i:2;i:12;}}i:5;a:5:{s:1:\"a\";i:14;s:1:\"b\";s:18:\"store.admin.create\";s:1:\"c\";s:5:\"store\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:5;i:1;i:9;i:2;i:12;}}i:6;a:5:{s:1:\"a\";i:15;s:1:\"b\";s:8:\"hub.menu\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:7;a:5:{s:1:\"a\";i:16;s:1:\"b\";s:10:\"hub.create\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:8;a:5:{s:1:\"a\";i:17;s:1:\"b\";s:19:\"hub.incharge.create\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:9;a:5:{s:1:\"a\";i:18;s:1:\"b\";s:21:\"store.incharge.create\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:10;a:5:{s:1:\"a\";i:19;s:1:\"b\";s:24:\"dispatch.incharge.create\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:11;a:5:{s:1:\"a\";i:20;s:1:\"b\";s:12:\"setting.menu\";s:1:\"c\";s:7:\"setting\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:12;a:5:{s:1:\"a\";i:21;s:1:\"b\";s:9:\"role.menu\";s:1:\"c\";s:4:\"role\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:13;a:5:{s:1:\"a\";i:22;s:1:\"b\";s:12:\"product.menu\";s:1:\"c\";s:7:\"product\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:5;i:1;i:12;}}i:14;a:5:{s:1:\"a\";i:23;s:1:\"b\";s:15:\"merchant.manage\";s:1:\"c\";s:8:\"merchant\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:15;a:5:{s:1:\"a\";i:24;s:1:\"b\";s:12:\"admin.create\";s:1:\"c\";s:7:\"setting\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:16;a:5:{s:1:\"a\";i:31;s:1:\"b\";s:14:\"courier.assign\";s:1:\"c\";s:7:\"courier\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}}s:5:\"roles\";a:5:{i:0;a:3:{s:1:\"a\";i:5;s:1:\"b\";s:8:\"Merchant\";s:1:\"d\";s:3:\"web\";}i:1;a:3:{s:1:\"a\";i:10;s:1:\"b\";s:16:\"Booking Operator\";s:1:\"d\";s:3:\"web\";}i:2;a:3:{s:1:\"a\";i:11;s:1:\"b\";s:21:\"Merchant Fullfillment\";s:1:\"d\";s:3:\"web\";}i:3;a:3:{s:1:\"a\";i:12;s:1:\"b\";s:5:\"Admin\";s:1:\"d\";s:3:\"web\";}i:4;a:3:{s:1:\"a\";i:9;s:1:\"b\";s:11:\"Store Admin\";s:1:\"d\";s:3:\"web\";}}}', 1766387147);
+('faisaltez@gmail.com|127.0.0.1', 'i:1;', 1767502014),
+('faisaltez@gmail.com|127.0.0.1:timer', 'i:1767502014;', 1767502014),
+('spatie.permission.cache', 'a:3:{s:5:\"alias\";a:5:{s:1:\"a\";s:2:\"id\";s:1:\"b\";s:4:\"name\";s:1:\"c\";s:10:\"group_name\";s:1:\"d\";s:10:\"guard_name\";s:1:\"r\";s:5:\"roles\";}s:11:\"permissions\";a:17:{i:0;a:5:{s:1:\"a\";i:9;s:1:\"b\";s:12:\"booking.menu\";s:1:\"c\";s:7:\"booking\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:4:{i:0;i:5;i:1;i:10;i:2;i:11;i:3;i:12;}}i:1;a:5:{s:1:\"a\";i:10;s:1:\"b\";s:23:\"booking.operator.create\";s:1:\"c\";s:7:\"booking\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:5;i:1;i:11;i:2;i:12;}}i:2;a:5:{s:1:\"a\";i:11;s:1:\"b\";s:12:\"order.create\";s:1:\"c\";s:7:\"booking\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:10;i:1;i:11;i:2;i:12;}}i:3;a:5:{s:1:\"a\";i:12;s:1:\"b\";s:10:\"store.menu\";s:1:\"c\";s:5:\"store\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:5;i:1;i:9;i:2;i:12;}}i:4;a:5:{s:1:\"a\";i:13;s:1:\"b\";s:12:\"store.create\";s:1:\"c\";s:5:\"store\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:5;i:1;i:9;i:2;i:12;}}i:5;a:5:{s:1:\"a\";i:14;s:1:\"b\";s:18:\"store.admin.create\";s:1:\"c\";s:5:\"store\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:3:{i:0;i:5;i:1;i:9;i:2;i:12;}}i:6;a:5:{s:1:\"a\";i:15;s:1:\"b\";s:8:\"hub.menu\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:7;a:5:{s:1:\"a\";i:16;s:1:\"b\";s:10:\"hub.create\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:8;a:5:{s:1:\"a\";i:17;s:1:\"b\";s:19:\"hub.incharge.create\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:9;a:5:{s:1:\"a\";i:18;s:1:\"b\";s:21:\"store.incharge.create\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:10;a:5:{s:1:\"a\";i:19;s:1:\"b\";s:24:\"dispatch.incharge.create\";s:1:\"c\";s:3:\"hub\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:11;a:5:{s:1:\"a\";i:20;s:1:\"b\";s:12:\"setting.menu\";s:1:\"c\";s:7:\"setting\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:12;a:5:{s:1:\"a\";i:21;s:1:\"b\";s:9:\"role.menu\";s:1:\"c\";s:4:\"role\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:13;a:5:{s:1:\"a\";i:22;s:1:\"b\";s:12:\"product.menu\";s:1:\"c\";s:7:\"product\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:2:{i:0;i:5;i:1;i:12;}}i:14;a:5:{s:1:\"a\";i:23;s:1:\"b\";s:15:\"merchant.manage\";s:1:\"c\";s:8:\"merchant\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:15;a:5:{s:1:\"a\";i:24;s:1:\"b\";s:12:\"admin.create\";s:1:\"c\";s:7:\"setting\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}i:16;a:5:{s:1:\"a\";i:31;s:1:\"b\";s:14:\"courier.assign\";s:1:\"c\";s:7:\"courier\";s:1:\"d\";s:3:\"web\";s:1:\"r\";a:1:{i:0;i:12;}}}s:5:\"roles\";a:5:{i:0;a:3:{s:1:\"a\";i:5;s:1:\"b\";s:8:\"Merchant\";s:1:\"d\";s:3:\"web\";}i:1;a:3:{s:1:\"a\";i:10;s:1:\"b\";s:16:\"Booking Operator\";s:1:\"d\";s:3:\"web\";}i:2;a:3:{s:1:\"a\";i:11;s:1:\"b\";s:21:\"Merchant Fullfillment\";s:1:\"d\";s:3:\"web\";}i:3;a:3:{s:1:\"a\";i:12;s:1:\"b\";s:5:\"Admin\";s:1:\"d\";s:3:\"web\";}i:4;a:3:{s:1:\"a\";i:9;s:1:\"b\";s:11:\"Store Admin\";s:1:\"d\";s:3:\"web\";}}}', 1767588330);
 
 -- --------------------------------------------------------
 
@@ -322,8 +345,8 @@ CREATE TABLE `courier_stores` (
 --
 
 INSERT INTO `courier_stores` (`id`, `user_id`, `courier_platform_id`, `client_id`, `client_secret`, `username`, `password`, `store_id`, `store_name`, `token`, `refresh_token`, `expires_in`, `store_token`, `created_at`, `updated_at`) VALUES
-(2, 1, 1, 'lNbWqWxeyg', 'wxROBa8wehcqhcSKcaOEgAONuEt4Gk4DCoGbSPri', 'khaledrayan40@gmail.com', 'eyJpdiI6ImtqUldkR0h2RlFuVnhlRTJXdE5xdFE9PSIsInZhbHVlIjoiNGk4bXloS05oeVRVRk9vS2lQZEpJdEQ0ak5VdUZpTUMwVUJSTXdNbEVGcz0iLCJtYWMiOiIzOGJlZmI5MGExNTNiMDYyNzM4ZTRiYTljYTI5ZmZmNGJhYmUyMmYzMmMxOTU3NDExYjg1NmQ1ZDhhMWFlODY1IiwidGFnIjoiIn0=', '345173', 'rayluxeo', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODI3NjYiLCJhdWQiOlsiMTQwMzAiXSwiZXhwIjoxNzczMzI0NzQwLCJuYmYiOjE3NjU1NDg3NDAsImlhdCI6MTc2NTU0ODc0MCwianRpIjoiYjgwYzRiOGY3NGQ2NTg5ZGZiMjY2ZjJiMzRhMWU4MjJhM2IwNGJjNjliMjQ2YTYzMDhiNzNkMjFiZDdhMzY5NyIsIm1lcmNoYW50X2lkIjoiV1pkUDdaTm5iSyIsInNjb3BlcyI6W119.Ld7KCY5dLeC7Jkx6xrdgjq7RbETWRn8DSr0ZlYS4kGekwSGtN1AFx0L1LN21PnbzYb-DuulN7_pp7RU8R3RaArc_XtVk1puqUkmTo0u9tyPwa66oFG9cs_sBckitj5p5yvSzrDB994O2zjxTMaFeLUEoLGmqtlYrB1fGKJ4gO-223rtNK_gdSBAkFZwUNXAdXmiOosm5KfPjCTCeiLHFt5HwxCTXCaKgZ6gRnqXEMAOhuSBT4-HwVNsJ5mnBv_yjll5f8xMfSR-Icyuh52nvATXx6jNL6BIeD11u7iT_Fgaliyo8BeN-XNcHLjg56a_2EtvSR1NwK2z9DOPIYVc_RcZdx3Y7punajkrti-O1qFFFO_pjUCwhbii6LL0cd_ulo05RXcnUS5YdTtc60iaoYl0Yk07z1wfDZP5z8Raykl8hZ8igL4ApnRmaUFYJg-8GFf6u6D7isCtA0hWriP8_ul4aDHnyme6hDOUkSQYrBMXRDYTfa6W4Nm8WtFQLzrRA77SvBwn6mUk7pm1cnsUD4bDY488wWuBHLhulWbaRY3SUfrXf7WUiW1AgNz90NAOeLl19_yKqywmiCN_YyhkEbYawHCYiKfWGz6kyRVJqQzVAwzuoo-h-TdzlEcSiYsy9Lj4XgC26SpQ1amB3SjXZf_0yJ35ohB7AHlNKHZMnZ-8', 'def50200c038c86fe1ac6df97b5e8d539246bf223741e1718b7212174920b35b733c38c7a396dc3ee0fc472e9d45e3589095003e172dc127559da9d05eabe908772efd2633df0f6f4d540233b0f9181c88350c131e34084c5f30fb2f93e36089f69eedbe74fc5df4a6cd1f567f18faa7513851e037226aebd927cec55c5c4dff93389ae8df2ab7024cc3c4069b0f7e476dd79c63e68858fba9cb386463443faeef2d3253ac3157681404404f4465282a4b82acb64d457f92551c5a09af6fce8d1599b09608d8058af63d17be9caf40ab95bbaeffb041c458113fb91234f06a0d3e5eb13bc47e8a84341069e99018f201042e16985462448766f8080a3cdbd70df9f998dec11434427fc4e20d3da5f81bd0e114822b19c17a70a1fc57ff22ed46dd499e52d26f870d34ed36a515c42f17146f9002a88c2b7b4c5d7b553ade90ae7ba53a9c0d29d85e10bcb3e76361b87118e22890a67dd06b3dabf569', '1773324770', '89d0e335-f822-4f26-8ace-b1b8567a3ceb', '2025-12-12 08:12:50', '2025-12-12 08:12:50'),
-(3, 1, 1, 'lNbWqWxeyg', 'wxROBa8wehcqhcSKcaOEgAONuEt4Gk4DCoGbSPri', 'khaledrayan40@gmail.com', 'eyJpdiI6IkNyYk00SWdaak1NYlJHdUdoRlMvYlE9PSIsInZhbHVlIjoiOW9XTDRieEIrUDZwMzl6dVFyendHeis5Zm1RN1hQdm5PSUY1QU5jU1R4TT0iLCJtYWMiOiIxY2E0MTAyMDE5OTRlMDY2MjBiMzA1YmJlY2YyMjNkMTJkOGQ0N2RjNjM0YjU5ZmY1ZTI4NDJkY2RkNTNhYzZkIiwidGFnIjoiIn0=', '346731', 'Test 5', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODI3NjYiLCJhdWQiOlsiMTQwMzAiXSwiZXhwIjoxNzczMzI4NDgzLCJuYmYiOjE3NjU1NTI0ODMsImlhdCI6MTc2NTU1MjQ4MywianRpIjoiYWY3NzY4ZWE3YjE1M2Y3YWM2M2JhMWFhNWRmYzVjYThmYjYzYTE0NTRjMjk0M2ZhYWZlODIxMWVkMWEwY2E4MCIsIm1lcmNoYW50X2lkIjoiV1pkUDdaTm5iSyIsInNjb3BlcyI6W119.NwskS6kWJXJrj27B-COe1rgUoPg3jVxuX35cQd9yjmPvlLkIzFwdw_TdmjFriD6cLiYDsuZbYLHg74LqJlfnl14t1_WsdsWKRa0NkWw75CtwYF1e52n_eiyQ4Upw823qKVMSLottd77XvAP2qfIBFIZZWTXnLahSqWoUS0Jhd7UaRrb0kW4kzpkKKhlewFZV3mKTWKEMoBAht6F7JYT9CrmjgzixlWfDM55Oikr8MIF7bH8Yy_kDpq6ejYSeiMAvQgbU3FyIhaHnyV-hdvqIUTfwc2F1vqVLls0S2XyFbIONCyCGd3JEmSpH_CngZNYrXMenMAlqBh0YrY8sCSwU9bsQp7oulz2tyBw0-Y9kTK0cvuix3dccwuZ_KR7Qi0IOAKJ2zR8g-jPt_h7TZyNHdo04Hdz00YhoSFw7jCJFaEZ_KB32fScEmiH7UJjUGBo5SFSV_N8Vc3SeEv9iOkeyJJcmd6dV8QeXaJsdyRlyZM7F9H3WjK2FGBKBDN6tCB9cY-SoMnb5r_vuCoprmVNzc2iOCeszV8b0E-NLChOKhminkROPh5oHoiq6Bi2bjT4lMVm35Nes7ES30-65D9l48PkPUgoD4hJFc2DavqymjY25I79E6OKGwrlu6KJrpnSDpdvA-aPIudEiPf1E-y535yLzSzCSly0jXWrb_Pg7qfw', 'def502005e6770ec25de300585a68f7a2d377a9ad5b30e4e1766aa79af2bdc35f881ceea4ba7750fb3a62a2995395b54463ba5ee6f5e4980ab7eb84796ff4de14a0d477f5783e769e079e4ca81f85e0d8d806c7b6404117b3c671c463055e58ed6f3816b92b84f593dbb530d8af0f45dd929c679f851be232ed74be50138870b3e32a2ad081d54700f27e649b9fedf3ba5e4e080f768a1883fda8f0d29b919d85206ba64fb4d323ab07ba6be60ce117d8da7ad89c0bea03f5cbd9b2a5b0df897e679107cb2bf47c7da3b16aaaf4c3d20acc958bdaf051172c7f78ad16c62cc4a8bae00686ee13a13e3475f04ee821804a5b011f6e98ed1ba6f69bcddeb2e9f315bf8940290598d65a5be90d2ca077767749a9c6aaf4df78b247def5dd78790ea1f2d3cd5d918cf6395ac522cd044216c7fef053a9c2249f2ddcf457d3567f7ae1ab62041f18e57fcf0a8043955e9c1cbce5264babf7f67f27a727130', '1773328513', '3446127f-acc5-4a97-bf9c-2358577fc9c6', '2025-12-12 09:15:13', '2025-12-12 09:15:13');
+(6, 1, 1, 'zPdyXpnbQr', 'FmSXd6pivDme8Nbe9zkbIZzYSIL7GRcQQ8HpkXMz', 'jasmineakther62@gmail.com', 'eyJpdiI6IlMwdXZqK2hOQzJXREVONDRjSU9LRlE9PSIsInZhbHVlIjoidEpUQWVPbXVHd1paUVE3MTFJRFFwNGd0d0hFN1RVb0VicUNUSmlNbC9pOD0iLCJtYWMiOiI1MDUwZTQ4OTQwMWJkYTQ2YjhmMzkxMDNhOWIyZWMxNTAxNzJhODcwNjUwOWQyZjM4ZWMzMmI4ZTM1YjcwNThlIiwidGFnIjoiIn0=', '322143', 'TAABIR', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDUyNjciLCJhdWQiOlsiMTQwMTMiXSwiZXhwIjoxNzc0OTY4MDEyLCJuYmYiOjE3NjcxOTIwMTIsImlhdCI6MTc2NzE5MjAxMiwianRpIjoiNmE2NjY3MTZkZTdiMDc5ZmIxMDZjMjkzMzk5ZTBhMGMxYmJmNDhjMjNlZmY2MWQwMDFkZTFmOGJiY2Y0NWVlNSIsIm1lcmNoYW50X2lkIjoiM1lhT1l5Sk5keCIsInNjb3BlcyI6W119.KF-8UljVMzIy0vsB3Al4BBGqnib26eXhHfJK3XG4NrzJW7uBGCWscV1ukwazmD9QRsl9_7sWlEYQVOpHwmswLh9XZ-XXdb61x28BjEbZylMjpHq1R8k35z5Q8SRCAtbUj2LC5nOK3aVfHiUpUiIl9yTC8jnBo54ISkOcJoNyQy54hNbptCXgTWg36waVl10f9Y4AY5Nt141wDeKbKKW985cTTLtio62nXN6YA42vBicfA9smD3OctMvMh0u8NF33Lf35MV7YRyKWyFgIDIYs9suk_rRxGtq9ZZ5rWPh65g_UwV-HIb4mbV4l9REYeFVMOrujZA9zWYnF2zhDTzsMOXg86PB5CNY8KC0hUveC55c66fNrP7TQh2jBGocajSeskrmzDEM1NZLOapLM-LMNh33jMdnSRUmscwehi8Fre4JPwE9hYHJt_iefAQ5Irve5Sc8oRjcsBhaHlozIW5m7SlYD3dX0H2BIRVHeus_-XLv3e2zCh8dU3JzsEBtE5cqzMoTBU-gY_Blph8Ze-Jj6JY99g0_3po5LBrcsXtk9ymWSIcmdPG0rrzb4ZqUaXcJulOt6o6bMv_UmB_7pqrMHOnuIYesMWSswYJwLxo4NDsQgjmnfG1kZLooC1xxaVZ6LCOMzC8jcCNILk4BuJJIGKZeyj54ZKYNqCqoW9ts8-bE', 'def50200e30088138fd267a838001de5ffa29deea30055b40f14bd4ae037a23bf215bf25a3516b5c42d06003c47c84dcf32b429d671e5a8e57fdc64a01ee8d7d9a1a8b10c462c2a0343f5ebbd790ec772462dbc1f636fc15f53d4ad205c3b2dcce42bc6e74e7f1b3c17abea860078745dd2005bab9a477ce3bdc4c1241f7e37dbc4f5ddfa69e3d3ad31a6a73d254ce00ba996237a6fc698d724d0574565f922433040227710babf37fb4182293e52dfc9fe324a04ca8c9c25a844d493c88055a74b2d56aaad5fb418ee3130ce2a588ef3fc101e4b7422675b63e9d7b2657be4b43f11b8809d32aa2beeaad959bfc4072b9d97a6ed662f4da5a3ccacc015f042cbe0471a4e8ba84bb981848da146265dfb43c65331d9eac2bc561b318c83e20548dd2a02b7cb1d0fe82cabcf8c65e4403e3136835baded9f5645178a8666500f06a63443be56f5fb832c772a8e2090d18eb996b1ffc86f3b780d227a8', '1774968012', '1c614127-fe6f-4cbf-a5bd-15ca7e026bb4', '2025-12-31 08:40:12', '2025-12-31 08:40:12'),
+(7, 1, 1, 'lNbWqWxeyg', 'wxROBa8wehcqhcSKcaOEgAONuEt4Gk4DCoGbSPri', 'khaledrayan40@gmail.com', 'eyJpdiI6IndhZ2hrb0tRZFVGODR5ZFVEdVIrSVE9PSIsInZhbHVlIjoiZHRZc1VwY3UzbERUSFpMOXNXMUFsMW1BOGRYbXJFZUlyOGFWNmJJdWI2cz0iLCJtYWMiOiI2NGMzMWFhYmZkMzhjZjc5MDgxMDI4NDc0MDU5YWRhMDJkNjI5NmEwZmZmMDAyYjdlNjRhMmZiMjg3NmEyNmY2IiwidGFnIjoiIn0=', '345173', 'rayluxeo', 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODI3NjYiLCJhdWQiOlsiMTQwMzAiXSwiZXhwIjoxNzc0OTcwMjA3LCJuYmYiOjE3NjcxOTQyMDcsImlhdCI6MTc2NzE5NDIwNywianRpIjoiYjlmNGFjZDA3NjNjN2MzZDIwMGNjMTAxYzFiMDQyMTI4YTA2NjgwNDk4OTBkYzAxMmI3OWUzOTM3MDczOTJkMCIsIm1lcmNoYW50X2lkIjoiV1pkUDdaTm5iSyIsInNjb3BlcyI6W119.lsWaTaFftyLyqqs6h5TnP48aRJnbrcNuMtDaMApOrkcHKzLOH6wSvhFqez5a8AAjyIu1F-dSQaZZ9HrT2qlhRnFQY2Hc3tyGWbiabhpk2v19dm_YBrJ6rq4ezqWSv2Mq1lZ0K5zQBLFwoN0hjx_wMYvPD8zFx_mK-WmYqUJXA6Az7mb1qY93prj5ciWhsti36m05ePuTM4rzPLeb3XR4XxFgj9P3h-Brn9SXCN8hKm2Xs_QVoJ3j3IbCwbUKjLJMZoXWzZU1Py7IRlU2O3qyCO06PFgSz5WTejRsEVkCSeEj2p_GXp4Guep2leN31lH7SSdjOpkL3G74dTAgC0LhMuWvPhqq3lWIxAtneOB2hg2eK2O3E4gqcviZeEeFp-uv2iRvoRMLCR9y_kKe814sEmbURw-MoYh2KkHU7AWONvObts8opBLa3xYNo2VDhQ_ltbGGUPMjIiQhQ3jhAtll0w16Q14zt6HwJp1DpPF8HzIP-NwH5JWa95xIUX-0yZ07szevoQUGHlWXr9qLKz8Yu058_nmqs4sGD1h4wBdmPnX0Ynl2SqZKNuxPcFV7CQDt44q7Xxn9fYt0QB_nQyWkSGFVPd0e_iUrk_nAzetPPkILQodn8arv8JDDaH0ZvwNL0fyqX4FdeqhwESa-D9LU_8FeEj801GHKSNKsTEubkTM', 'def50200c53a62bf1180987e3860736cfee5ac41ab3b5f4937c6709a3399c28daa299356697bd1550629a063edc0964ba72849a26cc9876b87e4ab7c11d9a6989a6806b106f21cee51142fd9c88b3f71e18d77ebd18fa33a44ea3b8ab965daf6f2031dadd76142afc35f4fd092cc3fde3fce904a97757b71392ff6821deb984a323a8dfc5dc8688c0362c670e21c14a63f77a518b833a1ddfd720a8dd38a3869a8364db84c15a456351849d4672104b977b4a99b025093a0ca41694cebe9d4485f01ba0ed59cadc8d2acd8293e6e292ade85ec8876573d3cc74350994652779611853a0e0720d43ff4359df11f53391cfdbc7d0101bc66cecd1abe557225eb3d31ac8ef881a062a7884c2f7b1b21f12c911e646f02f4990dd2bad60f6437c87dc3f4c7ae93a48d7ebc29a5341f8784316bb5d92616b2d7e93f7b655dce22e343847fa40e14c383a71a4837713d19f0b5bfae21b49366b6c418b2e83b', '1774970215', 'f901ec29-3940-462d-b9d8-7abe699d557d', '2025-12-31 09:16:55', '2025-12-31 09:16:55');
 
 -- --------------------------------------------------------
 
@@ -427,6 +450,96 @@ CREATE TABLE `hubs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `hubs`
+--
+
+INSERT INTO `hubs` (`id`, `user_id`, `name`, `location`, `phone`, `address`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Chattogram Central Hub', 'Chittagong', '01516173275', 'Muradpur', 1, '2026-01-03 23:32:04', '2026-01-03 23:32:04'),
+(2, 1, 'Dhaka Central Hub', 'Dhaka', '01838906073', 'House No - 06, Road No - 01', 1, '2026-01-03 23:32:28', '2026-01-03 23:32:28');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoices`
+--
+
+CREATE TABLE `invoices` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `order_id` varchar(255) NOT NULL,
+  `merchant_id` varchar(255) NOT NULL,
+  `order_consignment_id` varchar(255) DEFAULT NULL,
+  `merchant_order_id` varchar(255) DEFAULT NULL,
+  `order_created_at` timestamp NULL DEFAULT NULL,
+  `order_description` text DEFAULT NULL,
+  `order_status` varchar(255) DEFAULT NULL,
+  `order_status_updated_at` timestamp NULL DEFAULT NULL,
+  `recipient_name` varchar(255) NOT NULL,
+  `recipient_address` text NOT NULL,
+  `recipient_phone` varchar(20) NOT NULL,
+  `recipient_secondary_phone` varchar(20) DEFAULT NULL,
+  `customer_city_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `customer_zone_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `customer_area_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `city_name` varchar(255) DEFAULT NULL,
+  `zone_name` varchar(255) DEFAULT NULL,
+  `area_name` varchar(255) DEFAULT NULL,
+  `order_amount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `total_fee` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `promo_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `cod_fee` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `additional_charge` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `compensation_cost` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `delivery_fee` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `delivery_type` int(11) DEFAULT NULL,
+  `total_weight` int(11) NOT NULL DEFAULT 0,
+  `cash_on_delivery` varchar(10) DEFAULT NULL,
+  `order_delivery_hub_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `delivery_string` varchar(255) DEFAULT NULL,
+  `delivery_method` int(11) NOT NULL DEFAULT 0,
+  `pickup_method` int(11) NOT NULL DEFAULT 0,
+  `pickup_string` varchar(255) DEFAULT NULL,
+  `store_name` varchar(255) DEFAULT NULL,
+  `store_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `order_type` varchar(255) DEFAULT NULL,
+  `item_type` varchar(255) DEFAULT NULL,
+  `order_type_id` tinyint(3) UNSIGNED DEFAULT NULL,
+  `item_type_id` tinyint(3) UNSIGNED DEFAULT NULL,
+  `item_quantity` int(11) NOT NULL DEFAULT 1,
+  `item_description` text DEFAULT NULL,
+  `color` varchar(255) DEFAULT NULL,
+  `billing_status` varchar(255) NOT NULL DEFAULT 'Unpaid',
+  `modification_notes` text DEFAULT NULL,
+  `failed_reason` text DEFAULT NULL,
+  `delivery_instruction` text DEFAULT NULL,
+  `is_incomplete` tinyint(1) NOT NULL DEFAULT 0,
+  `is_recipient_flagged` tinyint(1) NOT NULL DEFAULT 0,
+  `is_point_delivery` tinyint(1) NOT NULL DEFAULT 0,
+  `can_place_execution_request` tinyint(1) NOT NULL DEFAULT 0,
+  `short_link` varchar(255) DEFAULT NULL,
+  `ticket_id` varchar(255) DEFAULT NULL,
+  `invoice_id` varchar(255) DEFAULT NULL,
+  `delivery_slip` varchar(255) DEFAULT NULL,
+  `execution_request_type` varchar(255) DEFAULT NULL,
+  `sorted_at` timestamp NULL DEFAULT NULL,
+  `contact_collectable_amount_update_status` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`contact_collectable_amount_update_status`)),
+  `c2c_info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`c2c_info`)),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `invoices`
+--
+
+INSERT INTO `invoices` (`id`, `order_id`, `merchant_id`, `order_consignment_id`, `merchant_order_id`, `order_created_at`, `order_description`, `order_status`, `order_status_updated_at`, `recipient_name`, `recipient_address`, `recipient_phone`, `recipient_secondary_phone`, `customer_city_id`, `customer_zone_id`, `customer_area_id`, `city_name`, `zone_name`, `area_name`, `order_amount`, `total_fee`, `promo_discount`, `discount`, `cod_fee`, `additional_charge`, `compensation_cost`, `delivery_fee`, `delivery_type`, `total_weight`, `cash_on_delivery`, `order_delivery_hub_id`, `delivery_string`, `delivery_method`, `pickup_method`, `pickup_string`, `store_name`, `store_id`, `order_type`, `item_type`, `order_type_id`, `item_type_id`, `item_quantity`, `item_description`, `color`, `billing_status`, `modification_notes`, `failed_reason`, `delivery_instruction`, `is_incomplete`, `is_recipient_flagged`, `is_point_delivery`, `can_place_execution_request`, `short_link`, `ticket_id`, `invoice_id`, `delivery_slip`, `execution_request_type`, `sorted_at`, `contact_collectable_amount_update_status`, `c2c_info`, `created_at`, `updated_at`) VALUES
+(1, 'DR271225VU5G66', '1', 'DR271225VU5G66', '20251216132608RKPH7P', '2025-12-27 12:36:19', '2000', 'Pending', '2025-12-27 12:36:19', 'Fahad', 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', '01516173275', NULL, 1, 1, 1, 'Dhaka', 'Banani', 'Road 01', 2000.00, 130.00, 0.00, 0.00, 20.00, 0.00, 0.00, 110.00, 48, 1, 'Yes', 1, '', 0, 0, '', 'Test 5', 346731, 'Delivery', 'Parcel', 1, 2, 1, '2000', 'blue', 'Unpaid', NULL, NULL, NULL, 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '{\"can_update\":true,\"phone_updated\":false,\"address_updated\":false,\"amount_to_collect_updated\":false,\"can_update_amount_to_collect\":true}', NULL, '2025-12-27 12:36:20', '2025-12-27 12:36:20'),
+(2, 'DR1612253U2ZTP', '1', 'DR1612253U2ZTP', '2025121616514408H0FP', '2025-12-16 10:52:17', NULL, 'Pickup Cancel', '2025-12-16 10:53:14', 'Jasmine', 'Muradpurqqq', '01516173275', NULL, 2, 400, 20058, 'Chittagong', 'East Joara', 'Gachbaria', 2000.00, 90.00, 0.00, 0.00, 20.00, 0.00, 0.00, 70.00, 48, 1, 'Yes', 7, '', 0, 0, '', 'Test 5', 346731, 'Delivery', 'Parcel', 1, 2, 1, '', 'red', 'Unpaid', NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '{\"can_update\":false,\"phone_updated\":false,\"address_updated\":false,\"amount_to_collect_updated\":false,\"can_update_amount_to_collect\":false}', NULL, '2025-12-28 14:16:15', '2025-12-28 14:17:46'),
+(3, 'DR311225FZAR4L', '1', 'DR311225FZAR4L', '2025123115254038UYLI', '2025-12-31 09:26:11', '2001', 'Pickup Cancel', '2025-12-31 09:27:01', 'Jasmine', 'House no. 12, road 12, Andorkilla, Chattogram', '01312361494', NULL, 2, 69, NULL, 'Chittagong', 'Andarkilla', NULL, 2000.00, 90.00, 0.00, 0.00, 20.00, 0.00, 0.00, 70.00, 48, 1, 'Yes', 7, '', 0, 0, '', 'rayluxeo', 345173, 'Delivery', 'Parcel', 1, 2, 1, '2001', 'red', 'Unpaid', NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '{\"can_update\":false,\"phone_updated\":false,\"address_updated\":false,\"amount_to_collect_updated\":false,\"can_update_amount_to_collect\":false}', NULL, '2025-12-31 09:37:40', '2025-12-31 09:37:40'),
+(4, 'DR3112256XQU2K', '1', 'DR3112256XQU2K', '202512311539268HCVFX', '2025-12-31 09:40:18', '2001', 'Pending', '2025-12-31 09:40:18', 'Jasmine', 'House no. 12, road 12, Andorkilla, Chattogram', '01312361494', NULL, 2, 69, NULL, 'Chittagong', 'Andarkilla', NULL, 2000.00, 90.00, 0.00, 0.00, 20.00, 0.00, 0.00, 70.00, 48, 1, 'Yes', 7, '', 0, 0, '', 'rayluxeo', 345173, 'Delivery', 'Parcel', 1, 2, 1, '2001', 'blue', 'Unpaid', NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '{\"can_update\":true,\"phone_updated\":false,\"address_updated\":false,\"amount_to_collect_updated\":false,\"can_update_amount_to_collect\":true}', NULL, '2025-12-31 09:40:19', '2025-12-31 09:40:19'),
+(5, 'DR311225ZMZ6J5', '1', 'DR311225ZMZ6J5', '20251231182008IAIVYI', '2025-12-31 12:30:25', NULL, 'Pickup Cancel', '2025-12-31 12:30:43', 'Fahad', 'NUR ALI SAWDAGAR BARI, BATHUA, WARD NO-04, POST OFFICE- NURALI BARI', '01312361494', NULL, 1, 1, 1, 'Dhaka', 'Banani', 'Road 01', 2000.00, 150.00, 0.00, 0.00, 20.00, 0.00, 0.00, 130.00, 48, 1, 'Yes', 1, '', 0, 0, '', 'rayluxeo', 345173, 'Delivery', 'Parcel', 1, 2, 1, '', 'red', 'Unpaid', NULL, NULL, NULL, 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '{\"can_update\":false,\"phone_updated\":false,\"address_updated\":false,\"amount_to_collect_updated\":false,\"can_update_amount_to_collect\":false}', NULL, '2025-12-31 12:47:15', '2026-01-04 03:42:18');
+
 -- --------------------------------------------------------
 
 --
@@ -479,6 +592,8 @@ CREATE TABLE `kycs` (
   `selfie` varchar(255) DEFAULT NULL,
   `verify_phone` int(11) NOT NULL DEFAULT 0,
   `verify_email` int(11) NOT NULL DEFAULT 0,
+  `email_otp` text DEFAULT NULL,
+  `email_otp_expires_at` timestamp NULL DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -488,8 +603,9 @@ CREATE TABLE `kycs` (
 -- Dumping data for table `kycs`
 --
 
-INSERT INTO `kycs` (`id`, `user_id`, `bin`, `trade`, `phone`, `email`, `nid`, `selfie`, `verify_phone`, `verify_email`, `status`, `created_at`, `updated_at`) VALUES
-(1, 5, 'AE123123', 'TRDX1231288U9', '01312361494', 'nayem@gmail.com', 'uploads/kyc/nid/6940f0549c7d4.jpg', 'uploads/selfies/selfie_1765863508.png', 1, 1, 1, '2025-12-15 23:38:28', '2025-12-15 23:41:35');
+INSERT INTO `kycs` (`id`, `user_id`, `bin`, `trade`, `phone`, `email`, `nid`, `selfie`, `verify_phone`, `verify_email`, `email_otp`, `email_otp_expires_at`, `status`, `created_at`, `updated_at`) VALUES
+(1, 5, 'AE123123', 'TRDX1231288U9', '01312361494', 'nayem@gmail.com', 'uploads/kyc/nid/6940f0549c7d4.jpg', 'uploads/selfies/selfie_1765863508.png', 1, 1, NULL, NULL, 1, '2025-12-15 23:38:28', '2025-12-15 23:41:35'),
+(3, 1, NULL, NULL, NULL, 'faisaltez@gmail.com', NULL, NULL, 0, 0, '622731', '2025-12-31 11:17:07', 0, '2025-12-23 03:20:52', '2025-12-31 11:12:07');
 
 -- --------------------------------------------------------
 
@@ -535,7 +651,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (363, '2025_12_04_182925_create_bookings_table', 1),
 (364, '2025_12_04_182926_create_booking_products_table', 1),
 (365, '2025_12_12_074935_create_courier_platforms_table', 2),
-(366, '2025_12_12_130106_create_courier_stores_table', 3);
+(366, '2025_12_12_130106_create_courier_stores_table', 3),
+(367, '2025_12_23_120544_make_location_ids_nullable_in_bookings_table', 4),
+(368, '2025_12_26_112612_create_invoices_table', 4);
 
 -- --------------------------------------------------------
 
@@ -589,12 +707,17 @@ CREATE TABLE `model_has_roles` (
 --
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(5, 'App\\Models\\User', 3),
 (5, 'App\\Models\\User', 5),
+(6, 'App\\Models\\User', 9),
+(6, 'App\\Models\\User', 10),
+(7, 'App\\Models\\User', 11),
+(8, 'App\\Models\\User', 12),
 (9, 'App\\Models\\User', 2),
 (9, 'App\\Models\\User', 4),
 (9, 'App\\Models\\User', 6),
-(10, 'App\\Models\\User', 7);
+(9, 'App\\Models\\User', 8),
+(10, 'App\\Models\\User', 7),
+(11, 'App\\Models\\User', 3);
 
 -- --------------------------------------------------------
 
@@ -723,8 +846,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `user_id`, `name`, `sku`, `category`, `weight`, `dimensions`, `stock`, `image`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Tab. Peptica', 'SKU_250524030609', 'Pharmaceutical', '1', '12x12x12', '0', NULL, '2025-12-12 08:15:42', '2025-12-14 09:48:11'),
-(2, 1, 'T-Shirt', 'SKU_250408043436', 'T-shirt', '1', '12x12x12', '-2', NULL, '2025-12-12 08:15:55', '2025-12-16 10:51:44'),
+(1, 1, 'Tab. Peptica', 'SKU_250524030609', 'Pharmaceutical', '1', '12x12x12', '-2', NULL, '2025-12-12 08:15:42', '2025-12-31 12:11:58'),
+(2, 1, 'T-Shirt', 'SKU_250408043436', 'T-shirt', '1', '12x12x12', '-7', NULL, '2025-12-12 08:15:55', '2025-12-31 12:20:08'),
 (3, 3, 'Black T-shirt', NULL, 'T-shirt', '1', '12x12x12', '0', NULL, '2025-12-13 02:47:15', '2025-12-13 02:47:15'),
 (4, 5, 'Watch', '123123', 'Ladies Watch', '.5', NULL, '7', 'uploads/products/20251216_062903_download (20).png', '2025-12-16 00:29:03', '2025-12-16 07:29:03'),
 (5, 5, 'Black T-shirt', 'SKU-20251216065032-LOQXQFJP-5', 'T-shirt', '.5', NULL, '10', NULL, '2025-12-16 00:50:32', '2025-12-16 06:33:46'),
@@ -849,7 +972,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('E5OgPX8DmAWqXoIZ2AfMN6ffFCy7eIcYqbzziSfH', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiNWp2SWJSdEgwb21RSjN4RXV2RndHUzZzd25WYjgzUzUxcG5KN09EYyI7czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo3OToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FkbWluL2Fzc2lnbi9jb3VyaWVyL3NlcnZpY2VzL2ludm9pY2UvRFIxNjEyMjUzVTJaVFAvcGFnZSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1766311093);
+('hdjNBa0XDJVPE80f4NMVOGUkgqEW5dTyLtyRT5UX', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiVGhYelJnOXAyN3dmRkM1MVFFdFNjbzZUTFlQdTV4OUtjTjFhSWdEMyI7czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo1MDoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FkbWluL3JlZ2lzdGVyL21lcmNoYW50L3BhZ2UiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1767520080),
+('HMBPSnXM0Hv7Fyoko1vMCJ82B2L73ndqYwjzBrTM', 8, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiU29Cdk1FbEhDYVZiRzNsUFB0WlB1anVFa3FQc2N6TTBxYm1TV2hBaCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czoxODoiZmxhc2hlcjo6ZW52ZWxvcGVzIjthOjA6e31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo0OToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FkbWluL2t5Yy92ZXJpZmljYXRpb24vcGFnZSI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjg7fQ==', 1767517522);
 
 -- --------------------------------------------------------
 
@@ -866,6 +990,13 @@ CREATE TABLE `setup_charges` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `setup_charges`
+--
+
+INSERT INTO `setup_charges` (`id`, `fulfilment_fee`, `product_charges`, `delivery_charges`, `cod_fee`, `created_at`, `updated_at`) VALUES
+(1, 2000.00, 100.00, 180.00, 30.00, '2025-12-28 14:17:34', '2025-12-28 14:17:34');
 
 -- --------------------------------------------------------
 
@@ -935,7 +1066,8 @@ INSERT INTO `stores` (`id`, `merchant_id`, `store_admin_id`, `name`, `owner_name
 (3, '5', NULL, 'Al Hira', 'Juwel', 'juwel@gmail.com', NULL, '01312361494', 'Andarkilla, Chittagong', 'uploads/store/store_1765879638_Th8E0i.png', '2', '79', '15868', 1, '2025-12-16 01:55:08', '2025-12-16 05:53:49', NULL),
 (4, '5', NULL, 'Metro', NULL, 'samee@gmail.com', NULL, '01312361494', 'Andarkilla, Chittagong', NULL, '2', '1032', NULL, 1, '2025-12-16 02:13:19', '2025-12-16 05:53:43', NULL),
 (5, '5', NULL, 'XYZ', 'Samee', 'samee1@gmail.com', NULL, '01312361494', 'Andarkilla, Chittagong', 'uploads/store/1765887047_69414c475f7d0.jpeg', '18', '929', '15856', 1, '2025-12-16 06:10:47', '2025-12-16 06:45:16', NULL),
-(6, '5', '6', 'ABCD', 'Faisal', 'faisaltez@gmail.com', NULL, '01727656531', 'Jalan Perbandaran SS 7', 'uploads/store/1765887198_69414cded9714.jpeg', '2', '69', '5435', 1, '2025-12-16 06:13:18', '2025-12-16 06:18:51', NULL);
+(6, '5', '6', 'ABCD', 'Faisal', 'faisaltez@gmail.com', NULL, '01727656531', 'Jalan Perbandaran SS 7', 'uploads/store/1765887198_69414cded9714.jpeg', '2', '69', '5435', 1, '2025-12-16 06:13:18', '2025-12-16 06:18:51', NULL),
+(7, '1', '8', 'Galvin Burns', 'Yetta Carlson', 'xopu@mailinator.com', NULL, '01312361494', 'Qui nisi quos libero', NULL, '64', '662', '13844', 1, '2026-01-03 23:31:27', '2026-01-03 23:31:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -985,11 +1117,16 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `address`, `image`, `nid`, `role`, `user_id`, `hub_id`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Packer Panda', 'admin@gmail.com', NULL, '$2y$12$lZWyxBJThzWoceb6Fx9UN.FPBlwkcyF4Qrk5iH0bng/qV757ng5V.', '01700000000', 'Dhaka, Bangladesh', 'uploads/admin_images/20251214_162017_Packer_Panda_Icon-04.svg', NULL, 'Admin', NULL, NULL, 1, NULL, '2025-12-08 12:14:23', '2025-12-14 10:20:17'),
 (2, 'Kaiser Uddin', 'kaiser@gmail.com', NULL, '$2y$12$ENuDOdvqKnWe9vDau4wB4uWQPKMq3PHi8hJMzXKBfR/Q/xC43xhAm', '01838906073', 'House No - 06, Road No - 01', NULL, NULL, 'Store Admin', 1, NULL, 1, NULL, '2025-12-11 23:52:53', '2025-12-11 23:52:56'),
-(3, 'Fahad', 'fahad65@gmail.com', NULL, '$2y$12$YpOozqY6ad1byenUWVc5z.ZeLhT7X1whzcIWD8tiPahe2IMbgA68q', NULL, NULL, NULL, NULL, 'Merchant', NULL, NULL, 1, NULL, '2025-12-13 02:45:27', '2025-12-13 02:45:36'),
+(3, 'Fahad', 'fahad65@gmail.com', NULL, '$2y$12$YpOozqY6ad1byenUWVc5z.ZeLhT7X1whzcIWD8tiPahe2IMbgA68q', NULL, NULL, NULL, NULL, 'Merchant Fullfillment', NULL, NULL, 1, NULL, '2025-12-13 02:45:27', '2025-12-31 10:50:46'),
 (4, 'Kutub Al Din', 'kutubal@gmail.com', NULL, '$2y$12$qW7BlV16GlvgI623p6L0ZOOaxJ1CT1MnkbkhulCRy0o6x0hVLjNQy', '01312361494', 'Andarkilla', NULL, NULL, 'Store Admin', 3, NULL, 1, NULL, '2025-12-13 03:54:49', '2025-12-13 03:54:54'),
-(5, 'Nayem Islam', 'nayem@gmail.com', NULL, '$2y$12$fhS9IjXAHxJCeU1uhUPZNO8GMzfxQvg1f6Y12goJ/LfuCrOgSBD9O', '01312361494', 'House No - 06, Road No - 01', 'uploads/admin_images/20251216_054247_logo (2).png', 'uploads/nid_images/20251216_054649_1.jpg', 'Merchant', NULL, NULL, 1, NULL, '2025-12-15 23:37:40', '2025-12-16 01:25:50'),
+(5, 'Nayem Islam', 'nayem@gmail.com', NULL, '$2y$12$fhS9IjXAHxJCeU1uhUPZNO8GMzfxQvg1f6Y12goJ/LfuCrOgSBD9O', '01312361494', 'House No - 06, Road No - 01', 'uploads/admin_images/20251216_054247_logo (2).png', 'uploads/nid_images/20251216_054649_1.jpg', 'Merchant', NULL, NULL, 1, NULL, '2025-12-15 23:37:40', '2025-12-31 10:55:28'),
 (6, 'New Store Admin', 'newstore@gmail.com', NULL, '$2y$12$.Wh/nKvrkBfnFnwf.w/oneUp4cwftWSxBPzZrignrh7tWdvMnGh/y', '01312361494', 'Andarkilla, Chittagong', NULL, NULL, 'Store Admin', 5, NULL, 1, NULL, '2025-12-16 01:28:45', '2025-12-16 01:41:23'),
-(7, 'Nafiz Karim', 'nafiz@gmail.com', NULL, '$2y$12$qGXw7z/RguBuhEah8MLusO1NbLwZJqKop9.A6P0/M6QK5r0DQGdLm', '01312361494', 'Andarkilla, Chittagong', NULL, NULL, 'Booking Operator', 5, NULL, 1, NULL, '2025-12-16 06:49:12', '2025-12-16 07:04:41');
+(7, 'Nafiz Karim', 'nafiz@gmail.com', NULL, '$2y$12$qGXw7z/RguBuhEah8MLusO1NbLwZJqKop9.A6P0/M6QK5r0DQGdLm', '01312361494', 'Andarkilla, Chittagong', NULL, NULL, 'Booking Operator', 5, NULL, 1, NULL, '2025-12-16 06:49:12', '2025-12-16 07:04:41'),
+(8, 'Jasmine Akther', 'jasmine@gmail.com', NULL, '$2y$12$0D2jRFVCxM.buA9661rDFe/2V9TU/5B0OJ1k.71SD.HbvbsWQWxXm', '01516173275', 'Muradpur', NULL, NULL, 'Store Admin', 1, NULL, 1, NULL, '2026-01-03 23:30:26', '2026-01-03 23:30:32'),
+(9, 'Kaiser Uddin', 'kaiserhub@gmail.com', NULL, '$2y$12$9B.GmXEfOO7X1ADP1sycUecFTqNdgJlyx5lj6ZojGG7fF/pSUrv4O', '01838906073', 'House No - 06, Road No - 01', NULL, NULL, 'Hub Incharge', 1, 1, 1, NULL, '2026-01-03 23:33:03', '2026-01-03 23:33:31'),
+(10, 'Korim', 'korim@gmail.com', NULL, '$2y$12$h6moD/TShPIzRpTpgL1N1.K353YjvozHYDfZLC1xn2DhFqU1Eg6/K', '01516173275', 'Muradpur', NULL, NULL, 'Hub Incharge', 1, 2, 1, NULL, '2026-01-03 23:33:19', '2026-01-03 23:33:28'),
+(11, 'Faisal Salam', 'faisalsalam@gmail.com', NULL, '$2y$12$eMOLYnDcDDnuAzQMJaH8POCLu9fGvjQgZ.OwOaar18RpH4X2KfWOq', '0172765653', 'Jalan Perbandaran SS 7\r\nB308', NULL, NULL, 'Store Incharge', 1, 2, 1, NULL, '2026-01-03 23:36:19', '2026-01-03 23:36:50'),
+(12, 'Dispatch Incharge', 'dispatch@gmail.com', NULL, '$2y$12$sQYSgCUPIV6COXHcdnXx5uDK6eAVu953kn1Evs6S8K2OLTRcUuD7m', '01516173275', 'Muradpur', NULL, NULL, 'Dispatch Incharge', 1, 1, 1, NULL, '2026-01-03 23:37:25', '2026-01-03 23:37:33');
 
 -- --------------------------------------------------------
 
@@ -1847,6 +1984,13 @@ ALTER TABLE `hubs`
   ADD KEY `hubs_user_id_foreign` (`user_id`);
 
 --
+-- Indexes for table `invoices`
+--
+ALTER TABLE `invoices`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `invoices_order_id_index` (`order_id`);
+
+--
 -- Indexes for table `jobs`
 --
 ALTER TABLE `jobs`
@@ -2006,13 +2150,13 @@ ALTER TABLE `areas`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `booking_products`
 --
 ALTER TABLE `booking_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -2036,7 +2180,7 @@ ALTER TABLE `courier_platforms`
 -- AUTO_INCREMENT for table `courier_stores`
 --
 ALTER TABLE `courier_stores`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `delivery_types`
@@ -2072,7 +2216,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `hubs`
 --
 ALTER TABLE `hubs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `invoices`
+--
+ALTER TABLE `invoices`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -2084,13 +2234,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `kycs`
 --
 ALTER TABLE `kycs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=367;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=369;
 
 --
 -- AUTO_INCREMENT for table `pathao-courier`
@@ -2132,7 +2282,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `setup_charges`
 --
 ALTER TABLE `setup_charges`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `stock_movements`
@@ -2144,7 +2294,7 @@ ALTER TABLE `stock_movements`
 -- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `thanas`
@@ -2156,7 +2306,7 @@ ALTER TABLE `thanas`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `zones`
