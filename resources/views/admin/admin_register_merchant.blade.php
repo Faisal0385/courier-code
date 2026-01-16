@@ -93,19 +93,19 @@
                                                 {{ $merchant->status ? 'Active' : 'Inactive' }}
                                             </a>
 
-                                            <button class="btn btn-sm btn-dark text-white" data-bs-toggle="modal"
-                                                data-bs-target="#merchantModal" data-name="{{ $merchant->name }}"
-                                                data-email="{{ $merchant->email }}" data-phone="{{ $merchant->phone }}"
-                                                data-address="{{ $merchant->address }}"
-                                                data-status="{{ $merchant->status == 1 ? 'Active' : 'Inactive' }}"
-                                                data-image="{{ $merchant->image ? asset($merchant->image) : asset('no_image.jpg') }}"
-                                                data-nid="{{ $merchant->nid ? asset($merchant->nid) : asset('no_image.jpg') }}">
-                                                <i class="fa fa-eye"></i> View
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <select class="form-select" name="fullfillment" id="fullfillment"
-                                                data-user-id="{{ $merchant->id }}">
+                                        <button class="btn btn-sm btn-dark text-white" data-bs-toggle="modal"
+                                            data-bs-target="#merchantModal" data-name="{{ $merchant->name }}"
+                                            data-email="{{ $merchant->email }}" data-phone="{{ $merchant->phone }}"
+                                            data-address="{{ $merchant->address }}"
+                                            data-status="{{ $merchant->status == 1 ? 'Active' : 'Inactive' }}"
+                                            data-image="{{ $merchant->image ? asset($merchant->image) : asset('no_image.jpg') }}"
+                                            data-nid="{{ $merchant->nid ? asset($merchant->nid) : asset('no_image.jpg') }}">
+                                            <i class="fa fa-eye"></i> View
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <select class="form-select fullfillment-select" name="fullfillment"
+                                            data-user-id="{{ $merchant->id }}">
 
                                                 <option value="yes"
                                                     {{ $merchant->role == 'Merchant Fullfillment' ? 'selected' : '' }}>
@@ -255,29 +255,37 @@
     </script>
 
     <script>
-        document.getElementById('fullfillment').addEventListener('change', function() {
-            let value = this.value;
-            let userId = this.getAttribute('data-user-id');
+        // Attach change handler to every fulfillment select (IDs were colliding before)
+        document.querySelectorAll('.fullfillment-select').forEach(function(select) {
+            select.addEventListener('change', function(event) {
+                var value = event.target.value;
+                var userId = event.target.getAttribute('data-user-id');
 
-            fetch("/admin/update-fullfillment-role", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({
-                        fullfillment: value,
-                        user_id: userId
+                fetch("/admin/update-fullfillment-role", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            fullfillment: value,
+                            user_id: userId
+                        })
                     })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success == 1) {
-                        alert("Fullfillment Role Updated");
-                        window.location.reload();
-                    }
-                })
-                .catch(err => console.error(err));
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success == 1) {
+                            alert("Fullfillment Role Updated");
+                            window.location.reload();
+                        } else {
+                            alert("Failed to update. Please try again.");
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error(err);
+                        alert("Something went wrong.");
+                    });
+            });
         });
     </script>
 @endsection
