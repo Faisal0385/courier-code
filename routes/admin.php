@@ -27,6 +27,7 @@ use App\Http\Controllers\Backend\HubInchargeController;
 use App\Http\Controllers\Backend\StockMovementController;
 use App\Http\Controllers\Backend\StoreInchargeController;
 use App\Http\Controllers\Backend\KYCController;
+use App\Http\Controllers\Backend\MerchantCourierController;
 use App\Http\Controllers\Backend\PathaoController;
 use App\Http\Controllers\Backend\PhoneVerifyController;
 use App\Http\Controllers\Backend\ProductTypeController;
@@ -437,4 +438,14 @@ Route::get('/test-mail', function () {
     });
 
     return 'Email sent!';
+});
+
+
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::post('/merchant/{merchant}/courier', [MerchantCourierController::class, 'store'])
+        ->name('merchant.courier.store');
+
+    Route::delete('/merchant-courier/{merchantCourier}', [MerchantCourierController::class, 'destroy'])
+        ->name('merchant.courier.destroy');
 });

@@ -51,8 +51,8 @@
                                     <th>Booking Operator</th>
                                     <th class="text-center">Booking</th>
                                     <th>Courier</th>
-                                    <th>Consignment ID</th>
-                                    <th>Status</th>
+                                    {{-- <th>Consignment ID</th>
+                                    <th>Status</th> --}}
                                     {{-- <th>Invoice</th>
                                     <th>POD</th> --}}
                                 </tr>
@@ -164,17 +164,16 @@
                                             @endif
                                         </td>
 
-                                        <td>
+                                        {{-- <td>
                                             {{ $booking->pathao_consignment_ids }}
                                         </td>
                                         <td>
                                             @if (!empty($booking->pathao_consignment_ids))
                                                 <div class="bg-danger p-2 rounded text-white" role="alert">
-                                                    {{-- {{ $value['data']['order_status'] ?? null }} --}}
                                                     {{ $booking->courier_status ?? null }}
                                                 </div>
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         {{-- <td>
                                             @if (!empty($booking->pathao_consignment_ids))
                                                 <a class="btn btn-sm btn-warning d-flex align-item-center"

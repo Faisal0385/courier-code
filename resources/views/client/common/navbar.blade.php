@@ -15,7 +15,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('price.plan.page') }}">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Coverage</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
                 <li class="nav-item ms-3"><a class="nav-link text-success" href="#"><i
                             class="fa fa-map-marker-alt me-1"></i> Track Parcel</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>

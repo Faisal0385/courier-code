@@ -31,7 +31,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $merchants ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $total ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-user fs-3 text-black'></i>
                                 </div>
@@ -51,7 +51,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $operators ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $delivered ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -70,7 +70,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $stores ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $partial_delivery ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -89,7 +89,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $courierPlatforms ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $exchange ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -108,7 +108,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">৳ {{ $courierPlatforms ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">৳ {{ $collected_amount ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -135,11 +135,47 @@
                 </div>
                 <div class="card-body">
                     {{-- Search --}}
-                    <form method="GET" action="{{ route('admin.assign.courier.services.page') }}" class="mb-4">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Search by Order ID"
-                                value="{{ request('search') }}">
-                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    <form method="GET" action="{{ route('admin.delivered.page') }}" class="mb-4">
+                        <div class="row g-2 align-items-end">
+
+                            <!-- Order ID -->
+                            <div class="col-md-2">
+                                <label class="form-label">Order ID</label>
+                                <input type="text" name="order_id" class="form-control" placeholder="Order ID"
+                                    value="{{ request('order_id') }}">
+                            </div>
+
+                            <!-- Consignment ID -->
+                            <div class="col-md-2">
+                                <label class="form-label">Consignment ID</label>
+                                <input type="text" name="consignment_id" class="form-control"
+                                    placeholder="Consignment ID" value="{{ request('consignment_id') }}">
+                            </div>
+
+                            <!-- Recipient Name -->
+                            <div class="col-md-2">
+                                <label class="form-label">Recipient Name</label>
+                                <input type="text" name="recipient_name" class="form-control" placeholder="Recipient"
+                                    value="{{ request('recipient_name') }}">
+                            </div>
+
+                            <!-- Recipient Phone -->
+                            <div class="col-md-2">
+                                <label class="form-label">Recipient Phone</label>
+                                <input type="text" name="recipient_phone" class="form-control" placeholder="Phone"
+                                    value="{{ request('recipient_phone') }}">
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-md-2 d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    Filter
+                                </button>
+                                <a href="{{ route('admin.delivered.page') }}" class="btn btn-outline-secondary mt-1">
+                                    Reset
+                                </a>
+                            </div>
+
                         </div>
                     </form>
                     <br>
@@ -239,7 +275,17 @@
 
                                         <td>
                                             @php
-                                                $invoice_data = App\Models\Invoice::where('order_consignment_id', '=', $booking->pathao_consignment_ids)->first(["order_amount", "total_fee", "discount", "cod_fee", "billing_status"]);
+                                                $invoice_data = App\Models\Invoice::where(
+                                                    'order_consignment_id',
+                                                    '=',
+                                                    $booking->pathao_consignment_ids,
+                                                )->first([
+                                                    'order_amount',
+                                                    'total_fee',
+                                                    'discount',
+                                                    'cod_fee',
+                                                    'billing_status',
+                                                ]);
                                             @endphp
 
                                             Order Amount : {{ $invoice_data->order_amount ?? 'N/A' }} <br>

@@ -14,49 +14,92 @@ class DeliveriesController extends Controller
     public function all(Request $request)
     {
         $user_id = Auth::user()->id;
+        $courierStores = CourierStore::get();
         $counts = 0;
 
         if (Auth::user()->role == "Admin") {
             $counts = Booking::where('pathao_consignment_ids', '!=', null)->count();
+
             $bookings = Booking::with([
                 'store',
-                'Merchant',
+                'merchant',
                 'bookingOperator',
                 'productType',
                 'deliveryType',
-                'products.product'   // nested eager loading
+                'products.product',
             ])
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
-                ->where('pathao_consignment_ids', '!=', null)
-                ->orderBy('id', 'desc')
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
+                ->whereNotNull('pathao_consignment_ids')
+                ->latest()
                 ->paginate(8)
                 ->withQueryString();
-
-            $courierStores = CourierStore::get();
 
             return view('admin.deliveries.all', compact('bookings', 'courierStores', 'counts'));
         } else {
             $counts = Booking::where('pathao_consignment_ids', '!=', null)->where('merchant_id', '=', $user_id)->count();
+
             $bookings = Booking::with([
                 'store',
-                'Merchant',
+                'merchant',
                 'bookingOperator',
                 'productType',
                 'deliveryType',
-                'products.product'   // nested eager loading
+                'products.product',
             ])
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->where('merchant_id', $user_id)
-                ->where('pathao_consignment_ids', '!=', null)
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
-                ->orderBy('id', 'desc')
+                ->whereNotNull('pathao_consignment_ids')
+                ->latest()
                 ->paginate(8)
                 ->withQueryString();
-
-            $courierStores = CourierStore::get();
 
             return view('admin.deliveries.all', compact('bookings', 'courierStores', 'counts'));
         }
@@ -66,11 +109,21 @@ class DeliveriesController extends Controller
     {
         $user_id = Auth::user()->id;
 
+        $courierStores = CourierStore::get();
+
         if (Auth::user()->role == "Booking Operator") {
             $user_id = Auth::user()->user_id;
         }
 
         if (Auth::user()->role == "Admin") {
+
+            $at_sorting = Booking::where('courier_status', '=', "At sorting")->count();
+            $in_transit = Booking::where('courier_status', '=', "In transit")->count();
+            $at_delivery_hub = Booking::where('courier_status', '=', "On the Way To Delivery Hub")->count();
+            $assigned_for_delivery = Booking::where('courier_status', '=', "Assigned for delivery")->count();
+            $delivery_on_hold = Booking::where('courier_status', '=', "Delivery on hold")->count();
+            $collectable_amount = Booking::where('courier_status', '!=', "Delivered")->sum('amount_to_collect');
+
             $bookings = Booking::with([
                 'store',
                 'Merchant',
@@ -79,9 +132,31 @@ class DeliveriesController extends Controller
                 'deliveryType',
                 'products.product'   // nested eager loading
             ])
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '!=', "Pickup Cancel")
                 ->where('courier_status', '!=', "Delivered")
@@ -90,10 +165,16 @@ class DeliveriesController extends Controller
                 ->paginate(8)
                 ->withQueryString();
 
-            $courierStores = CourierStore::get();
-
-            return view('admin.deliveries.active', compact('bookings', 'courierStores'));
+            return view('admin.deliveries.active', compact('bookings', 'courierStores', 'at_sorting', 'in_transit', 'at_delivery_hub', 'assigned_for_delivery', 'delivery_on_hold', 'collectable_amount'));
         } else {
+
+            $at_sorting = Booking::where('courier_status', '=', "At sorting")->where('merchant_id', $user_id)->count();
+            $in_transit = Booking::where('courier_status', '=', "In transit")->where('merchant_id', $user_id)->count();
+            $at_delivery_hub = Booking::where('courier_status', '=', "On the Way To Delivery Hub")->where('merchant_id', $user_id)->count();
+            $assigned_for_delivery = Booking::where('courier_status', '=', "Assigned for delivery")->where('merchant_id', $user_id)->count();
+            $delivery_on_hold = Booking::where('courier_status', '=', "Delivery on hold")->where('merchant_id', $user_id)->count();
+            $collectable_amount = Booking::where('courier_status', '!=', "Delivered")->where('merchant_id', $user_id)->sum('amount_to_collect');
+
             $bookings = Booking::with([
                 'store',
                 'Merchant',
@@ -102,10 +183,32 @@ class DeliveriesController extends Controller
                 'deliveryType',
                 'products.product'   // nested eager loading
             ])
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->where('merchant_id', $user_id)
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '!=', "Pickup Cancel")
                 ->where('courier_status', '!=', "Delivered")
@@ -114,21 +217,28 @@ class DeliveriesController extends Controller
                 ->paginate(8)
                 ->withQueryString();
 
-            $courierStores = CourierStore::get();
 
-            return view('admin.deliveries.active', compact('bookings', 'courierStores'));
+            return view('admin.deliveries.active', compact('bookings', 'courierStores', 'at_sorting', 'in_transit', 'at_delivery_hub', 'assigned_for_delivery', 'delivery_on_hold', 'collectable_amount'));
         }
     }
 
     public function delivered(Request $request)
     {
         $user_id = Auth::user()->id;
+        $courierStores = CourierStore::get();
 
         if (Auth::user()->role == "Booking Operator") {
             $user_id = Auth::user()->user_id;
         }
 
         if (Auth::user()->role == "Admin") {
+
+            $delivered = Booking::where('courier_status', '=', "Delivered")->count();
+            $partial_delivery = Booking::where('courier_status', '=', "Partial Delivery")->count();
+            $exchange = Booking::where('courier_status', '=', "Exchange")->count();
+            $collected_amount = Booking::where('courier_status', '=', "Delivered")->sum('amount_to_collect');
+            $total = $delivered + $partial_delivery + $exchange;
+
             $bookings = Booking::with([
                 'store',
                 'Merchant',
@@ -137,19 +247,46 @@ class DeliveriesController extends Controller
                 'deliveryType',
                 'products.product'   // nested eager loading
             ])
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '=', "Delivered")
                 ->orderBy('id', 'desc')
                 ->paginate(8)
                 ->withQueryString();
 
-            $courierStores = CourierStore::get();
-
-            return view('admin.deliveries.delivered', compact('bookings', 'courierStores'));
+            return view('admin.deliveries.delivered', compact('bookings', 'courierStores', 'delivered', 'partial_delivery', 'exchange', 'collected_amount', 'total'));
         } else {
+
+            $delivered = Booking::where('courier_status', '=', "Delivered")->where('merchant_id', $user_id)->count();
+            $partial_delivery = Booking::where('courier_status', '=', "Partial Delivery")->where('merchant_id', $user_id)->count();
+            $exchange = Booking::where('courier_status', '=', "Exchange")->where('merchant_id', $user_id)->count();
+            $collected_amount = Booking::where('courier_status', '=', "Delivered")->where('merchant_id', $user_id)->sum('amount_to_collect');
+            $total = $delivered + $partial_delivery + $exchange;
+
             $bookings = Booking::with([
                 'store',
                 'Merchant',
@@ -159,72 +296,38 @@ class DeliveriesController extends Controller
                 'products.product'   // nested eager loading
             ])
                 ->where('merchant_id', $user_id)
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '=', "Delivered")
                 ->orderBy('id', 'desc')
                 ->paginate(8)
                 ->withQueryString();
 
-            $courierStores = CourierStore::get();
-
-            return view('admin.deliveries.delivered', compact('bookings', 'courierStores'));
-        }
-    }
-
-    public function returned(Request $request)
-    {
-        $user_id = Auth::user()->id;
-
-        if (Auth::user()->role == "Booking Operator") {
-            $user_id = Auth::user()->user_id;
-        }
-
-        if (Auth::user()->role == "Admin") {
-            $bookings = Booking::with([
-                'store',
-                'Merchant',
-                'bookingOperator',
-                'productType',
-                'deliveryType',
-                'products.product'   // nested eager loading
-            ])
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
-                ->where('pathao_consignment_ids', '!=', null)
-                ->where('courier_status', '=', "Returned")
-                ->orderBy('id', 'desc')
-                ->paginate(8)
-                ->withQueryString();
-
-            $courierStores = CourierStore::get();
-
-            return view('admin.deliveries.returned', compact('bookings', 'courierStores'));
-        } else {
-            $bookings = Booking::with([
-                'store',
-                'Merchant',
-                'bookingOperator',
-                'productType',
-                'deliveryType',
-                'products.product'   // nested eager loading
-            ])
-                ->where('merchant_id', $user_id)
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
-                ->where('pathao_consignment_ids', '!=', null)
-                ->where('courier_status', '=', "Returned")
-                ->orderBy('id', 'desc')
-                ->paginate(8)
-                ->withQueryString();
-
-            $courierStores = CourierStore::get();
-
-            return view('admin.deliveries.returned', compact('bookings', 'courierStores'));
+            return view('admin.deliveries.delivered', compact('bookings', 'courierStores', 'delivered', 'partial_delivery', 'exchange', 'collected_amount', 'total'));
         }
     }
 
@@ -237,6 +340,10 @@ class DeliveriesController extends Controller
         }
 
         if (Auth::user()->role == "Admin") {
+
+            $pickup_cancel = Booking::where('courier_status', '=', "Pickup Cancel")->count();
+            $total = Booking::where('courier_status', '!=', null)->count();
+
             $bookings = Booking::with([
                 'store',
                 'Merchant',
@@ -245,9 +352,26 @@ class DeliveriesController extends Controller
                 'deliveryType',
                 'products.product'   // nested eager loading
             ])
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '=', "Pickup Cancel")
                 ->orWhere('courier_status', '=', "Cancelled")
@@ -257,8 +381,10 @@ class DeliveriesController extends Controller
 
             $courierStores = CourierStore::get();
 
-            return view('admin.deliveries.cancelled', compact('bookings', 'courierStores'));
+            return view('admin.deliveries.cancelled', compact('bookings', 'courierStores', 'pickup_cancel', 'total'));
         } else {
+            $pickup_cancel = Booking::where('courier_status', '=', "Pickup Cancel")->where('merchant_id', $user_id)->count();
+
             $bookings = Booking::with([
                 'store',
                 'Merchant',
@@ -268,9 +394,26 @@ class DeliveriesController extends Controller
                 'products.product'   // nested eager loading
             ])
                 ->where('merchant_id', $user_id)
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '=', "Pickup Cancel")
                 ->orWhere('courier_status', '=', "Cancelled")
@@ -280,10 +423,100 @@ class DeliveriesController extends Controller
 
             $courierStores = CourierStore::get();
 
-            return view('admin.deliveries.cancelled', compact('bookings', 'courierStores'));
+            return view('admin.deliveries.cancelled', compact('bookings', 'courierStores', 'pickup_cancel'));
         }
     }
 
+    public function returned(Request $request)
+    {
+        $user_id = Auth::user()->id;
+        $courierStores = CourierStore::get();
+
+        if (Auth::user()->role == "Booking Operator") {
+            $user_id = Auth::user()->user_id;
+        }
+
+        if (Auth::user()->role == "Admin") {
+
+            $returned = Booking::where('courier_status', '=', "Returned")->count();
+
+            $bookings = Booking::with([
+                'store',
+                'Merchant',
+                'bookingOperator',
+                'productType',
+                'deliveryType',
+                'products.product'   // nested eager loading
+            ])
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->where('pathao_consignment_ids', '!=', null)
+                ->where('courier_status', '=', "Returned")
+                ->orderBy('id', 'desc')
+                ->paginate(8)
+                ->withQueryString();
+
+            return view('admin.deliveries.returned', compact('bookings', 'courierStores', 'returned'));
+        } else {
+
+            $returned = Booking::where('courier_status', '=', "Returned")->where('merchant_id', $user_id)->count();
+
+            $bookings = Booking::with([
+                'store',
+                'Merchant',
+                'bookingOperator',
+                'productType',
+                'deliveryType',
+                'products.product'   // nested eager loading
+            ])
+                ->where('merchant_id', $user_id)
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->where('pathao_consignment_ids', '!=', null)
+                ->where('courier_status', '=', "Returned")
+                ->orderBy('id', 'desc')
+                ->paginate(8)
+                ->withQueryString();
+
+            return view('admin.deliveries.returned', compact('bookings', 'courierStores', 'delivered', 'returned'));
+        }
+    }
 
 
     public function invoice(Request $request)
@@ -303,9 +536,21 @@ class DeliveriesController extends Controller
                 'deliveryType',
                 'products.product'   // nested eager loading
             ])
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->orderBy('id', 'desc')
                 ->paginate(8)
@@ -323,9 +568,21 @@ class DeliveriesController extends Controller
                 'deliveryType',
                 'products.product'   // nested eager loading
             ])
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('merchant_id', $user_id)
                 ->orderBy('id', 'desc')
@@ -352,7 +609,7 @@ class DeliveriesController extends Controller
 
         // 3x3 inch = 216 x 216 points (72 points per inch)
         $pdf = Pdf::loadView('admin.deliveries.invoice-pdf', compact('booking'))
-                ->setPaper([0, 0, 216, 216], 'portrait');
+            ->setPaper([0, 0, 216, 216], 'portrait');
         return $pdf->stream('Invoice_' . $booking->order_id . '.pdf');
     }
 }

@@ -120,19 +120,91 @@
                                             </select>
                                         </td>
                                         <td>
+                                            <button class="btn btn-sm btn-dark text-white" data-bs-toggle="modal"
+                                                data-bs-target="#courierModal{{$merchant->id}}">
+                                                <i class="fa fa-eye"></i> Courier
+                                            </button>
 
-                                            <form action="">
-                                                <select class="form-select form-select-md" name="courier" required>
-                                                    <option value="">Select Courier</option>
-                                                    @foreach ($courierStores as $courierStore)
-                                                        <option value="{{ $courierStore->id }}">
-                                                            {{ $courierStore->store_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <button type="button"
-                                                    class="btn btn-sm btn-success mt-1 w-100">Select</button>
-                                            </form>
+                                            <!-- 🧩 Bootstrap Modal -->
+                                            <div class="modal fade" id="courierModal{{$merchant->id}}" tabindex="-1"
+                                                aria-labelledby="courierModal{{$merchant->id}}Label" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                    <div class="modal-content border-0 shadow">
+                                                        <div class="modal-header bg-primary text-white">
+                                                            <h5 class="modal-title text-white" id="courierModal{{$merchant->id}}Label">Assign
+                                                                Courier</h5>
+                                                            <button type="button" class="btn-close btn-close-white"
+                                                                data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row g-3 align-items-center">
+                                                                <div class="col-md-12">
+                                                                    <form
+                                                                        action="{{ route('admin.merchant.courier.store', $merchant->id) }}"
+                                                                        method="POST">
+                                                                        @csrf
+
+                                                                        <select class="form-select form-select-md"
+                                                                            name="courier_id" required>
+                                                                            <option value="">Select Courier</option>
+                                                                            @foreach ($courierStores as $courierStore)
+                                                                                <option value="{{ $courierStore->id }}">
+                                                                                    {{ $courierStore->store_name }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-success mt-1 w-100">
+                                                                            Assign Courier
+                                                                        </button>
+                                                                    </form>
+                                                                    <hr>
+                                                                    <table class="table table-borderless">
+                                                                        <thead class="bg-light">
+                                                                            <tr>
+                                                                                <th>Name</th>
+                                                                                <th>Action</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @php
+                                                                                $merchantCouriers = App\Models\MerchantCourier::where(
+                                                                                    'merchant_id',
+                                                                                    '=',
+                                                                                    $merchant->id,
+                                                                                )->get();
+                                                                            @endphp
+                                                                            @foreach ($merchantCouriers as $item)
+                                                                                <tr>
+                                                                                    <td>{{ $item->courier->store_name }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <form method="POST"
+                                                                                            action="{{ route('admin.merchant.courier.destroy', $item->id) }}">
+                                                                                            @csrf
+                                                                                            @method('DELETE')
+                                                                                            <button
+                                                                                                class="btn btn-danger btn-sm">
+                                                                                                Remove
+                                                                                            </button>
+                                                                                        </form>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endforeach
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td>{{ $merchant->created_at->format('d M, Y h:i A') }}</td>
                                     </tr>
@@ -219,6 +291,43 @@
         document.addEventListener('DOMContentLoaded', function() {
             var merchantModal = document.getElementById('merchantModal');
             merchantModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+
+                // Get data attributes
+                var name = button.getAttribute('data-name');
+                var email = button.getAttribute('data-email');
+                var phone = button.getAttribute('data-phone');
+                var address = button.getAttribute('data-address');
+                var nid = button.getAttribute('data-nid');
+                var status = button.getAttribute('data-status');
+                var image = button.getAttribute('data-image');
+
+                // Set modal content
+                document.getElementById('merchantName').textContent = name;
+                document.getElementById('merchantEmail').textContent = email;
+                document.getElementById('merchantPhone').textContent = phone || '-';
+                document.getElementById('merchantAddress').textContent = address || '-';
+                document.getElementById('merchantStatus').innerHTML =
+                    status === 'Active' ?
+                    '<span class="badge bg-success">Active</span>' :
+                    '<span class="badge bg-secondary">Inactive</span>';
+                document.getElementById('merchantImage').src = image;
+
+                // 🔗 NID image click opens in new tab
+                if (nid) {
+                    document.getElementById('merchantNid').src = nid;
+                    document.getElementById('merchantNidLink').href = nid;
+                } else {
+                    document.getElementById('merchantNid').src =
+                        'https://via.placeholder.com/150x100?text=No+NID';
+                    document.getElementById('merchantNidLink').removeAttribute('href');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var courierModal = document.getElementById('courierModal');
+            courierModal.addEventListener('show.bs.modal', function(event) {
                 var button = event.relatedTarget;
 
                 // Get data attributes

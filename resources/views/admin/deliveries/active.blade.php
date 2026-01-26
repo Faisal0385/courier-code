@@ -31,7 +31,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $merchants ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $at_sorting ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-user fs-3 text-black'></i>
                                 </div>
@@ -51,7 +51,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $operators ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $in_transit ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -70,7 +70,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $stores ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $at_delivery_hub ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -89,7 +89,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $courierPlatforms ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $assigned_for_delivery ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -108,7 +108,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $courierPlatforms ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $delivery_on_hold ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -127,14 +127,14 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $courierPlatforms ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $collectable_amount ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
                             </div>
                             <div class="progress my-3 bg-light-transparent" style="height:3px;">
-                                <div class="progress-bar bg-black" role="progressbar" style="width: 55%" aria-valuenow="25"
-                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-black" role="progressbar" style="width: 55%"
+                                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                             <div class="d-flex align-items-center text-black">
                                 <p class="mb-0">Collectable amount</p>
@@ -152,13 +152,71 @@
                 </div>
                 <div class="card-body">
                     {{-- Search --}}
-                    <form method="GET" action="{{ route('admin.assign.courier.services.page') }}" class="mb-4">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Search by Order ID"
-                                value="{{ request('search') }}">
-                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    <form method="GET" action="{{ route('admin.active.page') }}" class="mb-4">
+                        <div class="row g-2 align-items-end">
+
+                            <!-- Order ID -->
+                            <div class="col-md-2">
+                                <label class="form-label">Order ID</label>
+                                <input type="text" name="order_id" class="form-control" placeholder="Order ID"
+                                    value="{{ request('order_id') }}">
+                            </div>
+
+                            <!-- Consignment ID -->
+                            <div class="col-md-2">
+                                <label class="form-label">Consignment ID</label>
+                                <input type="text" name="consignment_id" class="form-control"
+                                    placeholder="Consignment ID" value="{{ request('consignment_id') }}">
+                            </div>
+
+                            <!-- Recipient Name -->
+                            <div class="col-md-2">
+                                <label class="form-label">Recipient Name</label>
+                                <input type="text" name="recipient_name" class="form-control" placeholder="Recipient"
+                                    value="{{ request('recipient_name') }}">
+                            </div>
+
+                            <!-- Recipient Phone -->
+                            <div class="col-md-2">
+                                <label class="form-label">Recipient Phone</label>
+                                <input type="text" name="recipient_phone" class="form-control" placeholder="Phone"
+                                    value="{{ request('recipient_phone') }}">
+                            </div>
+
+                            <!-- Courier Status -->
+                            <div class="col-md-2">
+                                <label class="form-label">Courier Status</label>
+                                <select name="courier_status" class="form-select">
+                                    <option value="">All</option>
+                                    <option value="pending"
+                                        {{ request('courier_status') == 'pending' ? 'selected' : '' }}>
+                                        Pending</option>
+                                    <option value="picked" {{ request('courier_status') == 'picked' ? 'selected' : '' }}>
+                                        Picked</option>
+                                    <option value="in_transit"
+                                        {{ request('courier_status') == 'in_transit' ? 'selected' : '' }}>In Transit
+                                    </option>
+                                    <option value="delivered"
+                                        {{ request('courier_status') == 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                    <option value="Pickup Cancel"
+                                        {{ request('courier_status') == 'Pickup Cancel' ? 'selected' : '' }}>Pickup Cancel
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-md-2 d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    Filter
+                                </button>
+                                <a href="{{ route('admin.active.page') }}" class="btn btn-outline-secondary mt-1">
+                                    Reset
+                                </a>
+                            </div>
+
                         </div>
                     </form>
+
                     <br>
 
                     {{-- Table --}}
@@ -256,7 +314,17 @@
 
                                         <td>
                                             @php
-                                                $invoice_data = App\Models\Invoice::where('order_consignment_id', '=', $booking->pathao_consignment_ids)->first(["order_amount", "total_fee", "discount", "cod_fee", "billing_status"]);
+                                                $invoice_data = App\Models\Invoice::where(
+                                                    'order_consignment_id',
+                                                    '=',
+                                                    $booking->pathao_consignment_ids,
+                                                )->first([
+                                                    'order_amount',
+                                                    'total_fee',
+                                                    'discount',
+                                                    'cod_fee',
+                                                    'billing_status',
+                                                ]);
                                             @endphp
 
                                             Order Amount : {{ $invoice_data->order_amount ?? 'N/A' }} <br>

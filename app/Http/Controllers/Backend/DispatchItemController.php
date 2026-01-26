@@ -19,7 +19,8 @@ class DispatchItemController extends Controller
             $user_id = Auth::user()->user_id;
         }
 
-        // if (Auth::user()->role == "Admin") {
+        $courierStores = CourierStore::get();
+
         $bookings = Booking::with([
             'store',
             'Merchant',
@@ -28,37 +29,39 @@ class DispatchItemController extends Controller
             'deliveryType',
             'products.product'   // nested eager loading
         ])
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-            })
-            ->where('courier_service','!=', null)
+            ->when(
+                $request->order_id,
+                fn($q, $v) =>
+                $q->where('order_id', 'like', "%{$v}%")
+            )
+            ->when(
+                $request->consignment_id,
+                fn($q, $v) =>
+                $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+            )
+            ->when(
+                $request->recipient_name,
+                fn($q, $v) =>
+                $q->where('recipient_name', 'like', "%{$v}%")
+            )
+            ->when(
+                $request->recipient_phone,
+                fn($q, $v) =>
+                $q->where('recipient_phone', 'like', "%{$v}%")
+            )
+            ->when(
+                $request->courier_status,
+                fn($q, $v) =>
+                $q->where('courier_status', $v)
+            )
+            ->where('merchant_id', $user_id)
+            ->where('pathao_consignment_ids', '!=', null)
+            ->where('courier_status', '=', "pending")
             ->orderBy('id', 'desc')
             ->paginate(8)
             ->withQueryString();
 
-        $courierStores = CourierStore::get();
 
         return view('admin.dispatch-item.index', compact('bookings', 'courierStores'));
-        // } else {
-        //     $bookings = Booking::with([
-        //         'store',
-        //         'Merchant',
-        //         'bookingOperator',
-        //         'productType',
-        //         'deliveryType',
-        //         'products.product'   // nested eager loading
-        //     ])
-        //         ->where('merchant_id', $user_id)
-        //         ->when($request->filled('search'), function ($query) use ($request) {
-        //             $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-        //         })
-        //         ->orderBy('id', 'desc')
-        //         ->paginate(8)
-        //         ->withQueryString();
-
-        //     $courierStores = CourierStore::get();
-
-        //     return view('admin.courier-services.index', compact('bookings', 'courierStores'));
-        // }
     }
 }

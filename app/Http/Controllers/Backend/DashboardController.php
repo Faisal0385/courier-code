@@ -61,9 +61,31 @@ class DashboardController extends Controller
                 'deliveryType',
                 'products.product'   // nested eager loading
             ])
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->orderBy('id', 'desc')
                 ->paginate(8)
@@ -84,9 +106,31 @@ class DashboardController extends Controller
             ])
                 ->where('merchant_id', $user_id)
                 ->where('pathao_consignment_ids', '!=', null)
-                ->when($request->filled('search'), function ($query) use ($request) {
-                    $query->where('bookings.order_id', 'like', '%' . $request->search . '%');
-                })
+                ->when(
+                    $request->order_id,
+                    fn($q, $v) =>
+                    $q->where('order_id', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->consignment_id,
+                    fn($q, $v) =>
+                    $q->where('pathao_consignment_ids', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_name,
+                    fn($q, $v) =>
+                    $q->where('recipient_name', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->recipient_phone,
+                    fn($q, $v) =>
+                    $q->where('recipient_phone', 'like', "%{$v}%")
+                )
+                ->when(
+                    $request->courier_status,
+                    fn($q, $v) =>
+                    $q->where('courier_status', $v)
+                )
                 ->orderBy('id', 'desc')
                 ->paginate(8)
                 ->withQueryString();

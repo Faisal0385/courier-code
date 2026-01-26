@@ -31,4 +31,10 @@ class CourierPlatform extends Model
     {
         return $this->hasMany(CourierStore::class);
     }
+
+    /** Platform has many courier stores */
+    public function storeName(): HasMany
+    {
+        return $this->hasMany(CourierStore::class, 'courier_platform_id');
+    }
 }

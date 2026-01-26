@@ -47,7 +47,7 @@
 
                             {{-- cod_fee --}}
                             <div class="mb-3 row">
-                                <label for="cod_fee" class="col-sm-3 col-form-label">COD Fee</label>
+                                <label for="cod_fee" class="col-sm-3 col-form-label">COD Fee (%)</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="cod_fee" id="cod_fee"
                                         placeholder="COD Fee" value="{{ old('cod_fee', $setupchargers->cod_fee ?? null) }}">

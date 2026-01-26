@@ -177,89 +177,32 @@ class AssignCourierController extends Controller
 
     public function invoice($pathao_consignment_id, $merchant_id, $role)
     {
-        $data = PathaoCourier::VIEW_ORDER($pathao_consignment_id);
-        $order = $data['data'];
-        $role = $role ?? null;
+        $data  = Booking::where('pathao_consignment_ids', '=', $pathao_consignment_id)->first();
+        $data2 = PathaoCourier::VIEW_ORDER($pathao_consignment_id);
+
+        $data->update([
+            'city_name'       => $data2["data"]["city_name"] ?? null,
+            'zone_name'       => $data2["data"]["zone_name"] ?? null,
+            'area_name'       => $data2["data"]["area_name"] ?? null,
+            'order_status'    => $data2["data"]["order_status"] ?? null,
+            'store_name'      => $data2["data"]["store_name"] ?? null,
+            'order_amount'    => $data2["data"]["order_amount"] ?? null,
+            'order_type'      => $data2["data"]["order_type"] ?? null,
+            'item_type'       => $data2["data"]["item_type"] ?? null,
+            'item_quantity'   => $data2["data"]["item_quantity"] ?? null,
+            'is_incomplete'   => $data2["data"]["is_incomplete"] ?? null,
+            'cash_on_delivery' => $data2["data"]["cash_on_delivery"] ?? null,
+            'short_link'      => $data2["data"]["short_link"] ?? null,
+            'total_weight'    => $data2["data"]["total_weight"] ?? null,
+            'total_fee'       => $data2["data"]["total_fee"] ?? null,
+            'cod_fee'         => $data2["data"]["cod_fee"] ?? null,
+            'delivery_fee'    => $data2["data"]["delivery_fee"] ?? null,
+            'billing_status'  => $data2["data"]["billing_status"] ?? null,
+        ]);
+
+        $order = $data['data'] ?? null;
+        $role  = $role ?? null;
         $setup_change = SetupCharge::first();
-
-        // Store invoice
-        $data = $invoice = Invoice::updateOrCreate(
-            [
-                'order_id' => $order['order_id'], // unique key
-                'merchant_id' => $merchant_id,
-            ],
-            [
-
-                'order_consignment_id' => $order['order_consignment_id'] ?? null,
-                'merchant_order_id' => $order['merchant_order_id'] ?? null,
-
-                'order_created_at' => $order['order_created_at'] ?? null,
-                'order_description' => $order['order_description'] ?? null,
-                'order_status' => $order['order_status'] ?? null,
-                'order_status_updated_at' => $order['order_status_updated_at'] ?? null,
-
-                'recipient_name' => $order['recipient_name'],
-                'recipient_address' => $order['recipient_address'],
-                'recipient_phone' => $order['recipient_phone'],
-                'recipient_secondary_phone' => $order['recipient_secondary_phone'] ?? null,
-
-                'customer_city_id' => $order['customer_city_id'] ?? null,
-                'customer_zone_id' => $order['customer_zone_id'] ?? null,
-                'customer_area_id' => $order['customer_area_id'] ?? null,
-                'city_name' => $order['city_name'] ?? null,
-                'zone_name' => $order['zone_name'] ?? null,
-                'area_name' => $order['area_name'] ?? null,
-
-                'order_amount' => $order['order_amount'] ?? 0,
-                'total_fee' => $order['total_fee'] ?? 0,
-                'promo_discount' => $order['promo_discount'] ?? 0,
-                'discount' => $order['discount'] ?? 0,
-                'cod_fee' => $order['cod_fee'] ?? 0,
-                'additional_charge' => $order['additional_charge'] ?? 0,
-                'compensation_cost' => $order['compensation_cost'] ?? 0,
-                'delivery_fee' => $order['delivery_fee'] ?? 0,
-
-                'delivery_type' => $order['delivery_type'] ?? null,
-                'total_weight' => $order['total_weight'] ?? 0,
-                'cash_on_delivery' => $order['cash_on_delivery'] ?? null,
-                'order_delivery_hub_id' => $order['order_delivery_hub_id'] ?? null,
-                'delivery_method' => $order['delivery_method'] ?? 0,
-                'delivery_string' => $order['delivery_string'] ?? null,
-                'pickup_method' => $order['pickup_method'] ?? 0,
-                'pickup_string' => $order['pickup_string'] ?? null,
-
-                'store_name' => $order['store_name'] ?? null,
-                'store_id' => $order['store_id'] ?? null,
-
-                'order_type' => $order['order_type'] ?? null,
-                'item_type' => $order['item_type'] ?? null,
-                'order_type_id' => $order['order_type_id'] ?? null,
-                'item_type_id' => $order['item_type_id'] ?? null,
-                'item_quantity' => $order['item_quantity'] ?? 1,
-                'item_description' => $order['item_description'] ?? null,
-                'color' => $order['color'] ?? null,
-
-                'billing_status' => $order['billing_status'] ?? 'Unpaid',
-                'modification_notes' => $order['modification_notes'] ?? null,
-                'failed_reason' => $order['failed_reason'] ?? null,
-                'delivery_instruction' => $order['delivery_instruction'] ?? null,
-                'is_incomplete' => $order['is_incomplete'] ?? false,
-
-                'is_recipient_flagged' => $order['is_recipient_flagged'] ?? false,
-                'is_point_delivery' => $order['is_point_delivery'] ?? false,
-                'can_place_execution_request' => $order['can_place_execution_request'] ?? false,
-
-                'short_link' => $order['short_link'] ?? null,
-                'ticket_id' => $order['ticket_id'] ?? null,
-                'invoice_id' => $order['invoice_id'] ?? null,
-                'delivery_slip' => $order['delivery_slip'] ?? null,
-                'execution_request_type' => $order['execution_request_type'] ?? null,
-                'sorted_at' => $order['sorted_at'] ?? null,
-
-                'contact_collectable_amount_update_status' => $order['contact_collectable_amount_update_status'] ?? null,
-                'c2c_info' => $order['c2c_info'] ?? null,
-            ]
-        );
 
         return view('admin.courier-services.invoice', compact('order', 'data', 'setup_change', 'role'));
     }

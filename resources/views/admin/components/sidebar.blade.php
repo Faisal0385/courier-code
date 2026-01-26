@@ -133,12 +133,12 @@
                         </a>
                     </li>
 
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('admin.returned.page') }}">
                             <div class="parent-icon"><i class='bx bx-cookie'></i></div>
                             <div class="menu-title">Returned</div>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
             {{-- @endif --}}

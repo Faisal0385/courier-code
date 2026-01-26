@@ -10,32 +10,56 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
+        // Order & Merchant
         'order_id',
         'merchant_id',
         'booking_operator_id',
         'store_id',
+        'store_name',
+
+        // Product & Delivery
         'product_type_id',
         'delivery_type_id',
+        'order_type',
+        'item_type',
+        'item_quantity',
+
+        // Recipient Info
         'recipient_name',
         'recipient_phone',
         'recipient_secondary_phone',
         'recipient_address',
-        'pathao_consignment_ids',
-        'courier_status',
-        'courier_service',
-        'amount_to_collect',
-        'item_description',
+
+        // Location
         'city_id',
         'zone_id',
         'area_id',
+        'city_name',
+        'zone_name',
+        'area_name',
+
+        // Courier
+        'pathao_consignment_ids',
+        'courier_status',
+        'courier_service',
+
+        // Financials
+        'amount_to_collect',
         'order_amount',
-        'total_fee',
         'total_weight',
-        'billing_status',
+        'total_fee',
         'discount_amount',
         'cod_fee',
         'delivery_fee',
-        'status'
+        'billing_status',
+        'cash_on_delivery',
+
+        // Misc
+        'item_description',
+        'order_status',
+        'is_incomplete',
+        'short_link',
+        'status',
     ];
 
     // Merchant who created the booking

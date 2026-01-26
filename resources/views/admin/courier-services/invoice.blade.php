@@ -24,142 +24,220 @@
     {{-- Admin List Table --}}
     <div class="row justify-content-start">
         <div class="col-lg-12">
-            <div class="container py-4">
 
-                <div class="card shadow">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Invoice - {{ $data['order_id'] }}</h5>
-                        {{-- <button onclick="window.print()" class="btn btn-primary btn-sm">Print</button> --}}
-                    </div>
-
-                    <div class="card-body">
-
-                        {{-- Store Info --}}
-                        <h6 class="fw-bold mb-2">{{ $data['store_name'] }}</h6>
-                        <p class="mb-4">Store ID: {{ $data['store_id'] }}</p>
-
-                        <div class="row">
-                            {{-- Recipient Info --}}
-                            <div class="col-md-6">
-                                <h5 class="fw-bold mb-3">Recipient Information</h5>
-                                <p><strong>Name:</strong> {{ $data['recipient_name'] }}</p>
-                                <p><strong>Phone:</strong> {{ $data['recipient_phone'] }}</p>
-                                <p><strong>Address:</strong> {{ $data['recipient_address'] }}</p>
-                                <p><strong>City:</strong> {{ $data['city_name'] }}</p>
-                                <p><strong>Zone:</strong> {{ $data['zone_name'] }}</p>
-                            </div>
-
-                            {{-- Order Info --}}
-                            <div class="col-md-6">
-                                <h5 class="fw-bold mb-3">Order Details</h5>
-                                <p><strong>Order ID:</strong> {{ $data['order_id'] }}</p>
-                                <p><strong>Merchant Order ID:</strong> {{ $data['merchant_order_id'] }}</p>
-                                <p><strong>Created At:</strong> {{ $data['order_created_at'] }}</p>
-                                <p><strong>Status:</strong> {{ $data['order_status'] }}</p>
-                                <p><strong>Delivery Type:</strong> {{ $data['order_type'] }}</p>
-                            </div>
+            <!-- HEADER -->
+            <div class="card mb-4">
+                <div class="card-body d-flex justify-content-between align-items-start flex-wrap">
+                    <div>
+                        <div class="mb-2">
+                            <span class="badge bg-danger">{{ ucwords($data['order_status']) }}</span>
+                            <span class="badge bg-primary">{{ $data['billing_status'] }}</span>
+                            {{-- <span class="badge bg-warning text-dark">Incomplete</span> --}}
                         </div>
 
-                        <hr>
+                        <h6 class="mb-1">
+                            Consignment ID <strong>#{{ $data['pathao_consignment_ids'] }}</strong>
+                            <i class="bi bi-clipboard ms-1"></i>
+                        </h6>
 
-                        {{-- Item Info --}}
-                        <h5 class="fw-bold mb-3">Item Information</h5>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Description</th>
-                                    <th>Quantity</th>
-                                    <th>Weight</th>
-                                    <th>Item Type</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Item</td>
-                                    <td>{{ $data['item_quantity'] }}</td>
-                                    <td>{{ $data['total_weight'] }} kg</td>
-                                    <td>{{ $data['item_type'] }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <small class="text-muted">
+                            {{ $data['store_name'] }} [ Order ID - {{ $data['order_id'] }} ]
+                        </small>
+                    </div>
 
-                        <hr>
+                    <div class="mt-2 mt-md-0">
+                        {{-- <button class="btn btn-outline-danger btn-sm me-2">Report Issue</button>
+                        <button class="btn btn-outline-danger btn-sm">Send Notes</button> --}}
+                    </div>
+                </div>
+            </div>
 
-                        {{-- Fees + Payment --}}
-                        <h5 class="fw-bold mb-3">Payment Summary</h5>
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <td>Customer Order Amount</td>
-                                    <td class="text-end">{{ $data['order_amount'] }} Tk</td>
-                                </tr>
-                                <tr>
-                                    <td>Courier Delivery Fee</td>
-                                    <td class="text-end">{{ $data['total_fee'] ?? null }} Tk</td>
-                                </tr>
-                                <tr>
-                                    <td>Courier COD Fee</td>
-                                    <td class="text-end">{{ $data['cod_fee'] ?? null }} Tk</td>
-                                </tr>
+            <div class="row g-4">
 
-                                {{-- @if ($role === 'Merchant Fullfillment') --}}
-                                <tr>
-                                    <td>Full Fillment Fee</td>
-                                    <td class="text-end">{{ $setup_change['fulfilment_fee'] ?? 0 }} Tk</td>
-                                </tr>
-                                {{-- @endif --}}
+                <!-- LEFT COLUMN -->
+                <div class="col-lg-8">
 
-                                <tr>
-                                    <td>Our Delivery Fee</td>
-                                    <td class="text-end">{{ $setup_change['delivery_charges'] ?? null }} Tk</td>
-                                </tr>
-                                <tr>
-                                    <td>Our COD Fee</td>
-                                    <td class="text-end">{{ $setup_change['cod_fee'] ?? null }} Tk</td>
-                                </tr>
-                                {{-- <tr>
-                                    <td>Promo Discount</td>
-                                    <td class="text-end">- {{ $data['promo_discount'] }} Tk</td>
-                                </tr> --}}
-                                <tr>
-                                    <td><strong>Total Fee</strong></td>
+                    <!-- RECIPIENT DETAILS -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <strong>Recipient Details</strong>
+                            {{-- <a href="#" class="text-danger text-decoration-none">
+                                <i class="bi bi-flag-fill"></i> Report Customer
+                            </a> --}}
+                        </div>
 
-                                    @php
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <small class="text-muted">Name</small>
+                                    <p class="mb-0">{{ $data['recipient_name'] }} </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted">Phone</small>
+                                    <p class="mb-0">{{ $data['recipient_phone'] }} </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted">Secondary Phone</small>
+                                    <p class="mb-0">{{ $data['recipient_secondary_phone'] }} </p>
+                                </div>
 
-                                        $fulfilment_fee =
-                                            $role === 'Merchant Fullfillment'
-                                            ? $setup_change['fulfilment_fee'] ?? 0
-                                            : 0;
+                                <div class="col-md-4">
+                                    <small class="text-muted">City</small>
+                                    <p class="mb-0">{{ $data['city_name'] }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted">Zone</small>
+                                    <p class="mb-0">{{ $data['zone_name'] }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted">Area</small>
+                                    <p class="mb-0">{{ $data['area_name'] }}</p>
+                                </div>
 
-                                        $total_amount =
-                                            $fulfilment_fee +
-                                            ($setup_change['delivery_charges'] ?? 0) +
-                                            ($setup_change['cod_fee'] ?? 0) +
-                                            $data['order_amount'];
-                                    @endphp
+                                <div class="col-md-8">
+                                    <small class="text-muted">Address</small>
+                                    <p class="mb-0">{{ $data['recipient_address'] }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted">Amount to Collect</small>
+                                    <p class="fw-bold mb-0">৳ {{ $data['amount_to_collect'] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- TIMELINE -->
+                    {{-- <div class="card">
+                        <div class="card-header">
+                            <strong>Timeline</strong>
+                        </div>
 
-                                    <td class="text-end"><strong>{{ $total_amount }} Tk</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>Billing Status</td>
-                                    <td class="text-end">{{ $data['billing_status'] }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between text-center position-relative">
+                                <div class="timeline-step active">
+                                    <i class="bi bi-box-seam"></i>
+                                    <p>Accepted</p>
+                                </div>
+                                <div class="timeline-step">
+                                    <i class="bi bi-cart-check"></i>
+                                    <p>Picked</p>
+                                </div>
+                                <div class="timeline-step">
+                                    <i class="bi bi-truck"></i>
+                                    <p>In Transit</p>
+                                </div>
+                                <div class="timeline-step">
+                                    <i class="bi bi-bicycle"></i>
+                                    <p>Out for Delivery</p>
+                                </div>
+                                <div class="timeline-step">
+                                    <i class="bi bi-hand-thumbs-up"></i>
+                                    <p>Delivered</p>
+                                </div>
+                            </div>
 
-                        <hr>
+                            <hr>
 
-                        <p><strong>Cash on Delivery:</strong> {{ $data['cash_on_delivery'] }}</p>
+                            <div class="mt-3">
+                                <span class="text-success fw-bold">●</span>
+                                New order pickup requested
+                                <br>
+                                <small class="text-muted">Jan 8, 2026 3:55 PM</small>
+                            </div>
+                        </div>
+                    </div> --}}
 
-                        <p class="text-muted mt-4">* This is a system-generated invoice.</p>
+                    <!-- DELIVERY INFO -->
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Delivery Info</strong>
+                            <span class="badge bg-secondary ms-2"> COD</span>
+                        </div>
 
+                        <div class="card-body">
+                            <p><strong>Product Type:</strong> {{ $data['item_type'] }}</p>
+                            <p><strong>Weight:</strong> {{ $data['total_weight'] }} kg</p>
+                            <p><strong>Delivery Type:</strong>
+                                {{ $data['delivery_type_id'] == 48 ? 'Normal Delivery' : 'Demand Delivery' }}</p>
+                            <p><strong>Amount to Collect:</strong> ৳ {{ $data['amount_to_collect'] }}</p>
+                            <p><strong>Description:</strong> {{ $data['item_description'] }}</p>
+                            {{-- <p><strong>Special Instruction:</strong> -</p>
+                            <p><strong>Modification Notes:</strong> -</p> --}}
+                        </div>
                     </div>
                 </div>
 
+                <!-- RIGHT COLUMN -->
+                <div class="col-lg-4">
 
+                    <!-- COST -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between">
+                            <strong>Cost of Delivery</strong>
+                            <span class="badge bg-primary">{{ $data['billing_status'] }}</span>
+                        </div>
+
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Amount to Collect: <span>৳ {{ $data['amount_to_collect'] }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Merchant Fullfilment Amount: <span>৳ {{ $setup_change['fulfilment_fee'] ?? 0 }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    Delivery Fee: <span>৳ {{ $data['delivery_fee'] }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    COD Fee: <span>৳ {{ $data['cod_fee'] }}</span>
+                                </li>
+                            </ul>
+
+                            <hr>
+                            
+
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    @php
+                                        $our_cod_price =
+                                            $data['cod_fee'] + ($data['cod_fee'] * $setup_change['cod_fee']) / 100;
+
+                                        $merchant_fullfilment_amount =
+                                            $data['order_amount'] +
+                                            $setup_change['fulfilment_fee'] +
+                                            $setup_change['delivery_charges'] +
+                                            $our_cod_price;
+                                    @endphp
+
+                                    <strong>Merchant Fullfilment Amount:</strong> <span>৳
+                                        {{ $merchant_fullfilment_amount }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    @php
+                                        $our_cod_price =
+                                            $data['cod_fee'] + ($data['cod_fee'] * $setup_change['cod_fee']) / 100;
+
+                                        $merchant_amount =
+                                            $data['order_amount'] + $setup_change['delivery_charges'] + $our_cod_price;
+
+                                    @endphp
+
+                                    <strong>Merchant Amount:</strong> <span>৳ {{ $merchant_amount }}</span>
+                                </li>
+                            </ul>
+
+
+                            <div class="d-flex justify-content-between fw-bold fs-5">
+                                <span>Total Cost</span>
+                                <span>৳ {{ $data['total_fee'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
         </div>
-
-
+    </div>
 @endsection

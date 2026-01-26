@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\CourierStore;
 use App\Models\Kyc;
+use App\Models\MerchantCourier;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
@@ -14,6 +15,7 @@ class MerchantController extends Controller
     public function manageMerchant(Request $request)
     {
         $courierStores = CourierStore::get();
+        
         $merchants = User::query()
             ->leftJoin('kycs', 'users.id', '=', 'kycs.user_id')
             ->when($request->filled('search'), function ($q) use ($request) {

@@ -11,6 +11,10 @@ Route::get('/', function () {
 })->name('home');
 
 
+Route::get('/contact', function () {
+    return view('client.contact.contact');
+})->name('contact');
+
 ## Price Plan
 Route::get('price/plan/page', [PricePlanController::class, 'index'])->name('price.plan.page');
 

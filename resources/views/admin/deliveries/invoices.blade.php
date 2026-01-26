@@ -23,7 +23,7 @@
 
     {{-- Admin List Table --}}
     <div class="row justify-content-start">
-                <div class="col-lg-12">
+        <div class="col-lg-12">
             <div class="row">
 
                 <div class="col">
@@ -114,11 +114,61 @@
                 </div>
                 <div class="card-body">
                     {{-- Search --}}
-                    <form method="GET" action="{{ route('admin.assign.courier.services.page') }}" class="mb-4">
+                    {{-- <form method="GET" action="{{ route('admin.assign.courier.services.page') }}" class="mb-4">
                         <div class="input-group">
                             <input type="text" name="search" class="form-control" placeholder="Search by Order ID"
                                 value="{{ request('search') }}">
                             <button class="btn btn-outline-secondary" type="submit">Search</button>
+                        </div>
+                    </form> --}}
+
+                    <form method="GET" action="{{ route('admin.invoice.page') }}" class="mb-4">
+                        <div class="row g-2 align-items-end">
+
+                            <!-- Order ID -->
+                            <div class="col-md-2">
+                                <label class="form-label">Order ID</label>
+                                <input type="text" name="order_id" class="form-control" placeholder="Order ID"
+                                    value="{{ request('order_id') }}">
+                            </div>
+
+                            <!-- Consignment ID -->
+                            <div class="col-md-2">
+                                <label class="form-label">Consignment ID</label>
+                                <input type="text" name="consignment_id" class="form-control"
+                                    placeholder="Consignment ID" value="{{ request('consignment_id') }}">
+                            </div>
+                            
+                            <!-- Courier Status -->
+                            <div class="col-md-2">
+                                <label class="form-label">Courier Status</label>
+                                <select name="courier_status" class="form-select">
+                                    <option value="">All</option>
+                                    <option value="pending" {{ request('courier_status') == 'pending' ? 'selected' : '' }}>
+                                        Pending</option>
+                                    <option value="picked" {{ request('courier_status') == 'picked' ? 'selected' : '' }}>
+                                        Picked</option>
+                                    <option value="in_transit"
+                                        {{ request('courier_status') == 'in_transit' ? 'selected' : '' }}>In Transit
+                                    </option>
+                                    <option value="delivered"
+                                        {{ request('courier_status') == 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                    <option value="Pickup Cancel"
+                                        {{ request('courier_status') == 'Pickup Cancel' ? 'selected' : '' }}>Pickup Cancel
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-md-2 d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    Filter
+                                </button>
+                                <a href="{{ route('admin.invoice.page') }}" class="btn btn-outline-secondary mt-1">
+                                    Reset
+                                </a>
+                            </div>
+
                         </div>
                     </form>
                     <br>
@@ -135,8 +185,8 @@
                                     <th>Courier</th>
                                     <th>Status</th>
                                     <th>Invoice</th>
-                                    <th>POD</th>
-                                    <th>PDF</th>
+                                    {{-- <th>POD</th> --}}
+                                    {{-- <th>POD</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -159,24 +209,23 @@
                                             @endif
                                         </td>
                                         <td>
-
                                             @if (!empty($booking->pathao_consignment_ids))
                                                 <a class="btn btn-sm btn-warning d-flex align-item-center"
                                                     href="{{ route('admin.assign.courier.services.invoice.page', [$booking->pathao_consignment_ids, $booking->merchant_id, $booking->merchant->role]) }}">Invoice</a>
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             @if (!empty($booking->pathao_consignment_ids))
                                                 <a class="btn btn-sm btn-success d-flex align-item-center" target="_blank"
                                                     href="{{ route('admin.assign.courier.services.pod.page', $booking->pathao_consignment_ids) }}">POD</a>
                                             @endif
-                                        </td>
-                                        <td>
+                                        </td> --}}
+                                        {{-- <td>
                                             @if (!empty($booking->pathao_consignment_ids))
                                                 <a class="btn btn-sm btn-success d-flex align-item-center" target="_blank"
-                                                    href="{{ route('admin.invoice.pdf', $booking->order_id) }}">PDF</a>
+                                                    href="{{ route('admin.invoice.pdf', $booking->order_id) }}">POD</a>
                                             @endif
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
 
