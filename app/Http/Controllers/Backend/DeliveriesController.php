@@ -612,4 +612,30 @@ class DeliveriesController extends Controller
             ->setPaper([0, 0, 216, 216], 'portrait');
         return $pdf->stream('Invoice_' . $booking->order_id . '.pdf');
     }
+
+    public function bulk(Request $request)
+{
+    // dd($request->orders);
+    $orderIds = explode(',', $request->orders);
+
+    $bookings = Booking::with([
+        'store',
+        'Merchant',
+        'bookingOperator',
+        'productType',
+        'deliveryType',
+        'products.product'
+    ])
+    ->whereIn('order_id', $orderIds)
+    ->get();
+
+    $pdf = Pdf::loadView(
+        'admin.deliveries.bulk-invoice-pdf',
+        compact('bookings')
+    )->setPaper([0, 0, 216, 216], 'portrait');
+
+    return $pdf->stream('Bulk_Invoices.pdf');
+}
+
+
 }

@@ -423,7 +423,8 @@ Route::get('admin/returned/page', [DeliveriesController::class, 'returned'])->na
 Route::get('admin/cancelled/page', [DeliveriesController::class, 'cancelled'])->name('admin.cancelled.page');
 Route::get('admin/invoice/page', [DeliveriesController::class, 'invoice'])->name('admin.invoice.page');
 Route::get('admin/invoice/pdf/{orderId}', [DeliveriesController::class, 'invoicePdf'])->name('admin.invoice.pdf');
-
+Route::get('/admin/invoice/bulk', [DeliveriesController::class, 'bulk'])
+    ->name('admin.invoice.bulk');
 // Route::get('admin/active/create', [DispatchItemController::class, 'create'])->name('admin.dispatch.item.create');
 // Route::get('admin/active/edit/{id}', [DispatchItemController::class, 'edit'])->name('admin.dispatch.item.edit');
 // Route::post('admin/active/store', [DispatchItemController::class, 'store'])->name('admin.dispatch.item.store');
