@@ -90,6 +90,11 @@
                                     Reset
                                 </a>
                             </div>
+                            <div>
+                                <button class="btn btn-primary mb-3" id="print-selected">
+                                    Print All
+                                </button>
+                            </div>
 
                         </div>
                     </form>
@@ -101,6 +106,9 @@
                         <table class="table table-bordered table-striped align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
+                                    <th>
+                                        <input type="checkbox" id="select-all">
+                                    </th>
                                     <th>#</th>
                                     <th>Order ID</th>
                                     <th>Consignment ID</th>
@@ -113,6 +121,9 @@
                             <tbody>
                                 @foreach ($bookings as $key => $booking)
                                     <tr>
+                                        <td>
+                                            <input type="checkbox" class="order-checkbox" value="{{ $booking->order_id }}">
+                                        </td>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $booking->order_id }}</td>
                                         <td>
@@ -151,6 +162,31 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('select-all').addEventListener('change', function() {
+            document.querySelectorAll('.order-checkbox').forEach(cb => {
+                cb.checked = this.checked;
+            });
+        });
 
+        document.getElementById('print-selected').addEventListener('click', function() {
+            let ids = [];
+            document.querySelectorAll('.order-checkbox:checked').forEach(cb => {
+                ids.push(cb.value);
+            });
+
+            if (ids.length === 0) {
+                alert('Please select at least one item');
+                return;
+            }
+
+            let url = "{{ route('admin.invoice.bulk') }}?orders=" + ids.join(',');
+            window.open(url, '_blank');
+        });
+    </script>
 
 @endsection
+
+{{-- @section('scripts')
+
+@endsection --}}
