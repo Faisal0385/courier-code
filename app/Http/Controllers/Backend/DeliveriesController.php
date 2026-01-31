@@ -159,8 +159,10 @@ class DeliveriesController extends Controller
                 )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '!=', "Pickup Cancel")
+                ->where('courier_status', '!=', "Assigned for delivery")
                 ->where('courier_status', '!=', "Delivered")
                 ->where('courier_status', '!=', "Returned")
+                ->where('courier_status', '!=', "Paid Return")
                 ->orderBy('id', 'desc')
                 ->paginate(8)
                 ->withQueryString();
@@ -211,6 +213,7 @@ class DeliveriesController extends Controller
                 ->where('merchant_id', $user_id)
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '!=', "Pickup Cancel")
+                ->where('courier_status', '!=', "Assigned for delivery")
                 ->where('courier_status', '!=', "Delivered")
                 ->where('courier_status', '!=', "Returned")
                 ->orderBy('id', 'desc')
@@ -429,6 +432,7 @@ class DeliveriesController extends Controller
 
     public function returned(Request $request)
     {
+
         $user_id = Auth::user()->id;
         $courierStores = CourierStore::get();
 
@@ -438,7 +442,10 @@ class DeliveriesController extends Controller
 
         if (Auth::user()->role == "Admin") {
 
+            $paid_returned = Booking::where('courier_status', '=', "Paid Return")->count();
+
             $returned = Booking::where('courier_status', '=', "Returned")->count();
+            $total_returned = $paid_returned + $returned;
 
             $bookings = Booking::with([
                 'store',
@@ -470,14 +477,17 @@ class DeliveriesController extends Controller
                 )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '=', "Returned")
+                ->orWhere('courier_status', '=', "Paid Return")
                 ->orderBy('id', 'desc')
                 ->paginate(8)
                 ->withQueryString();
 
-            return view('admin.deliveries.returned', compact('bookings', 'courierStores', 'returned'));
+            return view('admin.deliveries.returned', compact('bookings', 'courierStores', 'total_returned', 'paid_returned', 'returned'));
         } else {
 
+            $paid_returned = Booking::where('courier_status', '=', "Paid Return")->where('merchant_id', $user_id)->count();
             $returned = Booking::where('courier_status', '=', "Returned")->where('merchant_id', $user_id)->count();
+            $total_returned = $paid_returned + $returned;
 
             $bookings = Booking::with([
                 'store',
@@ -510,14 +520,14 @@ class DeliveriesController extends Controller
                 )
                 ->where('pathao_consignment_ids', '!=', null)
                 ->where('courier_status', '=', "Returned")
+                ->orWhere('courier_status', '=', "Paid Return")
                 ->orderBy('id', 'desc')
                 ->paginate(8)
                 ->withQueryString();
 
-            return view('admin.deliveries.returned', compact('bookings', 'courierStores', 'delivered', 'returned'));
+            return view('admin.deliveries.returned', compact('bookings', 'courierStores', 'delivered', 'total_returned', 'paid_returned', 'returned'));
         }
     }
-
 
     public function invoice(Request $request)
     {
@@ -595,7 +605,6 @@ class DeliveriesController extends Controller
         }
     }
 
-
     public function invoicePdf($orderId)
     {
         $booking = Booking::with([
@@ -614,28 +623,26 @@ class DeliveriesController extends Controller
     }
 
     public function bulk(Request $request)
-{
-    // dd($request->orders);
-    $orderIds = explode(',', $request->orders);
+    {
+        // dd($request->orders);
+        $orderIds = explode(',', $request->orders);
 
-    $bookings = Booking::with([
-        'store',
-        'Merchant',
-        'bookingOperator',
-        'productType',
-        'deliveryType',
-        'products.product'
-    ])
-    ->whereIn('order_id', $orderIds)
-    ->get();
+        $bookings = Booking::with([
+            'store',
+            'Merchant',
+            'bookingOperator',
+            'productType',
+            'deliveryType',
+            'products.product'
+        ])
+            ->whereIn('order_id', $orderIds)
+            ->get();
 
-    $pdf = Pdf::loadView(
-        'admin.deliveries.bulk-invoice-pdf',
-        compact('bookings')
-    )->setPaper([0, 0, 216, 216], 'portrait');
+        $pdf = Pdf::loadView(
+            'admin.deliveries.bulk-invoice-pdf',
+            compact('bookings')
+        )->setPaper([0, 0, 216, 216], 'portrait');
 
-    return $pdf->stream('Bulk_Invoices.pdf');
-}
-
-
+        return $pdf->stream('Bulk_Invoices.pdf');
+    }
 }

@@ -6,13 +6,13 @@
 
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Dispatch Items</div>
+        <div class="breadcrumb-title pe-3">Dispatch Items List</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Dispatch Item</li>
+                    <li class="breadcrumb-item active" aria-current="page">Dispatch Item List</li>
                 </ol>
             </nav>
         </div>
@@ -26,11 +26,11 @@
         <div class="col-lg-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-dark text-white fw-semibold">
-                    Dispatch Item
+                    Dispatch Item List
                 </div>
                 <div class="card-body">
                     {{-- Search --}}
-                    <form method="GET" action="{{ route('admin.dispatch.item.index') }}" class="mb-4">
+                    <form method="GET" action="{{ route('admin.dispatch.item.list') }}" class="mb-4">
                         <div class="row g-2 align-items-end">
 
                             <!-- Order ID -->
@@ -52,22 +52,11 @@
                                 <button type="submit" class="btn btn-primary">
                                     Filter
                                 </button>
-                                <a href="{{ route('admin.dispatch.item.index') }}" class="btn btn-outline-secondary mt-1">
+                                <a href="{{ route('admin.dispatch.item.list') }}" class="btn btn-outline-secondary mt-1">
                                     Reset
                                 </a>
                             </div>
                             <hr>
-                            <div>
-                                <button class="btn btn-primary mb-3" id="print-selected">
-                                    Print All
-                                </button>
-
-                                <a href="{{ route('admin.scan.dispatch.item') }}" target="_blank"
-                                    class="btn btn-danger mb-3" id="print-selected">
-                                    Scan Items
-                                </a>
-                            </div>
-
                         </div>
                     </form>
 
@@ -76,9 +65,6 @@
                         <table class="table table-bordered table-striped align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>
-                                        <input type="checkbox" id="select-all">
-                                    </th>
                                     <th>#</th>
                                     <th>Order ID</th>
                                     <th>Consignment ID</th>
@@ -91,9 +77,6 @@
                             <tbody>
                                 @foreach ($bookings as $key => $booking)
                                     <tr>
-                                        <td>
-                                            <input type="checkbox" class="order-checkbox" value="{{ $booking->order_id }}">
-                                        </td>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $booking->order_id }}</td>
                                         <td>

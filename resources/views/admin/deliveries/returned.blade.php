@@ -30,7 +30,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $merchants ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $total_returned ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-user fs-3 text-black'></i>
                                 </div>
@@ -49,7 +49,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $operators ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $returned ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>
@@ -68,7 +68,7 @@
                     <div class="card radius-10" style="background: #F5F8FA;">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <h5 class="mb-0 text-black">{{ $returned ?? 0 }}</h5>
+                                <h5 class="mb-0 text-black">{{ $paid_returned ?? 0 }}</h5>
                                 <div class="ms-auto">
                                     <i class='bx bx-dollar fs-3 text-black'></i>
                                 </div>

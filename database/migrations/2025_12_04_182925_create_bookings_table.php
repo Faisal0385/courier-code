@@ -54,6 +54,7 @@ return new class extends Migration
             $table->unsignedBigInteger('area_id')->nullable();
 
             $table->string('status')->default('0');
+            $table->integer('dispatch_status')->default(0);
 
             $table->timestamps();
         });

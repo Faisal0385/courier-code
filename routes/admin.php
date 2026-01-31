@@ -413,7 +413,9 @@ Route::post('admin/dispatch/item/store', [DispatchItemController::class, 'store'
 Route::post('admin/dispatch/item/update/{id}', [DispatchItemController::class, 'update'])->name('admin.dispatch.item.update');
 Route::get('admin/dispatch/item/delete/{id}', [DispatchItemController::class, 'destroy'])->name('admin.dispatch.item.delete');
 Route::get('admin/dispatch/item/status/toggle/{id}', [DispatchItemController::class, 'toggleStatus'])->name('admin.dispatch.item.toggle.status');
-
+Route::get('admin/scan/dispatch/item/index', [DispatchItemController::class, 'scanItem'])->name('admin.scan.dispatch.item');
+Route::get('admin/scan/dispatch/item/status', [DispatchItemController::class, 'scanItemUpdate'])->name('admin.scan.dispatch.item.status');
+Route::get('admin/dispatch/item/list', [DispatchItemController::class, 'list'])->name('admin.dispatch.item.list');
 
 ## Active
 Route::get('admin/all/page', [DeliveriesController::class, 'all'])->name('admin.all.page');

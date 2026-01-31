@@ -132,13 +132,12 @@
                             <div class="menu-title">Cancelled</div>
                         </a>
                     </li>
-
-                    {{-- <li>
+                    <li>
                         <a href="{{ route('admin.returned.page') }}">
                             <div class="parent-icon"><i class='bx bx-cookie'></i></div>
                             <div class="menu-title">Returned</div>
                         </a>
-                    </li> --}}
+                    </li>
                 </ul>
             </li>
             {{-- @endif --}}
@@ -228,11 +227,30 @@
                                 Create Dispatch Incharge
                             </a>
                         </li>
+                    </ul>
+                </li>
+            @endif
 
+             @if (Auth::user()->can('hub.menu'))
+                <li class="menu-label">DISPATCH SETUP</li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon">
+                            <i class="bx bx-grid-alt"></i>
+                        </div>
+                        <div class="menu-title">Manage Dispatch</div>
+                    </a>
+                    <ul>
                         <li>
                             <a href="{{ route('admin.dispatch.item.index') }}">
                                 <i class="bx bx-right-arrow-alt"></i>
-                                Dispatch Items
+                                Print Dispatch Items
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.dispatch.item.list') }}">
+                                <i class="bx bx-right-arrow-alt"></i>
+                                Dispatch Items List
                             </a>
                         </li>
                     </ul>
